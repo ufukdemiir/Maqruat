@@ -62,6 +62,29 @@ const blog = defineCollection({
 });
 
 // ---------------------------------------------------------------------------
+// "avatar" — BİLİNÇLİ OLARAK "settings"ten TAMAMEN AYRI, tek başına, minik
+// bir dosya. Neden ayrı: "settings" (Site Ayarları) 9 alanlı, karmaşık bir
+// giriştir; Decap CMS'in bu türden çok alanlı bir "files" girişine YENİ bir
+// alan eklendiğinde, o alanın değerini (tekrarlanabilir şekilde, hatta gizli
+// pencerede bile) YANLIŞ bir üst-seviye anahtara yazdığı defalarca
+// gözlemlendi (ör. "Baş Harfler" alanına yazılan bir değer, dosyanın en
+// dışında bambaşka bir anahtarın altında bitebiliyor). Bu, bizim
+// kodumuzdaki bir hata değil, Decap CMS'in kendi istemci tarafı kaydetme
+// mantığındaki bir hata. Avatarı KENDİ, TEK ALANLIK dosyasına taşımak bu
+// hatayı tetikleyen koşulu (kalabalık, çok alanlı bir girişe yeni alan
+// ekleme) ortadan kaldırır.
+// ---------------------------------------------------------------------------
+const avatar = defineCollection({
+  loader: file("src/data/avatar.json"),
+  schema: z
+    .object({
+      initials: z.string().optional().default(""),
+      image: z.string().optional().default(""),
+    })
+    .catch({ initials: "", image: "" }),
+});
+
+// ---------------------------------------------------------------------------
 // "settings" — tek dosyalık site ayarları (Decap CMS'te "Site Ayarları"
 // olarak düzenlenir). Ana sayfadaki okur kartı ve yıllık hedef buradan gelir.
 // ---------------------------------------------------------------------------
@@ -87,13 +110,6 @@ const settings = defineCollection({
   schema: z
     .object({
       readerName: z.string().default("Ufuk Demir"),
-      avatar: z
-        .object({
-          initials: z.string().optional().default(""),
-          image: z.string().optional().default(""),
-        })
-        .optional()
-        .default({ initials: "", image: "" }),
       tagline: z.string().default(""),
       bio: z.string().default(""),
       siteDescription: z.string().default(""),
@@ -115,7 +131,6 @@ const settings = defineCollection({
     })
     .catch({
       readerName: "Ufuk Demir",
-      avatar: { initials: "", image: "" },
       tagline: "",
       bio: "",
       siteDescription: "",
@@ -126,4 +141,4 @@ const settings = defineCollection({
     }),
 });
 
-export const collections = { books, settings, blog };
+export const collections = { books, settings, blog, avatar };

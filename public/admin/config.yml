@@ -21,6 +21,32 @@ display_url: https://ufukdemiir.github.io/Okurken
 logo_url: /favicon.svg
 
 collections:
+  # "Profil / Avatar" BİLİNÇLİ OLARAK "Site Ayarları"ndan ayrı, tek başına bir
+  # koleksiyon. Ana sayfada adınızın yanında gösterilecek görsel/rozet
+  # burada yönetilir; bkz. src/content.config.ts'teki "avatar" koleksiyonu
+  # için düşülen not.
+  - name: "avatar"
+    label: "Profil / Avatar"
+    files:
+      - name: "main"
+        label: "Profil / Avatar"
+        file: "src/data/avatar.json"
+        description: "Ana sayfada, adınızın solunda gösterilebilecek görsel ya da rozet. Her iki alan da isteğe bağlıdır."
+        fields:
+          - {
+              label: "Baş Harfler",
+              name: "initials",
+              widget: "string",
+              required: false,
+              hint: "Profil Fotoğrafı yüklemediyseniz, ana sayfada adınızın solunda küçük yuvarlak bir rozette görünen 1-2 harf (ör. 'UD'). Bir Profil Fotoğrafı yüklerseniz bu alan yerine o fotoğraf gösterilir. İkisi de boşsa hiçbir rozet/görsel gösterilmez, sorun oluşturmaz.",
+            }
+          - {
+              label: "Profil Fotoğrafı",
+              name: "image",
+              widget: "image",
+              required: false,
+              hint: "Ana sayfada adınızın solunda yuvarlak bir fotoğraf olarak görünür ve doldurulduğunda Baş Harfler rozetinin yerini alır. En iyi görünüm için kare (1:1) bir fotoğraf seçin.",
+            }
   - name: "books"
     label: "Kitaplar"
     label_singular: "Kitap"
@@ -247,25 +273,6 @@ collections:
               required: false,
               hint: "Adınız/soyadınız. Ana sayfadaki başlıkta, footer'daki telif hakkı satırında ve arama motorlarına gönderilen sayfa bilgilerinde (yazar adı) kullanılır. Boş bırakılırsa 'Ufuk Demir' varsayılan değeri kullanılır.",
             }
-          - label: "Profil / Avatar"
-            name: "avatar"
-            widget: "object"
-            hint: "Ana sayfada adınızın yanında gösterilebilecek görsel. Her iki alan da isteğe bağlıdır; ikisi de boşsa hiçbir görsel/rozet gösterilmez, sorun oluşturmaz."
-            fields:
-              - {
-                  label: "Baş Harfler",
-                  name: "initials",
-                  widget: "string",
-                  required: false,
-                  hint: "Profil Fotoğrafı yüklemediyseniz, adınızın yanında küçük yuvarlak bir rozette görünen 1-2 harf (ör. 'UD'). Bir Profil Fotoğrafı yüklerseniz bu alan yerine o fotoğraf gösterilir.",
-                }
-              - {
-                  label: "Profil Fotoğrafı",
-                  name: "image",
-                  widget: "image",
-                  required: false,
-                  hint: "Ana sayfada adınızın yanında yuvarlak bir fotoğraf olarak görünür ve doldurulduğunda Baş Harfler rozetinin yerini alır. En iyi görünüm için kare (1:1) bir fotoğraf seçin.",
-                }
           - {
               label: "Kısa Slogan",
               name: "tagline",
