@@ -56,7 +56,16 @@ const extraSchemas = structuredData
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
-<link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+<!-- Favicon: Google Arama, sonuçlarda göstereceği site simgesi için SVG'yi
+     DESTEKLEMEZ (yalnızca PNG/ICO/GIF/BMP/statik WebP kabul eder ve karenin
+     48'in katı bir boyutta olmasını ister) — bu yüzden asıl kaynak (PNG),
+     modern tarayıcılar için de SVG birlikte tanımlanıyor. sizes="any" olan
+     SVG, onu destekleyen tarayıcılarda PNG'nin önüne geçer; PNG ise hem
+     eski tarayıcılar hem de Google'ın kendisi için birincil kaynaktır. -->
+<link rel="icon" type="image/png" sizes="96x96" href={withBase("/favicon-96.png")} />
+<link rel="icon" type="image/png" sizes="48x48" href={withBase("/favicon-48.png")} />
+<link rel="icon" type="image/svg+xml" sizes="any" href={withBase("/favicon.svg")} />
+<link rel="apple-touch-icon" href={withBase("/apple-touch-icon.png")} />
 <link rel="sitemap" href={withBase("/sitemap-index.xml")} />
 <link rel="canonical" href={canonicalURL} />
 
