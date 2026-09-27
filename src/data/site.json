@@ -20,6 +20,7 @@
     "foundingYear": 2026
   },
   "avatar": {
-    "image": "/uploads/abyr-avatar.png"
+    "image": "",
+    "initials": "UD"
   }
 }
