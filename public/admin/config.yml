@@ -104,7 +104,15 @@ collections:
         fields:
           - { label: "Metin", name: "text", widget: "text" }
           - { label: "Sayfa", name: "page", widget: "number", value_type: "int", required: false, min: 1 }
-      - { label: "İnceleme (Markdown)", name: "body", widget: "markdown", required: false }
+      - {
+          label: "İnceleme (Markdown)",
+          name: "body",
+          widget: "markdown",
+          required: false,
+          media_folder: "/public/uploads",
+          public_folder: "/uploads",
+          hint: "Metin içine görsel eklemek için araç çubuğundaki resim simgesini kullanın; site adresinizin başına eklenmesi gereken ön ek otomatik olarak eklenir, siz sadece görseli seçin. Erişilebilirlik ve SEO için görsele mutlaka açıklayıcı bir 'alt metin' yazın.",
+        }
       - { label: "Taslak", name: "draft", widget: "boolean", default: false, required: false }
 
   - name: "blog"
@@ -127,7 +135,14 @@ collections:
           hint: "Listeleme ve arama motoru açıklaması için. Boş bırakılırsa yazının ilk cümlelerinden otomatik üretilir.",
         }
       - { label: "Etiketler", name: "tags", widget: "list", field: { label: "Etiket", name: "tag", widget: "string" }, required: false }
-      - { label: "Yazı (Markdown)", name: "body", widget: "markdown" }
+      - {
+          label: "Yazı (Markdown)",
+          name: "body",
+          widget: "markdown",
+          media_folder: "/public/uploads",
+          public_folder: "/uploads",
+          hint: "Metin içine görsel eklemek için araç çubuğundaki resim simgesini kullanın; site adresinizin başına eklenmesi gereken ön ek otomatik olarak eklenir, siz sadece görseli seçin. Erişilebilirlik ve SEO için görsele mutlaka açıklayıcı bir 'alt metin' yazın.",
+        }
       - { label: "Taslak", name: "draft", widget: "boolean", default: false, required: false }
 
   - name: "settings"
@@ -136,27 +151,111 @@ collections:
       - name: "main"
         label: "Genel Ayarlar"
         file: "src/data/site.json"
+        # NOT: Aşağıdaki alanların tamamı bilinçli olarak "required: false"
+        # (zorunlu değil) olarak ayarlanmıştır. Böylece tek bir alanı
+        # güncellemek için diğerlerine dokunmanız gerekmez. Her alanın altına,
+        # doldurulduğunda sitede tam olarak nerede ve nasıl kullanıldığını
+        # açıklayan bir ipucu eklendi. Bir alanı boş bırakırsanız kod
+        # tarafında güvenli bir varsayılan değer devreye girer; site asla
+        # bozulmaz.
         fields:
-          - { label: "Okur Adı", name: "readerName", widget: "string" }
-          - { label: "Baş Harfler (Avatar)", name: "avatarInitials", widget: "string" }
-          - { label: "Kısa Slogan", name: "tagline", widget: "string" }
-          - { label: "Biyografi", name: "bio", widget: "text" }
-          - { label: "Site Açıklaması (SEO)", name: "siteDescription", widget: "text" }
+          - {
+              label: "Okur Adı",
+              name: "readerName",
+              widget: "string",
+              required: false,
+              hint: "Adınız/soyadınız. Ana sayfadaki başlıkta, footer'daki telif hakkı satırında ve arama motorlarına gönderilen sayfa bilgilerinde (yazar adı) kullanılır. Boş bırakılırsa 'Ufuk Demir' varsayılan değeri kullanılır.",
+            }
+          - {
+              label: "Baş Harfler (Avatar)",
+              name: "avatarInitials",
+              widget: "string",
+              required: false,
+              hint: "Ana sayfada, adınızın yanında küçük yuvarlak bir rozette görünen 1-2 harf (ör. 'UD'). Boş bırakırsanız rozet hiç gösterilmez, sorun oluşturmaz.",
+            }
+          - {
+              label: "Kısa Slogan",
+              name: "tagline",
+              widget: "string",
+              required: false,
+              hint: "Ana sayfada adınızın hemen altında görünen tek cümlelik tanıtım. Arama motoru sonuçlarında da kişi açıklaması olarak kullanılabilir.",
+            }
+          - {
+              label: "Biyografi",
+              name: "bio",
+              widget: "text",
+              required: false,
+              hint: "Ana sayfadaki okur kartında görünen tanıtım paragrafı. İndirilebilir arşiv (PDF/JSON) dosyalarının kapak sayfasında da kullanılır.",
+            }
+          - {
+              label: "Site Açıklaması (SEO)",
+              name: "siteDescription",
+              widget: "text",
+              required: false,
+              hint: "Google gibi arama motorlarında site adınızın altında görünen açıklama metni — SEO için önemlidir. Bir blog yazısının kendi özeti olmadığında da yedek açıklama olarak kullanılır.",
+            }
           - {
               label: "Kuruluş Yılı",
               name: "foundingYear",
               widget: "number",
               value_type: "int",
-              hint: "Sitenin ilk yayına alındığı yıl. Footer'daki telif hakkı satırında kullanılır, normalde bir daha değiştirmenize gerek kalmaz.",
+              required: false,
+              hint: "Sitenin ilk yayına alındığı yıl. Footer'daki telif hakkı satırında kullanılır (ör. '2026–2029'), normalde bir daha değiştirmenize gerek kalmaz.",
             }
-          - { label: "Hedef Yılı", name: "goalYear", widget: "number", value_type: "int" }
-          - { label: "Yıllık Okuma Hedefi (kitap)", name: "yearlyGoal", widget: "number", value_type: "int", min: 1 }
+          - {
+              label: "Hedef Yılı",
+              name: "goalYear",
+              widget: "number",
+              value_type: "int",
+              required: false,
+              hint: "Ana sayfadaki 'Yıllık Okuma Hedefi' ilerleme çubuğunun hangi takvim yılına ait olduğunu belirler. Genelde içinde bulunduğunuz yıldır; yeni bir yıla girdiğinizde yalnızca bu alanı güncellemeniz yeterlidir.",
+            }
+          - {
+              label: "Yıllık Okuma Hedefi (kitap)",
+              name: "yearlyGoal",
+              widget: "number",
+              value_type: "int",
+              min: 1,
+              required: false,
+              hint: "O yıl için kendinize koyduğunuz kitap sayısı hedefi. Ana sayfadaki ilerleme çubuğunda 'bitirilen / hedef' şeklinde gösterilir.",
+            }
           - label: "Sosyal Bağlantılar"
             name: "social"
             widget: "object"
+            hint: "Bu alanların tamamı isteğe bağlıdır. Bir bağlantıyı boş bırakırsanız, o bağlantıya ait buton veya satır sitede hiç görünmez — herhangi bir sorun oluşturmaz."
             fields:
-              - { label: "Web Sitesi", name: "website", widget: "string", required: false }
-              - { label: "GitHub linki", name: "github", widget: "string", required: false }
-              - { label: "LinkedIn linki", name: "linkedin", widget: "string", required: false }
-              - { label: "Pinterest linki", name: "pinterest", widget: "string", required: false }
-              - { label: "E-posta", name: "email", widget: "string", required: false }
+              - {
+                  label: "Web Sitesi (isteğe bağlı)",
+                  name: "website",
+                  widget: "string",
+                  required: false,
+                  hint: "Doldurulursa sitenin tüm sayfalarının footer'ında (en alt kısmında) 'Web sitesi' adıyla bir bağlantı olarak görünür.",
+                }
+              - {
+                  label: "GitHub linki (isteğe bağlı)",
+                  name: "github",
+                  widget: "string",
+                  required: false,
+                  hint: "Doldurulursa ana sayfada, adınızın yanında bir GitHub butonu olarak görünür.",
+                }
+              - {
+                  label: "LinkedIn linki (isteğe bağlı)",
+                  name: "linkedin",
+                  widget: "string",
+                  required: false,
+                  hint: "Doldurulursa ana sayfada, adınızın yanında bir LinkedIn butonu olarak görünür.",
+                }
+              - {
+                  label: "Pinterest linki (isteğe bağlı)",
+                  name: "pinterest",
+                  widget: "string",
+                  required: false,
+                  hint: "Doldurulursa ana sayfada, adınızın yanında bir Pinterest butonu olarak görünür.",
+                }
+              - {
+                  label: "E-posta (isteğe bağlı)",
+                  name: "email",
+                  widget: "string",
+                  required: false,
+                  hint: "Doldurulursa sitenin tüm sayfalarının footer'ında 'E-posta' adıyla, tıklandığında e-posta uygulamanızı açan bir bağlantı olarak görünür (mailto:).",
+                }

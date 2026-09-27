@@ -309,3 +309,191 @@ export async function computeStats(referenceYear = new Date().getFullYear()): Pr
     trackingStartYear: trackingStart.getFullYear(),
   };
 }
+
+// ---------------------------------------------------------------------------
+// Belirli bir yıla ait "geriye dönük" istatistikler (İstatistikler sayfasındaki
+// yıl seçici için). computeStats() YUKARIDA olduğu gibi bırakılmıştır — tüm
+// zamanlar görünümü hiçbir şekilde etkilenmez; bu bölüm tamamen ek (additive)
+// bir katmandır.
+//
+// Bir kitap, "o yıla ait" sayılmak için TAMAMLANMIŞ ya da YARIM BIRAKILMIŞ
+// olmalı VE bitiş tarihi (endDate) o takvim yılına düşmelidir. Henüz
+// "okunuyor" ya da "okunacak" durumundaki kitapların belirli bir yılı yoktur,
+// bu yüzden geriye dönük bir yıl görünümüne dahil edilmezler.
+// ---------------------------------------------------------------------------
+
+export interface YearStats {
+  year: number;
+  totalBooks: number;
+  completedCount: number;
+  droppedCount: number;
+  totalPagesRead: number;
+  averagePagesPerBook: number | null;
+  averageDaysToFinish: number | null;
+  averageRating: number | null;
+  distinctAuthorCount: number;
+  totalQuotes: number;
+  totalNotes: number;
+  totalReviews: number;
+  genreDistribution: { genre: string; count: number }[];
+  ratingHistogram: { rating: number; count: number }[];
+  booksPerMonth: { label: string; count: number }[];
+  averagePagesPerDay: number;
+  topRated: RankedList;
+  mostQuoted: RankedList;
+  mostNoted: RankedList;
+  longestBook: BookEntry | null;
+  shortestBook: BookEntry | null;
+  fastestRead: DurationHighlight | null;
+  slowestRead: DurationHighlight | null;
+  mostReadAuthor: AuthorHighlight | null;
+  firstCompletedBook: BookEntry | null;
+  mostRecentCompletedBook: BookEntry | null;
+}
+
+/** İstatistik sayfasında yıl seçici oluşturmak için: en az bir kitabın
+ * bitiş tarihine sahip olduğu yılların listesi, en yeniden en eskiye. */
+export async function getAvailableStatsYears(): Promise<number[]> {
+  const books = await getPublishedBooks();
+  const years = new Set<number>();
+  books.forEach((b) => {
+    if ((b.data.status === "completed" || b.data.status === "dropped") && b.data.endDate) {
+      years.add(b.data.endDate.getFullYear());
+    }
+  });
+  return [...years].sort((a, b) => b - a);
+}
+
+/** Belirli bir yıla ait istatistik anlık görüntüsü. O yıla ait hiçbir
+ * kayıt yoksa null döner (getStaticPaths bu durumda sayfa üretmez). */
+export async function computeYearStats(year: number): Promise<YearStats | null> {
+  const books = await getPublishedBooks();
+  const now = new Date();
+
+  const relevant = books.filter(
+    (b) =>
+      (b.data.status === "completed" || b.data.status === "dropped") &&
+      b.data.endDate?.getFullYear() === year,
+  );
+  if (relevant.length === 0) return null;
+
+  const completed = relevant.filter((b) => b.data.status === "completed");
+  const droppedCount = relevant.length - completed.length;
+
+  const pageCounts = completed
+    .map((b) => b.data.pageCount)
+    .filter((p): p is number => typeof p === "number");
+  const totalPagesRead = relevant.reduce((sum, b) => sum + actualPagesRead(b), 0);
+  const averagePagesPerBook = pageCounts.length
+    ? Math.round(pageCounts.reduce((sum, p) => sum + p, 0) / pageCounts.length)
+    : null;
+
+  const durations = completed
+    .filter((b) => b.data.startDate && b.data.endDate)
+    .map((b) => ({ book: b, days: daysBetween(b.data.startDate as Date, b.data.endDate as Date) }));
+  const averageDaysToFinish = durations.length
+    ? Math.round(durations.reduce((sum, d) => sum + d.days, 0) / durations.length)
+    : null;
+
+  const totalQuotes = relevant.reduce((sum, b) => sum + b.data.quotes.length, 0);
+  const totalNotes = relevant.reduce((sum, b) => sum + b.data.notes.length, 0);
+  const totalReviews = relevant.filter((b) => (b.body ?? "").trim().length > 0).length;
+
+  const ratedBooks = relevant.map((b) => b.data.rating).filter((r): r is number => typeof r === "number");
+  const averageRating = ratedBooks.length
+    ? Math.round((ratedBooks.reduce((sum, r) => sum + r, 0) / ratedBooks.length) * 10) / 10
+    : null;
+
+  const distinctAuthorCount = new Set(relevant.map((b) => b.data.author)).size;
+
+  const genreMap = new Map<string, number>();
+  relevant.forEach((b) => b.data.genres.forEach((g) => genreMap.set(g, (genreMap.get(g) ?? 0) + 1)));
+  const genreDistribution = [...genreMap.entries()]
+    .map(([genre, count]) => ({ genre, count }))
+    .sort((a, b) => b.count - a.count);
+
+  const ratingHistogram = Array.from({ length: 10 }, (_, i) => {
+    const rating = i + 1;
+    return { rating, count: relevant.filter((b) => Math.round(b.data.rating ?? -1) === rating).length };
+  });
+
+  const monthFormatter = new Intl.DateTimeFormat("tr-TR", { month: "short" });
+  const booksPerMonth = Array.from({ length: 12 }, (_, month) => {
+    const label = monthFormatter.format(new Date(year, month, 1));
+    const count = completed.filter((b) => b.data.endDate?.getMonth() === month).length;
+    return { label, count };
+  });
+
+  const topRated = rankBooks(relevant, (b) => b.data.rating ?? 0, 5);
+  const mostQuoted = rankBooks(relevant, (b) => b.data.quotes.length, 5);
+  const mostNoted = rankBooks(relevant, (b) => b.data.notes.length, 5);
+
+  const withPages = completed.filter((b) => typeof b.data.pageCount === "number");
+  const longestBook = withPages.length
+    ? withPages.reduce((a, b) => ((b.data.pageCount ?? 0) > (a.data.pageCount ?? 0) ? b : a))
+    : null;
+  const shortestBook = withPages.length
+    ? withPages.reduce((a, b) => ((b.data.pageCount ?? 0) < (a.data.pageCount ?? 0) ? b : a))
+    : null;
+
+  const fastestRead = durations.length ? durations.reduce((a, b) => (b.days < a.days ? b : a)) : null;
+  const slowestRead = durations.length ? durations.reduce((a, b) => (b.days > a.days ? b : a)) : null;
+
+  const authorCounts = new Map<string, number>();
+  relevant.forEach((b) => authorCounts.set(b.data.author, (authorCounts.get(b.data.author) ?? 0) + 1));
+  let mostReadAuthor: AuthorHighlight | null = null;
+  for (const [name, count] of authorCounts) {
+    if (!mostReadAuthor || count > mostReadAuthor.count) {
+      mostReadAuthor = { name, slug: turkishSlugify(name), count };
+    }
+  }
+  if (mostReadAuthor && mostReadAuthor.count <= 1 && authorCounts.size > 1) {
+    mostReadAuthor = null;
+  }
+
+  const completedWithEndDate = completed.filter((b) => b.data.endDate);
+  const firstCompletedBook = completedWithEndDate.length
+    ? completedWithEndDate.reduce((a, b) => ((b.data.endDate as Date) < (a.data.endDate as Date) ? b : a))
+    : null;
+  const mostRecentCompletedBook = completedWithEndDate.length
+    ? completedWithEndDate.reduce((a, b) => ((b.data.endDate as Date) > (a.data.endDate as Date) ? b : a))
+    : null;
+
+  // O yıl içinde okumaya ayrılan günlük ortalama sayfa: geçmiş bir yıl için
+  // 365/366 güne, içinde bulunduğumuz yıl için bugüne kadar geçen gün
+  // sayısına bölünür (computeStats'teki windowStat ile aynı mantık).
+  const yearStart = new Date(year, 0, 1);
+  const yearEndNominal = new Date(year, 11, 31);
+  const yearEndEffective = now < yearEndNominal ? now : yearEndNominal;
+  const daysElapsed = Math.max(1, daysBetween(yearStart, yearEndEffective) + 1);
+  const averagePagesPerDay = totalPagesRead > 0 ? Math.round((totalPagesRead / daysElapsed) * 10) / 10 : 0;
+
+  return {
+    year,
+    totalBooks: relevant.length,
+    completedCount: completed.length,
+    droppedCount,
+    totalPagesRead,
+    averagePagesPerBook,
+    averageDaysToFinish,
+    averageRating,
+    distinctAuthorCount,
+    totalQuotes,
+    totalNotes,
+    totalReviews,
+    genreDistribution,
+    ratingHistogram,
+    booksPerMonth,
+    averagePagesPerDay,
+    topRated,
+    mostQuoted,
+    mostNoted,
+    longestBook,
+    shortestBook,
+    fastestRead,
+    slowestRead,
+    mostReadAuthor,
+    firstCompletedBook,
+    mostRecentCompletedBook,
+  };
+}

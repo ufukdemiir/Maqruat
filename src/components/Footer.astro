@@ -1,42 +1,98 @@
 ---
 import { getEntry } from "astro:content";
 import { withBase } from "../lib/url";
+import { navItems } from "../lib/nav";
 import ExportDataButton from "./ExportDataButton.astro";
 
 const settings = await getEntry("settings", "main");
 const social = settings?.data.social;
-const readerName = settings?.data.readerName ?? "Ufuk Demir";
+const readerName = settings?.data.readerName || "Ufuk Demir";
+const footerBlurb =
+  settings?.data.tagline ||
+  settings?.data.siteDescription ||
+  "Okuduğum kitapları, alıntılarımı, incelemelerimi ve notlarımı bir araya getirdiğim kişisel okuma günlüğüm.";
 const foundingYear = settings?.data.foundingYear ?? new Date().getFullYear();
 const currentYear = new Date().getFullYear();
 const yearLabel = currentYear > foundingYear ? `${foundingYear}–${currentYear}` : String(foundingYear);
 
-// GitHub/LinkedIn/Pinterest ana sayfadaki okur kartında buton olarak
-// gösteriliyor; burada yalnızca genel amaçlı bağlantılar kalıyor.
-const links = [
+// GitHub/LinkedIn/Pinterest ana sayfadaki okur kartında da buton olarak
+// gösteriliyor; burada AYRICA yer almaları, ana sayfaya dönmeden — bir kitap
+// ya da blog yazısı gibi herhangi bir iç sayfadayken de — doğrudan
+// erişilebilir olmalarını sağlıyor. Homepage'teki metin-tabanlı bağlantı
+// üslubuyla tutarlı kalması için burada da simge değil düz metin kullanılıyor.
+const socialLinks = [
+  { href: social?.github, label: "GitHub" },
+  { href: social?.linkedin, label: "LinkedIn" },
+  { href: social?.pinterest, label: "Pinterest" },
   { href: social?.website, label: "Web sitesi" },
-  { href: social?.email && `mailto:${social.email}`, label: "E-posta" },
-].filter((l): l is { href: string; label: string } => Boolean(l.href));
+  { href: social?.email ? `mailto:${social.email}` : undefined, label: "E-posta" },
+].filter((link): link is { href: string; label: string } => Boolean(link.href));
 ---
 
 <footer class="border-t border-rule">
-  <div class="mx-auto flex max-w-3xl flex-col items-center gap-4 px-5 py-10 text-center">
-    <nav class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-ink-soft" aria-label="Site bağlantıları">
-      <a href={withBase("/admin/")} class="hover:text-leather">Yönetim paneli</a>
-      <ExportDataButton variant="link" />
-      {links.map((link) => (
-        <a
-          href={link.href}
-          target={link.href.startsWith("mailto:") ? undefined : "_blank"}
-          rel="noopener noreferrer"
-          class="transition-colors hover:text-leather"
-        >
-          {link.label}
+  <div class="mx-auto max-w-5xl px-5 py-12">
+    <div class="grid grid-cols-1 gap-10 text-center sm:grid-cols-2 sm:text-left lg:grid-cols-[1.2fr_1fr_1fr] lg:gap-12">
+      <!-- Marka / kısa tanıtım -->
+      <div class="sm:col-span-2 lg:col-span-1">
+        <a href={withBase("/")} class="font-serif text-xl font-semibold italic text-ink">
+          Okurken
         </a>
-      ))}
-    </nav>
+        <p class="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-ink-soft sm:mx-0">
+          {footerBlurb}
+        </p>
+      </div>
 
-    <p class="text-xs text-ink-soft/60">
-      © {yearLabel} Okurken — {readerName}. Tüm hakları saklıdır.
-    </p>
+      <!-- Site haritası: üst menüyle aynı kaynaktan (src/lib/nav.ts) geliyor -->
+      <nav aria-label="Site haritası">
+        <p class="text-xs font-semibold uppercase tracking-wider text-ink-soft/60">Site</p>
+        <ul class="mt-3 space-y-2 text-sm">
+          {
+            navItems.map((item) => (
+              <li>
+                <a href={withBase(item.href)} class="text-ink-soft transition-colors hover:text-leather">
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <!-- Sosyal / dış bağlantılar (yalnızca doldurulmuş olanlar görünür) -->
+      {
+        socialLinks.length > 0 && (
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-ink-soft/60">Bağlantılar</p>
+            <ul class="mt-3 space-y-2 text-sm">
+              {socialLinks.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+                    rel="noopener noreferrer"
+                    class="text-ink-soft transition-colors hover:text-leather"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+
+    <div class="mt-10 flex flex-col items-center gap-4 border-t border-rule pt-8">
+      <nav class="flex flex-wrap items-center justify-center divide-x divide-rule text-sm text-ink-soft" aria-label="Site araçları">
+        <span class="px-4 first:pl-0 last:pr-0">
+          <a href={withBase("/admin/")} class="transition-colors hover:text-leather">Yönetim paneli</a>
+        </span>
+        <span class="px-4 first:pl-0 last:pr-0">
+          <ExportDataButton variant="link" />
+        </span>
+      </nav>
+
+      <p class="text-center text-xs text-ink-soft/60">© {yearLabel} Okurken — {readerName}. Tüm hakları saklıdır.</p>
+    </div>
   </div>
 </footer>

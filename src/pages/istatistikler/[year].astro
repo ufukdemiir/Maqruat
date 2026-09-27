@@ -1,0 +1,387 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import InfoStrip from "../../components/InfoStrip.astro";
+import { computeYearStats, getAvailableStatsYears } from "../../lib/stats";
+import { withBase } from "../../lib/url";
+
+export async function getStaticPaths() {
+  const years = await getAvailableStatsYears();
+  const entries = await Promise.all(
+    years.map(async (year) => ({
+      params: { year: String(year) },
+      props: { stats: await computeYearStats(year), allYears: years },
+    })),
+  );
+  return entries.filter((e) => e.props.stats !== null);
+}
+
+const { stats, allYears } = Astro.props;
+if (!stats) return Astro.redirect(withBase("/istatistikler/"));
+
+// Sitenin tüm istatistik grafiklerinde kullanılan TEK renk kaynağı (ana
+// istatistik sayfasıyla birebir aynı — bkz. src/pages/istatistikler.astro).
+const CHART_PALETTE = [
+  "#6E3B22",
+  "#223752",
+  "#A67C1E",
+  "#2F4A3A",
+  "#7A2E2E",
+  "#5B3868",
+  "#3D5A6C",
+  "#A65A2E",
+];
+
+const genreDistributionWithColor = stats.genreDistribution.map((g, i) => ({
+  ...g,
+  color: CHART_PALETTE[i % CHART_PALETTE.length],
+}));
+const topGenre = stats.genreDistribution[0] ?? null;
+
+const summaryCards = [
+  { label: `${stats.year} yılında bitirilen`, value: String(stats.completedCount) },
+  { label: "Okunan sayfa", value: stats.totalPagesRead.toLocaleString("tr-TR") },
+  { label: "Ort. sayfa / kitap", value: stats.averagePagesPerBook ? String(stats.averagePagesPerBook) : "—" },
+  { label: "Ort. bitirme süresi", value: stats.averageDaysToFinish ? `${stats.averageDaysToFinish} gün` : "—" },
+  { label: "Ortalama puan", value: stats.averageRating ? `${stats.averageRating}/10` : "—" },
+  { label: "Farklı yazar", value: String(stats.distinctAuthorCount) },
+];
+
+const highlights = [
+  stats.longestBook && {
+    label: "En uzun kitap",
+    book: stats.longestBook,
+    metric: `${stats.longestBook.data.pageCount} sayfa`,
+  },
+  stats.shortestBook &&
+    stats.shortestBook.id !== stats.longestBook?.id && {
+      label: "En kısa kitap",
+      book: stats.shortestBook,
+      metric: `${stats.shortestBook.data.pageCount} sayfa`,
+    },
+  stats.fastestRead && {
+    label: "En hızlı bitirilen",
+    book: stats.fastestRead.book,
+    metric: stats.fastestRead.days === 0 ? "Aynı gün" : `${stats.fastestRead.days} günde`,
+  },
+  stats.slowestRead &&
+    stats.slowestRead.book.id !== stats.fastestRead?.book.id && {
+      label: "En uzun süren okuma",
+      book: stats.slowestRead.book,
+      metric: `${stats.slowestRead.days} günde`,
+    },
+  stats.firstCompletedBook && {
+    label: `${stats.year}'de ilk bitirilen`,
+    book: stats.firstCompletedBook,
+    metric: stats.firstCompletedBook.data.endDate
+      ? new Intl.DateTimeFormat("tr-TR", { month: "long", day: "numeric" }).format(stats.firstCompletedBook.data.endDate)
+      : "",
+  },
+  stats.mostRecentCompletedBook &&
+    stats.mostRecentCompletedBook.id !== stats.firstCompletedBook?.id && {
+      label: `${stats.year}'de son bitirilen`,
+      book: stats.mostRecentCompletedBook,
+      metric: stats.mostRecentCompletedBook.data.endDate
+        ? new Intl.DateTimeFormat("tr-TR", { month: "long", day: "numeric" }).format(
+            stats.mostRecentCompletedBook.data.endDate,
+          )
+        : "",
+    },
+].filter((h): h is { label: string; book: NonNullable<typeof stats.longestBook>; metric: string } => Boolean(h));
+
+const chartPayload = {
+  genreLabels: stats.genreDistribution.map((g) => g.genre),
+  genreValues: stats.genreDistribution.map((g) => g.count),
+  genreColors: genreDistributionWithColor.map((g) => g.color),
+  ratingLabels: stats.ratingHistogram.map((r) => String(r.rating)),
+  ratingValues: stats.ratingHistogram.map((r) => r.count),
+  monthLabels: stats.booksPerMonth.map((m) => m.label),
+  monthValues: stats.booksPerMonth.map((m) => m.count),
+  ratingColor: CHART_PALETTE[0],
+  monthColor: CHART_PALETTE[6],
+};
+
+const pageTitle = `${stats.year} Yılı İstatistikleri`;
+const pageDescription = `${stats.year} yılında bitirilen ${stats.completedCount} kitap, okunan ${stats.totalPagesRead.toLocaleString("tr-TR")} sayfa ve daha fazlası — Okurken'in ${stats.year} yılı okuma istatistikleri.`;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <div class="mx-auto max-w-4xl px-5 py-10">
+    <p class="text-sm text-ink-soft">
+      <a href={withBase("/istatistikler/")} class="hover:text-leather">← Tüm Zamanlar</a>
+    </p>
+    <h1 class="mt-2 font-serif text-3xl text-ink">{stats.year} Yılı İstatistikleri</h1>
+    <p class="mt-2 text-ink-soft">
+      Bu sayfa yalnızca {stats.year} yılında bitirilen veya yarım bırakılan kitapları yansıtır.
+    </p>
+
+    <!-- Yıl seçici -->
+    <nav aria-label="Yıla göre görüntüle" class="mt-6 flex flex-wrap gap-2">
+      <a
+        href={withBase("/istatistikler/")}
+        class="rounded-full border border-rule px-4 py-1.5 text-sm text-ink-soft transition-colors hover:border-leather hover:text-leather"
+      >
+        Tüm Zamanlar
+      </a>
+      {
+        allYears.map((year) => (
+          <a
+            href={withBase(`/istatistikler/${year}/`)}
+            aria-current={year === stats.year ? "page" : undefined}
+            class={
+              year === stats.year
+                ? "rounded-full border border-leather bg-leather/10 px-4 py-1.5 text-sm font-medium text-leather"
+                : "rounded-full border border-rule px-4 py-1.5 text-sm text-ink-soft transition-colors hover:border-leather hover:text-leather"
+            }
+          >
+            {year}
+          </a>
+        ))
+      }
+    </nav>
+
+    <!-- Genel özet -->
+    <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
+      {
+        summaryCards.map((card) => (
+          <div class="rounded-xl border border-rule bg-surface p-4">
+            <p class="font-serif text-2xl text-ink">{card.value}</p>
+            <p class="mt-1 text-sm text-ink-soft">{card.label}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- O yılın okuma temposu (tüm-zamanlar sayfasındaki "zaman dilimleri" kartının yıla özel karşılığı) -->
+    <h2 class="mt-10 font-serif text-lg text-ink">{stats.year} yılı özeti</h2>
+    <div class="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div class="rounded-xl border border-rule bg-surface p-4">
+        <p class="text-sm text-ink-soft">Bitirilen</p>
+        <p class="mt-1 font-serif text-xl text-ink">{stats.completedCount} kitap</p>
+      </div>
+      <div class="rounded-xl border border-rule bg-surface p-4">
+        <p class="text-sm text-ink-soft">Yarım bırakılan</p>
+        <p class="mt-1 font-serif text-xl text-ink">{stats.droppedCount} kitap</p>
+      </div>
+      <div class="rounded-xl border border-rule bg-surface p-4">
+        <p class="text-sm text-ink-soft">Okunan sayfa</p>
+        <p class="mt-1 font-serif text-xl text-ink">{stats.totalPagesRead.toLocaleString("tr-TR")}</p>
+      </div>
+      <div class="rounded-xl border border-rule bg-surface p-4">
+        <p class="text-sm text-ink-soft">Günlük ortalama</p>
+        <p class="mt-1 font-serif text-xl text-ink">{stats.averagePagesPerDay} sayfa</p>
+      </div>
+    </div>
+
+    <!-- Durum + tür/puan/aylık grafikleri -->
+    <div class="mt-10 grid gap-4 sm:grid-cols-2">
+      <div class="rounded-xl border border-rule bg-surface p-4">
+        <p class="mb-3 text-sm font-semibold text-ink">İçerik</p>
+        <div>
+          <div class="flex items-center justify-between border-b border-rule py-2 text-sm">
+            <span class="text-ink-soft">Alıntı</span>
+            <span class="text-ink">{stats.totalQuotes}</span>
+          </div>
+          <div class="flex items-center justify-between border-b border-rule py-2 text-sm">
+            <span class="text-ink-soft">Not</span>
+            <span class="text-ink">{stats.totalNotes}</span>
+          </div>
+          <div class="flex items-center justify-between py-2 text-sm">
+            <span class="text-ink-soft">İnceleme</span>
+            <span class="text-ink">{stats.totalReviews}</span>
+          </div>
+        </div>
+      </div>
+      <div class="rounded-xl border border-rule bg-surface p-4">
+        <p class="mb-3 text-sm font-semibold text-ink">Tür dağılımı</p>
+        {
+          genreDistributionWithColor.length > 0 ? (
+            <>
+              <canvas id="chart-genre" height="220" role="img" aria-label="Tür dağılımı grafiği" />
+              <ul class="mt-5 flex flex-wrap justify-center gap-x-4 gap-y-2 border-t border-rule pt-4">
+                {genreDistributionWithColor.map((g) => (
+                  <li class="flex items-center gap-2 text-sm">
+                    <span class="size-2.5 shrink-0 rounded-full" style={`background-color:${g.color}`} aria-hidden="true" />
+                    <span class="text-ink-soft">{g.genre}</span>
+                    <span class="text-ink-soft/70">{g.count}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p class="text-sm text-ink-soft">Bu yıl için tür bilgisi yok.</p>
+          )
+        }
+      </div>
+    </div>
+
+    <div class="mt-4 grid gap-4 sm:grid-cols-2">
+      <div class="rounded-xl border border-rule bg-surface p-4">
+        <p class="mb-3 text-sm font-semibold text-ink">Puan dağılımı (1-10)</p>
+        <canvas id="chart-rating" height="220" role="img" aria-label="Puan dağılımı grafiği"></canvas>
+      </div>
+      <div class="rounded-xl border border-rule bg-surface p-4">
+        <p class="mb-3 text-sm font-semibold text-ink">Aylık bitirilen kitap sayısı</p>
+        <canvas id="chart-monthly" height="220" role="img" aria-label="Aylık okuma grafiği"></canvas>
+      </div>
+    </div>
+
+    <!-- Öne çıkanlar -->
+    {
+      highlights.length > 0 && (
+        <>
+          <h2 class="mt-10 font-serif text-lg text-ink">{stats.year} yılının öne çıkanları</h2>
+          <div class="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {highlights.map((h) => (
+              <a
+                href={withBase(`/kitaplar/${h.book.id}/`)}
+                class="group rounded-xl border border-rule bg-surface p-4 transition-colors hover:border-leather"
+              >
+                <p class="text-sm text-ink-soft">{h.label}</p>
+                <p class="mt-1 font-serif text-base text-ink group-hover:text-leather line-clamp-2">{h.book.data.title}</p>
+                <p class="text-sm text-ink-soft">{h.metric}</p>
+              </a>
+            ))}
+            {stats.mostReadAuthor && (
+              <a
+                href={withBase(`/yazarlar/${stats.mostReadAuthor.slug}/`)}
+                class="group rounded-xl border border-rule bg-surface p-4 transition-colors hover:border-leather"
+              >
+                <p class="text-sm text-ink-soft">En çok okunan yazar</p>
+                <p class="mt-1 font-serif text-base text-ink group-hover:text-leather line-clamp-2">
+                  {stats.mostReadAuthor.name}
+                </p>
+                <p class="text-sm text-ink-soft">{stats.mostReadAuthor.count} kitap</p>
+              </a>
+            )}
+            {topGenre && (
+              <a
+                href={withBase("/kitaplar/")}
+                class="group rounded-xl border border-rule bg-surface p-4 transition-colors hover:border-leather"
+              >
+                <p class="text-sm text-ink-soft">En popüler tür</p>
+                <p class="mt-1 font-serif text-base text-ink group-hover:text-leather line-clamp-2">{topGenre.genre}</p>
+                <p class="text-sm text-ink-soft">{topGenre.count} kitap</p>
+              </a>
+            )}
+          </div>
+        </>
+      )
+    }
+
+    <!-- En'ler -->
+    {
+      (stats.topRated.items.length > 0 || stats.mostQuoted.items.length > 0 || stats.mostNoted.items.length > 0) && (
+        <>
+          <h2 class="mt-10 font-serif text-lg text-ink">{stats.year} yılının en'leri</h2>
+          <p class="mt-1 text-sm text-ink-soft">Eşit değerlerde en son bitirilen kitap önce gösterilir.</p>
+          <div class="mt-4 grid gap-6 sm:grid-cols-3">
+            <div>
+              <h3 class="font-serif text-base text-ink">En yüksek puanlılar</h3>
+              <ul class="mt-3 flex flex-col gap-2">
+                {stats.topRated.items.map((book) => (
+                  <li>
+                    <a href={withBase(`/kitaplar/${book.id}/`)} class="text-sm text-ink-soft hover:text-leather">
+                      {book.data.title} ({book.data.rating}/10)
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 class="font-serif text-base text-ink">En çok alıntılananlar</h3>
+              <ul class="mt-3 flex flex-col gap-2">
+                {stats.mostQuoted.items.map((book) => (
+                  <li>
+                    <a href={withBase(`/kitaplar/${book.id}/`)} class="text-sm text-ink-soft hover:text-leather">
+                      {book.data.title} ({book.data.quotes.length})
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 class="font-serif text-base text-ink">En çok not alınanlar</h3>
+              <ul class="mt-3 flex flex-col gap-2">
+                {stats.mostNoted.items.map((book) => (
+                  <li>
+                    <a href={withBase(`/kitaplar/${book.id}/`)} class="text-sm text-ink-soft hover:text-leather">
+                      {book.data.title} ({book.data.notes.length})
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </>
+      )
+    }
+  </div>
+
+  <InfoStrip>
+    Bu, {stats.year} yılına ait bir görünümdür. Tüm zamanların istatistikleri için{" "}
+    <a href={withBase("/istatistikler/")} class="underline hover:text-leather">buraya göz atabilirsiniz</a>.
+  </InfoStrip>
+</BaseLayout>
+
+<script type="application/json" id="stats-payload" set:html={JSON.stringify(chartPayload)} />
+
+<script>
+  import Chart from "chart.js/auto";
+
+  interface ChartPayload {
+    genreLabels: string[];
+    genreValues: number[];
+    genreColors: string[];
+    ratingLabels: string[];
+    ratingValues: number[];
+    monthLabels: string[];
+    monthValues: number[];
+    ratingColor: string;
+    monthColor: string;
+  }
+
+  const payloadEl = document.getElementById("stats-payload");
+  const payload: ChartPayload = JSON.parse(payloadEl?.textContent ?? "{}");
+  const { genreLabels, genreValues, genreColors, ratingLabels, ratingValues, monthLabels, monthValues, ratingColor, monthColor } =
+    payload;
+
+  const styles = getComputedStyle(document.documentElement);
+  const cssVar = (name: string) => styles.getPropertyValue(name).trim() || "#999999";
+  const rule = cssVar("--color-rule");
+
+  Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
+  Chart.defaults.color = cssVar("--color-ink-soft");
+
+  const genreCanvas = document.getElementById("chart-genre") as HTMLCanvasElement | null;
+  if (genreCanvas && genreLabels?.length) {
+    new Chart(genreCanvas, {
+      type: "doughnut",
+      data: { labels: genreLabels, datasets: [{ data: genreValues, backgroundColor: genreColors, borderColor: "transparent" }] },
+      options: { plugins: { legend: { display: false } } },
+    });
+  }
+
+  const ratingCanvas = document.getElementById("chart-rating") as HTMLCanvasElement | null;
+  if (ratingCanvas) {
+    new Chart(ratingCanvas, {
+      type: "bar",
+      data: { labels: ratingLabels, datasets: [{ data: ratingValues, backgroundColor: ratingColor }] },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: rule } } },
+      },
+    });
+  }
+
+  const monthlyCanvas = document.getElementById("chart-monthly") as HTMLCanvasElement | null;
+  if (monthlyCanvas) {
+    new Chart(monthlyCanvas, {
+      type: "bar",
+      data: { labels: monthLabels, datasets: [{ data: monthValues, backgroundColor: monthColor }] },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: rule } } },
+      },
+    });
+  }
+</script>

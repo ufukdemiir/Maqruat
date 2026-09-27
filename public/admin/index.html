@@ -9,7 +9,13 @@
   </head>
   <body>
     <!-- Decap CMS'i çalıştıran ve yönetim arayüzünü oluşturan betik.
-         Sürüm aralığı (^3.1.2) küçük/yama güncellemelerine izin verir. -->
-    <script src="https://unpkg.com/decap-cms@^3.1.2/dist/decap-cms.js"></script>
+         Sürüm BİLİNÇLİ OLARAK sabitlenmiştir (^3.x gibi bir aralık DEĞİL).
+         Bir aralık kullanılsaydı, panele her girişte unpkg o an hangi sürüm
+         yayında ise onu getirirdi; bu da CMS'in hiç haberiniz olmadan
+         güncellenmesine (ve olası bir sürümün panel davranışını
+         değiştirmesine/bozmasına) yol açabilirdi. Güncellemek isterseniz,
+         önce Decap CMS'in sürüm notlarını okuyup buradaki numarayı elle
+         yükseltin. -->
+    <script src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"></script>
   </body>
 </html>

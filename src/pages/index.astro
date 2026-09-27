@@ -9,7 +9,8 @@ import { withBase } from "../lib/url";
 import { getCurrentlyReading, getRecentlyFinished } from "../lib/books";
 
 const settings = await getEntry("settings", "main");
-const readerName = settings?.data.readerName ?? "Ufuk Demir";
+const readerName = settings?.data.readerName || "Ufuk Demir";
+const avatarInitials = settings?.data.avatarInitials ?? "";
 const tagline = settings?.data.tagline ?? "";
 const bio = settings?.data.bio ?? "";
 const social = settings?.data.social;
@@ -19,14 +20,26 @@ const currentlyReading = await getCurrentlyReading();
 const recentlyFinished = await getRecentlyFinished(8);
 ---
 
-<BaseLayout title="Okurken" description={settings?.data.siteDescription ?? "Ufuk Demir'in kişisel okuma günlüğü."}>
+<BaseLayout title="Okurken" description={settings?.data.siteDescription || "Ufuk Demir'in kişisel okuma günlüğü."}>
   <div class="mx-auto max-w-5xl px-5 py-10">
     <!-- Okur karşılama kartı -->
     <section class="border-b border-rule pb-10">
       <div class="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 class="font-serif text-3xl text-ink">{readerName}</h1>
-          <p class="mt-1 italic text-ink-soft">{tagline}</p>
+        <div class="flex items-center gap-4">
+          {
+            avatarInitials && (
+              <div
+                class="grid size-14 shrink-0 place-items-center rounded-full bg-leather font-serif text-lg font-semibold text-paper"
+                aria-hidden="true"
+              >
+                {avatarInitials}
+              </div>
+            )
+          }
+          <div>
+            <h1 class="font-serif text-3xl text-ink">{readerName}</h1>
+            <p class="mt-1 italic text-ink-soft">{tagline}</p>
+          </div>
         </div>
 
         {

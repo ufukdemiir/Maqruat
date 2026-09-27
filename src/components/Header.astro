@@ -1,17 +1,7 @@
 ---
 import { withBase } from "../lib/url";
+import { navItems } from "../lib/nav";
 import ThemeToggle from "./ThemeToggle.astro";
-
-const navItems = [
-  { href: "/kitaplar/", label: "Kitaplar" },
-  { href: "/yazarlar/", label: "Yazarlar" },
-  { href: "/alintilar/", label: "Alıntılar" },
-  { href: "/incelemeler/", label: "İncelemeler" },
-  { href: "/notlar/", label: "Notlar" },
-  { href: "/blog/", label: "Blog" },
-  { href: "/istatistikler/", label: "İstatistikler" },
-  { href: "/arsiv/", label: "Arşiv" },
-];
 
 const currentPath = Astro.url.pathname;
 function isActive(href: string) {

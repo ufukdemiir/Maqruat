@@ -1,13 +1,19 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import InfoStrip from "../components/InfoStrip.astro";
-import { computeStats } from "../lib/stats";
+import { computeStats, getAvailableStatsYears } from "../lib/stats";
 import { STATUS_LABELS_TR } from "../lib/books";
 import { getPublishedPosts } from "../lib/blog";
 import { withBase } from "../lib/url";
 
 const stats = await computeStats();
 const totalBlogPosts = (await getPublishedPosts()).length;
+
+// Yıl seçici: "/istatistikler/2027/" gibi ayrı, statik sayfalara bağlantı
+// verir (bkz. src/pages/istatistikler/[year].astro). Bu liste otomatik
+// oluşur — yeni bir yılda kitap bitirdikçe, bir sonraki derlemede o yıl da
+// burada kendiliğinden belirir; elle bir şey eklemeniz gerekmez.
+const availableYears = await getAvailableStatsYears();
 
 // Sitenin tüm istatistik grafiklerinde kullanılan TEK renk kaynağı — hepsi
 // aynı aileden olduğu için grafikler birbirinden alakasız durmuyor.
@@ -103,6 +109,27 @@ const chartPayload = {
   <div class="mx-auto max-w-4xl px-5 py-10">
     <h1 class="font-serif text-3xl text-ink">İstatistikler</h1>
     <p class="mt-2 text-ink-soft">Tüm veriler derleme anında (build-time) hesaplanır.</p>
+
+    {
+      availableYears.length > 0 && (
+        <nav aria-label="Yıla göre görüntüle" class="mt-6 flex flex-wrap gap-2">
+          <span
+            aria-current="page"
+            class="rounded-full border border-leather bg-leather/10 px-4 py-1.5 text-sm font-medium text-leather"
+          >
+            Tüm Zamanlar
+          </span>
+          {availableYears.map((year) => (
+            <a
+              href={withBase(`/istatistikler/${year}/`)}
+              class="rounded-full border border-rule px-4 py-1.5 text-sm text-ink-soft transition-colors hover:border-leather hover:text-leather"
+            >
+              {year}
+            </a>
+          ))}
+        </nav>
+      )
+    }
 
     <!-- Genel özet -->
     <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">

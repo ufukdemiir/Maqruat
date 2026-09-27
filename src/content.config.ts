@@ -67,24 +67,35 @@ const blog = defineCollection({
 // ---------------------------------------------------------------------------
 const settings = defineCollection({
   loader: file("src/data/site.json"),
+  // CMS'teki "Genel Ayarlar" alanlarının HİÇBİRİ artık zorunlu değil (bkz.
+  // public/admin/config.yml). Bu yüzden her alana burada da makul bir
+  // varsayılan değer tanımlıyoruz: panelden bir alan boş bırakılsa/silinse
+  // bile derleme ASLA hata vermez, site her zaman güvenli bir değerle
+  // (ör. "Ufuk Demir", geçerli yıl) render edilir. İlgili varsayılanların
+  // fiilen kullanıldığı yerler için src/components/Footer.astro,
+  // BaseHead.astro ve src/pages/index.astro dosyalarındaki "??"/"||"
+  // yedeklerine bakabilirsiniz.
   schema: z.object({
-    readerName: z.string(),
-    avatarInitials: z.string(),
-    tagline: z.string(),
-    bio: z.string(),
-    siteDescription: z.string(),
+    readerName: z.string().default("Ufuk Demir"),
+    avatarInitials: z.string().default(""),
+    tagline: z.string().default(""),
+    bio: z.string().default(""),
+    siteDescription: z.string().default(""),
     // Sitenin ilk yayına alındığı yıl — footer'daki telif hakkı satırında
-    // "© 2026–2028" gibi bir aralık göstermek için kullanılır.
-    foundingYear: z.number().int(),
-    goalYear: z.number().int(),
-    yearlyGoal: z.number().int().positive(),
-    social: z.object({
-      website: z.string().optional().default(""),
-      github: z.string().optional().default(""),
-      linkedin: z.string().optional().default(""),
-      pinterest: z.string().optional().default(""),
-      email: z.string().optional().default(""),
-    }),
+    // "© 2026–2028" gibi bir aralık göstermek için kullanılır. Boş
+    // bırakılırsa derleme anındaki yıl varsayılan olarak kullanılır.
+    foundingYear: z.number().int().default(new Date().getFullYear()),
+    goalYear: z.number().int().default(new Date().getFullYear()),
+    yearlyGoal: z.number().int().positive().default(12),
+    social: z
+      .object({
+        website: z.string().optional().default(""),
+        github: z.string().optional().default(""),
+        linkedin: z.string().optional().default(""),
+        pinterest: z.string().optional().default(""),
+        email: z.string().optional().default(""),
+      })
+      .default({ website: "", github: "", linkedin: "", pinterest: "", email: "" }),
   }),
 });
 
