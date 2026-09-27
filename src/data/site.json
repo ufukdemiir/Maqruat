@@ -1,22 +1,25 @@
 {
   "main": {
-    "readerName": "Ufuk Demir",
-    "avatar": {
-      "initials": "",
-      "image": ""
-    },
-    "tagline": "Okuma takibi ve kişisel kütüphane platformum.",
     "bio": "Okurken; okuduğum kitapları takip ettiğim, kişisel kütüphanemi oluşturduğum, öne çıkan alıntılarımı, incelemelerimi ve notlarımı bir araya getirdiğim bir platform. Bitirdiğim her kitap burada bir yer buluyor.",
-    "siteDescription": "Ufuk Demir'in okuma takibi, kişisel kütüphane ve alıntı/inceleme/not platformu.",
-    "foundingYear": 2026,
-    "goalYear": 2026,
-    "yearlyGoal": 12,
     "social": {
       "website": "",
       "github": "https://github.com/ufukdemiir",
       "linkedin": "https://www.linkedin.com/in/ufukdemiir/",
       "pinterest": "https://tr.pinterest.com/demiirufuk/",
       "email": ""
-    }
+    },
+    "readerName": "Ufuk Demir",
+    "tagline": "Okuma takibi ve kişisel kütüphane platformum.",
+    "goalYear": 2026,
+    "siteDescription": "Ufuk Demir'in okuma takibi, kişisel kütüphane ve alıntı/inceleme/not platformu.",
+    "avatar": {
+      "initials": "",
+      "image": ""
+    },
+    "yearlyGoal": 12,
+    "foundingYear": 2026
+  },
+  "avatar": {
+    "image": "/uploads/abyr-avatar.png"
   }
 }
