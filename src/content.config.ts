@@ -78,6 +78,7 @@ const settings = defineCollection({
   schema: z.object({
     readerName: z.string().default("Ufuk Demir"),
     avatarInitials: z.string().default(""),
+    avatarImage: z.string().default(""),
     tagline: z.string().default(""),
     bio: z.string().default(""),
     siteDescription: z.string().default(""),

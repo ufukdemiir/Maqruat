@@ -44,21 +44,73 @@ collections:
         field: status
         pattern: "dropped"
     fields:
-      - { label: "Başlık", name: "title", widget: "string" }
-      - { label: "Yazar", name: "author", widget: "string" }
-      - { label: "Yayınevi", name: "publisher", widget: "string", required: false }
-      - { label: "Sayfa Sayısı", name: "pageCount", widget: "number", value_type: "int", required: false, min: 1 }
-      - { label: "Başlangıç Tarihi", name: "startDate", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
-      - { label: "Bitiş Tarihi", name: "endDate", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - {
+          label: "Başlık",
+          name: "title",
+          widget: "string",
+          hint: "Kitabın adı. Kitap kartlarında, sayfa başlığında ve sayfa adresinde (URL) kullanılır.",
+        }
+      - {
+          label: "Yazar",
+          name: "author",
+          widget: "string",
+          hint: "Yazarın tam adı. 'Yazarlar' sayfası bu alana göre otomatik oluşur; aynı yazarın tüm kitaplarında adı BİREBİR AYNI şekilde yazın (ör. hep 'Fyodor Dostoyevski' — bazen kısaltmayın), yoksa aynı yazar iki ayrı kişi gibi görünür.",
+        }
+      - {
+          label: "Yayınevi",
+          name: "publisher",
+          widget: "string",
+          required: false,
+          hint: "İsteğe bağlıdır. Kitap detay sayfasında küçük bir bilgi olarak gösterilir.",
+        }
+      - {
+          label: "Sayfa Sayısı",
+          name: "pageCount",
+          widget: "number",
+          value_type: "int",
+          required: false,
+          min: 1,
+          hint: "Kitabın toplam sayfa sayısı. İstatistikler sayfasındaki 'toplam okunan sayfa', 'ortalama sayfa/kitap' ve 'en uzun/en kısa kitap' hesaplamaları için kullanılır.",
+        }
+      - {
+          label: "Başlangıç Tarihi",
+          name: "startDate",
+          widget: "datetime",
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          required: false,
+          hint: "Kitaba başladığınız tarih. Bitiş Tarihi ile birlikte 'ortalama bitirme süresi' ve 'en hızlı/en yavaş okunan kitap' istatistiklerinde kullanılır.",
+        }
+      - {
+          label: "Bitiş Tarihi",
+          name: "endDate",
+          widget: "datetime",
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          required: false,
+          hint: "Kitabı bitirdiğiniz ya da yarım bıraktığınız tarih. İstatistikler sayfasındaki aylık/yıllık grafiklerde ve '[yıl] İstatistikleri' sayfalarında kitabın hangi yıla sayılacağını bu tarih belirler.",
+        }
       - label: "Durum"
         name: "status"
         widget: "select"
+        hint: "Kitabın şu anki durumu. 'Okunuyor' → ana sayfada 'şu an okunuyor' bölümünde görünür. 'Okundu' → tamamlanmış sayılır, istatistiklere (puan, sayfa, süre ortalamaları) dahil olur. 'Okunacak' → henüz başlanmamış kitap olarak listelenir. 'Yarım Bırakıldı' → ayrı sayılır, tamamlanmış ortalamalarına dahil edilmez."
         options:
           - { label: "Okunuyor", value: "reading" }
           - { label: "Okundu", value: "completed" }
           - { label: "Okunacak", value: "want-to-read" }
           - { label: "Yarım Bırakıldı", value: "dropped" }
-      - { label: "Puan (1-10)", name: "rating", widget: "number", value_type: "int", min: 1, max: 10, required: false }
+      - {
+          label: "Puan (1-10)",
+          name: "rating",
+          widget: "number",
+          value_type: "int",
+          min: 1,
+          max: 10,
+          required: false,
+          hint: "1-10 arası puanınız. Yalnızca puanladığınız kitaplar İstatistikler'deki 'ortalama puan' ve 'en yüksek puanlılar' listesine dahil edilir; boş bırakırsanız o kitap bu hesaplamalara girmez.",
+        }
       - {
           label: "Şu Ana Kadar Okunan Sayfa",
           name: "pagesRead",
@@ -96,14 +148,16 @@ collections:
         name: "notes"
         widget: "list"
         required: false
-        field: { label: "Not", name: "note", widget: "text" }
+        hint: "Kitabı okurken aldığınız serbest notlar. Kitap detay sayfasında listelenir ve İstatistikler'deki 'en çok not alınanlar' sıralamasını besler."
+        field: { label: "Not", name: "note", widget: "text", hint: "Tek bir not metni." }
       - label: "Alıntılar"
         name: "quotes"
         widget: "list"
         required: false
+        hint: "Kitaptan beğendiğiniz alıntılar. 'Alıntılar' sayfasında ve kitabın kendi sayfasında listelenir; İstatistikler'deki 'en çok alıntılananlar' sıralamasını besler."
         fields:
-          - { label: "Metin", name: "text", widget: "text" }
-          - { label: "Sayfa", name: "page", widget: "number", value_type: "int", required: false, min: 1 }
+          - { label: "Metin", name: "text", widget: "text", hint: "Alıntının tam metni." }
+          - { label: "Sayfa", name: "page", widget: "number", value_type: "int", required: false, min: 1, hint: "Alıntının geçtiği sayfa numarası (isteğe bağlı)." }
       - {
           label: "İnceleme (Markdown)",
           name: "body",
@@ -113,7 +167,14 @@ collections:
           public_folder: "/uploads",
           hint: "Metin içine görsel eklemek için araç çubuğundaki resim simgesini kullanın; site adresinizin başına eklenmesi gereken ön ek otomatik olarak eklenir, siz sadece görseli seçin. Erişilebilirlik ve SEO için görsele mutlaka açıklayıcı bir 'alt metin' yazın.",
         }
-      - { label: "Taslak", name: "draft", widget: "boolean", default: false, required: false }
+      - {
+          label: "Taslak",
+          name: "draft",
+          widget: "boolean",
+          default: false,
+          required: false,
+          hint: "İşaretlerseniz bu kitap taslak sayılır ve yayınlanan sitede hiçbir yerde görünmez; yalnızca siz bu panelden görebilirsiniz.",
+        }
 
   - name: "blog"
     label: "Blog"
@@ -125,8 +186,21 @@ collections:
     summary: "{{title}}"
     sortable_fields: ["publishDate", "title"]
     fields:
-      - { label: "Başlık", name: "title", widget: "string" }
-      - { label: "Yayın Tarihi", name: "publishDate", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - {
+          label: "Başlık",
+          name: "title",
+          widget: "string",
+          hint: "Yazının başlığı. Blog listesinde, sekme başlığında ve paylaşım kartlarında (Google, sosyal medya) kullanılır.",
+        }
+      - {
+          label: "Yayın Tarihi",
+          name: "publishDate",
+          widget: "datetime",
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          hint: "Blog listesinde yazılar bu tarihe göre sıralanır ve yazının üstünde gösterilir.",
+        }
       - {
           label: "Kısa Özet",
           name: "excerpt",
@@ -134,7 +208,14 @@ collections:
           required: false,
           hint: "Listeleme ve arama motoru açıklaması için. Boş bırakılırsa yazının ilk cümlelerinden otomatik üretilir.",
         }
-      - { label: "Etiketler", name: "tags", widget: "list", field: { label: "Etiket", name: "tag", widget: "string" }, required: false }
+      - {
+          label: "Etiketler",
+          name: "tags",
+          widget: "list",
+          field: { label: "Etiket", name: "tag", widget: "string" },
+          required: false,
+          hint: "Yazıyı sınıflandırmak için serbest etiketler (ör. 'Serbest Fikirler'). Yazının altında gösterilir.",
+        }
       - {
           label: "Yazı (Markdown)",
           name: "body",
@@ -143,7 +224,7 @@ collections:
           public_folder: "/uploads",
           hint: "Metin içine görsel eklemek için araç çubuğundaki resim simgesini kullanın; site adresinizin başına eklenmesi gereken ön ek otomatik olarak eklenir, siz sadece görseli seçin. Erişilebilirlik ve SEO için görsele mutlaka açıklayıcı bir 'alt metin' yazın.",
         }
-      - { label: "Taslak", name: "draft", widget: "boolean", default: false, required: false }
+      - { label: "Taslak", name: "draft", widget: "boolean", default: false, required: false, hint: "İşaretlerseniz bu yazı taslak sayılır ve yayınlanan sitede hiçbir yerde görünmez; yalnızca siz bu panelden görebilirsiniz." }
 
   - name: "settings"
     label: "Site Ayarları"
@@ -171,7 +252,16 @@ collections:
               name: "avatarInitials",
               widget: "string",
               required: false,
-              hint: "Ana sayfada, adınızın yanında küçük yuvarlak bir rozette görünen 1-2 harf (ör. 'UD'). Boş bırakırsanız rozet hiç gösterilmez, sorun oluşturmaz.",
+              hint: "Profil Fotoğrafı yüklemediyseniz, ana sayfada adınızın yanında küçük yuvarlak bir rozette görünen 1-2 harf (ör. 'UD'). Bir Profil Fotoğrafı yüklerseniz bu alan yerine o fotoğraf gösterilir. İkisi de boşsa hiçbir rozet/görsel gösterilmez — sorun oluşturmaz, sadece adınız ve sloganınız görünür.",
+            }
+          - {
+              label: "Profil Fotoğrafı (isteğe bağlı)",
+              name: "avatarImage",
+              widget: "image",
+              required: false,
+              media_folder: "/public/uploads",
+              public_folder: "/uploads",
+              hint: "Ana sayfada adınızın yanında yuvarlak bir fotoğraf olarak görünür ve doldurulduğunda Baş Harfler rozetinin yerini alır. En iyi görünüm için kare (1:1) bir fotoğraf seçin. Boş bırakırsanız (veya Baş Harfler de boşsa) hiçbir görsel gösterilmez, sorun oluşturmaz.",
             }
           - {
               label: "Kısa Slogan",
