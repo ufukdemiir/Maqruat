@@ -10,8 +10,8 @@ import { getCurrentlyReading, getRecentlyFinished } from "../lib/books";
 
 const settings = await getEntry("settings", "main");
 const readerName = settings?.data.readerName || "Ufuk Demir";
-const avatarInitials = settings?.data.avatarInitials ?? "";
-const avatarImage = settings?.data.avatarImage ?? "";
+const avatarInitials = settings?.data.avatar?.initials ?? "";
+const avatarImage = settings?.data.avatar?.image ?? "";
 const tagline = settings?.data.tagline ?? "";
 const bio = settings?.data.bio ?? "";
 const social = settings?.data.social;

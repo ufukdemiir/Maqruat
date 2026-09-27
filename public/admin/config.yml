@@ -247,22 +247,25 @@ collections:
               required: false,
               hint: "Adınız/soyadınız. Ana sayfadaki başlıkta, footer'daki telif hakkı satırında ve arama motorlarına gönderilen sayfa bilgilerinde (yazar adı) kullanılır. Boş bırakılırsa 'Ufuk Demir' varsayılan değeri kullanılır.",
             }
-          - {
-              label: "Baş Harfler (Avatar)",
-              name: "avatarInitials",
-              widget: "string",
-              required: false,
-              hint: "Profil Fotoğrafı yüklemediyseniz, ana sayfada adınızın yanında küçük yuvarlak bir rozette görünen 1-2 harf (ör. 'UD'). Bir Profil Fotoğrafı yüklerseniz bu alan yerine o fotoğraf gösterilir. İkisi de boşsa hiçbir rozet/görsel gösterilmez — sorun oluşturmaz, sadece adınız ve sloganınız görünür.",
-            }
-          - {
-              label: "Profil Fotoğrafı (isteğe bağlı)",
-              name: "avatarImage",
-              widget: "image",
-              required: false,
-              media_folder: "/public/uploads",
-              public_folder: "/uploads",
-              hint: "Ana sayfada adınızın yanında yuvarlak bir fotoğraf olarak görünür ve doldurulduğunda Baş Harfler rozetinin yerini alır. En iyi görünüm için kare (1:1) bir fotoğraf seçin. Boş bırakırsanız (veya Baş Harfler de boşsa) hiçbir görsel gösterilmez, sorun oluşturmaz.",
-            }
+          - label: "Profil / Avatar"
+            name: "avatar"
+            widget: "object"
+            hint: "Ana sayfada adınızın yanında gösterilebilecek görsel. Her iki alan da isteğe bağlıdır; ikisi de boşsa hiçbir görsel/rozet gösterilmez, sorun oluşturmaz."
+            fields:
+              - {
+                  label: "Baş Harfler",
+                  name: "initials",
+                  widget: "string",
+                  required: false,
+                  hint: "Profil Fotoğrafı yüklemediyseniz, adınızın yanında küçük yuvarlak bir rozette görünen 1-2 harf (ör. 'UD'). Bir Profil Fotoğrafı yüklerseniz bu alan yerine o fotoğraf gösterilir.",
+                }
+              - {
+                  label: "Profil Fotoğrafı",
+                  name: "image",
+                  widget: "image",
+                  required: false,
+                  hint: "Ana sayfada adınızın yanında yuvarlak bir fotoğraf olarak görünür ve doldurulduğunda Baş Harfler rozetinin yerini alır. En iyi görünüm için kare (1:1) bir fotoğraf seçin.",
+                }
           - {
               label: "Kısa Slogan",
               name: "tagline",

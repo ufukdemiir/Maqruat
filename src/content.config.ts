@@ -75,29 +75,55 @@ const settings = defineCollection({
   // fiilen kullanıldığı yerler için src/components/Footer.astro,
   // BaseHead.astro ve src/pages/index.astro dosyalarındaki "??"/"||"
   // yedeklerine bakabilirsiniz.
-  schema: z.object({
-    readerName: z.string().default("Ufuk Demir"),
-    avatarInitials: z.string().default(""),
-    avatarImage: z.string().default(""),
-    tagline: z.string().default(""),
-    bio: z.string().default(""),
-    siteDescription: z.string().default(""),
-    // Sitenin ilk yayına alındığı yıl — footer'daki telif hakkı satırında
-    // "© 2026–2028" gibi bir aralık göstermek için kullanılır. Boş
-    // bırakılırsa derleme anındaki yıl varsayılan olarak kullanılır.
-    foundingYear: z.number().int().default(new Date().getFullYear()),
-    goalYear: z.number().int().default(new Date().getFullYear()),
-    yearlyGoal: z.number().int().positive().default(12),
-    social: z
-      .object({
-        website: z.string().optional().default(""),
-        github: z.string().optional().default(""),
-        linkedin: z.string().optional().default(""),
-        pinterest: z.string().optional().default(""),
-        email: z.string().optional().default(""),
-      })
-      .default({ website: "", github: "", linkedin: "", pinterest: "", email: "" }),
-  }),
+  //
+  // GÜVENLİK AĞI: settings dosyası tek bir JSON dosyasıdır ve CMS'ten
+  // beklenmedik/bozuk bir veriyle kaydedilirse (ör. bir widget'ın istemci
+  // tarafı bir hatası nedeniyle), normalde bu TÜM SİTENİN derlenmesini
+  // engelleyebilirdi (34 sayfanın tamamı etkilenir). Bunu asla istemediğimiz
+  // için şemanın tamamını `.catch()` ile sarmalıyoruz: veri şemaya uymazsa
+  // (ne olursa olsun) derleme durmaz, yalnızca site GEÇİCİ olarak varsayılan
+  // ayarlarla (aşağıdaki gibi) render edilir. Panelden ayarları düzeltip
+  // tekrar kaydettiğinizde site otomatik olarak gerçek verilerinize döner.
+  schema: z
+    .object({
+      readerName: z.string().default("Ufuk Demir"),
+      avatar: z
+        .object({
+          initials: z.string().optional().default(""),
+          image: z.string().optional().default(""),
+        })
+        .optional()
+        .default({ initials: "", image: "" }),
+      tagline: z.string().default(""),
+      bio: z.string().default(""),
+      siteDescription: z.string().default(""),
+      // Sitenin ilk yayına alındığı yıl — footer'daki telif hakkı satırında
+      // "© 2026–2028" gibi bir aralık göstermek için kullanılır. Boş
+      // bırakılırsa derleme anındaki yıl varsayılan olarak kullanılır.
+      foundingYear: z.number().int().default(new Date().getFullYear()),
+      goalYear: z.number().int().default(new Date().getFullYear()),
+      yearlyGoal: z.number().int().positive().default(12),
+      social: z
+        .object({
+          website: z.string().optional().default(""),
+          github: z.string().optional().default(""),
+          linkedin: z.string().optional().default(""),
+          pinterest: z.string().optional().default(""),
+          email: z.string().optional().default(""),
+        })
+        .default({ website: "", github: "", linkedin: "", pinterest: "", email: "" }),
+    })
+    .catch({
+      readerName: "Ufuk Demir",
+      avatar: { initials: "", image: "" },
+      tagline: "",
+      bio: "",
+      siteDescription: "",
+      foundingYear: new Date().getFullYear(),
+      goalYear: new Date().getFullYear(),
+      yearlyGoal: 12,
+      social: { website: "", github: "", linkedin: "", pinterest: "", email: "" },
+    }),
 });
 
 export const collections = { books, settings, blog };
