@@ -1,5 +1,6 @@
 import { defineCollection, z } from "astro:content";
-import { glob, file } from "astro/loaders";
+import { glob } from "astro/loaders";
+import { singleFile } from "./lib/singleFileLoader";
 
 // ---------------------------------------------------------------------------
 // "books" koleksiyonu — Decap CMS'in src/content/books klasörüne yazdığı
@@ -62,83 +63,92 @@ const blog = defineCollection({
 });
 
 // ---------------------------------------------------------------------------
-// "avatar" — BİLİNÇLİ OLARAK "settings"ten TAMAMEN AYRI, tek başına, minik
-// bir dosya. Neden ayrı: "settings" (Site Ayarları) 9 alanlı, karmaşık bir
-// giriştir; Decap CMS'in bu türden çok alanlı bir "files" girişine YENİ bir
-// alan eklendiğinde, o alanın değerini (tekrarlanabilir şekilde, hatta gizli
-// pencerede bile) YANLIŞ bir üst-seviye anahtara yazdığı defalarca
-// gözlemlendi (ör. "Baş Harfler" alanına yazılan bir değer, dosyanın en
-// dışında bambaşka bir anahtarın altında bitebiliyor). Bu, bizim
-// kodumuzdaki bir hata değil, Decap CMS'in kendi istemci tarafı kaydetme
-// mantığındaki bir hata. Avatarı KENDİ, TEK ALANLIK dosyasına taşımak bu
-// hatayı tetikleyen koşulu (kalabalık, çok alanlı bir girişe yeni alan
-// ekleme) ortadan kaldırır.
-// ---------------------------------------------------------------------------
-const avatar = defineCollection({
-  loader: file("src/data/avatar.json"),
-  schema: z
-    .object({
-      initials: z.string().optional().default(""),
-      image: z.string().optional().default(""),
-    })
-    .catch({ initials: "", image: "" }),
-});
-
-// ---------------------------------------------------------------------------
-// "settings" — tek dosyalık site ayarları (Decap CMS'te "Site Ayarları"
+// "settings" — tek dosyalık site ayarları (Decap CMS'te "Genel Ayarlar"
 // olarak düzenlenir). Ana sayfadaki okur kartı ve yıllık hedef buradan gelir.
+//
+// DOSYA BİÇİMİ (önemli): src/data/site.json DÜZ bir nesnedir — alanlar
+// doğrudan kökte durur, "main" gibi bir sarmalayıcı anahtar YOKTUR. Decap CMS
+// dosyayı tam olarak böyle okur/yazar. Girdi kimliğini ("main") dosyanın
+// içindeki bir anahtar değil, aşağıdaki özel yükleyici atar; ayrıntı için
+// bkz. src/lib/singleFileLoader.ts.
 // ---------------------------------------------------------------------------
+
+// CMS'te boş bırakılan bir alan dosyaya "", null ya da hiç yazılmamış olarak
+// düşebilir; hepsini güvenle aynı yere (varsayılan değere) indiriyoruz.
+const text = (fallback = "") => z.string().nullish().transform((v) => v ?? fallback);
+
+const wholeNumber = (fallback: number, positive = false) =>
+  z.preprocess(
+    (v) => {
+      if (v === "" || v === null) return undefined;
+      if (typeof v === "string" && /^\d+$/.test(v.trim())) return Number(v);
+      return v;
+    },
+    (positive ? z.number().int().positive() : z.number().int()).default(fallback),
+  );
+
+const currentYear = new Date().getFullYear();
+const defaultSocial = { website: "", github: "", linkedin: "", pinterest: "", email: "" };
+const defaultAvatar = { initials: "", image: "" };
+
 const settings = defineCollection({
-  loader: file("src/data/site.json"),
-  // CMS'teki "Genel Ayarlar" alanlarının HİÇBİRİ artık zorunlu değil (bkz.
+  loader: singleFile("src/data/site.json"),
+  // CMS'teki "Genel Ayarlar" alanlarının HİÇBİRİ zorunlu değil (bkz.
   // public/admin/config.yml). Bu yüzden her alana burada da makul bir
   // varsayılan değer tanımlıyoruz: panelden bir alan boş bırakılsa/silinse
   // bile derleme ASLA hata vermez, site her zaman güvenli bir değerle
-  // (ör. "Ufuk Demir", geçerli yıl) render edilir. İlgili varsayılanların
-  // fiilen kullanıldığı yerler için src/components/Footer.astro,
-  // BaseHead.astro ve src/pages/index.astro dosyalarındaki "??"/"||"
-  // yedeklerine bakabilirsiniz.
+  // (ör. "Ufuk Demir", geçerli yıl) render edilir.
   //
-  // GÜVENLİK AĞI: settings dosyası tek bir JSON dosyasıdır ve CMS'ten
-  // beklenmedik/bozuk bir veriyle kaydedilirse (ör. bir widget'ın istemci
-  // tarafı bir hatası nedeniyle), normalde bu TÜM SİTENİN derlenmesini
-  // engelleyebilirdi (34 sayfanın tamamı etkilenir). Bunu asla istemediğimiz
-  // için şemanın tamamını `.catch()` ile sarmalıyoruz: veri şemaya uymazsa
-  // (ne olursa olsun) derleme durmaz, yalnızca site GEÇİCİ olarak varsayılan
-  // ayarlarla (aşağıdaki gibi) render edilir. Panelden ayarları düzeltip
-  // tekrar kaydettiğinizde site otomatik olarak gerçek verilerinize döner.
+  // GÜVENLİK AĞI: Her alanın kendi `.catch()`'i var — tek bir alandaki
+  // beklenmedik bir değer yalnızca O alanı varsayılana döndürür, diğer
+  // ayarlar (biyografi, sosyal bağlantılar vb.) etkilenmez. Şemanın tamamı
+  // için de son bir `.catch()` var; ne olursa olsun derleme durmaz.
   schema: z
     .object({
-      readerName: z.string().default("Ufuk Demir"),
-      tagline: z.string().default(""),
-      bio: z.string().default(""),
-      siteDescription: z.string().default(""),
+      readerName: text("Ufuk Demir").catch("Ufuk Demir"),
+      // Ana sayfada adın solunda gösterilebilecek isteğe bağlı rozet/fotoğraf.
+      // Fotoğraf doluysa fotoğraf, değilse baş harfler, ikisi de boşsa hiçbiri
+      // gösterilir (bkz. src/pages/index.astro).
+      avatar: z
+        .object({
+          initials: text().catch(""),
+          image: text().catch(""),
+        })
+        .nullish()
+        .transform((v) => v ?? defaultAvatar)
+        .catch(defaultAvatar),
+      tagline: text().catch(""),
+      bio: text().catch(""),
+      siteDescription: text().catch(""),
       // Sitenin ilk yayına alındığı yıl — footer'daki telif hakkı satırında
       // "© 2026–2028" gibi bir aralık göstermek için kullanılır. Boş
       // bırakılırsa derleme anındaki yıl varsayılan olarak kullanılır.
-      foundingYear: z.number().int().default(new Date().getFullYear()),
-      goalYear: z.number().int().default(new Date().getFullYear()),
-      yearlyGoal: z.number().int().positive().default(12),
+      foundingYear: wholeNumber(currentYear).catch(currentYear),
+      goalYear: wholeNumber(currentYear).catch(currentYear),
+      yearlyGoal: wholeNumber(12, true).catch(12),
       social: z
         .object({
-          website: z.string().optional().default(""),
-          github: z.string().optional().default(""),
-          linkedin: z.string().optional().default(""),
-          pinterest: z.string().optional().default(""),
-          email: z.string().optional().default(""),
+          website: text().catch(""),
+          github: text().catch(""),
+          linkedin: text().catch(""),
+          pinterest: text().catch(""),
+          email: text().catch(""),
         })
-        .default({ website: "", github: "", linkedin: "", pinterest: "", email: "" }),
+        .nullish()
+        .transform((v) => v ?? defaultSocial)
+        .catch(defaultSocial),
     })
     .catch({
       readerName: "Ufuk Demir",
+      avatar: defaultAvatar,
       tagline: "",
       bio: "",
       siteDescription: "",
-      foundingYear: new Date().getFullYear(),
-      goalYear: new Date().getFullYear(),
+      foundingYear: currentYear,
+      goalYear: currentYear,
       yearlyGoal: 12,
-      social: { website: "", github: "", linkedin: "", pinterest: "", email: "" },
+      social: defaultSocial,
     }),
 });
 
-export const collections = { books, settings, blog, avatar };
+export const collections = { books, settings, blog };

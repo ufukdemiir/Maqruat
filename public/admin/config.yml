@@ -21,32 +21,6 @@ display_url: https://ufukdemiir.github.io/Okurken
 logo_url: /favicon.svg
 
 collections:
-  # "Profil / Avatar" BİLİNÇLİ OLARAK "Site Ayarları"ndan ayrı, tek başına bir
-  # koleksiyon. Ana sayfada adınızın yanında gösterilecek görsel/rozet
-  # burada yönetilir; bkz. src/content.config.ts'teki "avatar" koleksiyonu
-  # için düşülen not.
-  - name: "avatar"
-    label: "Profil / Avatar"
-    files:
-      - name: "main"
-        label: "Profil / Avatar"
-        file: "src/data/avatar.json"
-        description: "Ana sayfada, adınızın solunda gösterilebilecek görsel ya da rozet. Her iki alan da isteğe bağlıdır."
-        fields:
-          - {
-              label: "Baş Harfler",
-              name: "initials",
-              widget: "string",
-              required: false,
-              hint: "Profil Fotoğrafı yüklemediyseniz, ana sayfada adınızın solunda küçük yuvarlak bir rozette görünen 1-2 harf (ör. 'UD'). Bir Profil Fotoğrafı yüklerseniz bu alan yerine o fotoğraf gösterilir. İkisi de boşsa hiçbir rozet/görsel gösterilmez, sorun oluşturmaz.",
-            }
-          - {
-              label: "Profil Fotoğrafı",
-              name: "image",
-              widget: "image",
-              required: false,
-              hint: "Ana sayfada adınızın solunda yuvarlak bir fotoğraf olarak görünür ve doldurulduğunda Baş Harfler rozetinin yerini alır. En iyi görünüm için kare (1:1) bir fotoğraf seçin.",
-            }
   - name: "books"
     label: "Kitaplar"
     label_singular: "Kitap"
@@ -258,6 +232,10 @@ collections:
       - name: "main"
         label: "Genel Ayarlar"
         file: "src/data/site.json"
+        # DOSYA BİÇİMİ: src/data/site.json DÜZ bir JSON nesnesidir (alanlar
+        # doğrudan kökte; "main" gibi bir sarmalayıcı anahtar YOK). Decap CMS
+        # bu dosyayı bu biçimde okur ve yazar. Yukarıdaki `name: "main"`
+        # yalnızca Decap'in iç girdi kimliğidir, dosyanın içinde geçmez.
         # NOT: Aşağıdaki alanların tamamı bilinçli olarak "required: false"
         # (zorunlu değil) olarak ayarlanmıştır. Böylece tek bir alanı
         # güncellemek için diğerlerine dokunmanız gerekmez. Her alanın altına,
@@ -273,6 +251,25 @@ collections:
               required: false,
               hint: "Adınız/soyadınız. Ana sayfadaki başlıkta, footer'daki telif hakkı satırında ve arama motorlarına gönderilen sayfa bilgilerinde (yazar adı) kullanılır. Boş bırakılırsa 'Ufuk Demir' varsayılan değeri kullanılır.",
             }
+          - label: "Profil / Avatar"
+            name: "avatar"
+            widget: "object"
+            hint: "Ana sayfada, adınızın SOLUNDA gösterilebilecek isteğe bağlı görsel. Fotoğraf yüklerseniz fotoğraf; yüklemeyip yalnızca baş harf yazarsanız yuvarlak bir rozet görünür; ikisi de boşsa hiçbir şey görünmez ve yalnızca yazı düzeni kalır. Bu davranış otomatiktir, başka bir şey yapmanız gerekmez."
+            fields:
+              - {
+                  label: "Profil Fotoğrafı",
+                  name: "image",
+                  widget: "image",
+                  required: false,
+                  hint: "Ana sayfada adınızın solunda yuvarlak bir fotoğraf olarak görünür ve doldurulduğunda Baş Harfler rozetinin yerine geçer. En iyi görünüm için kare (1:1) bir fotoğraf seçin. Kaldırmak için alanı temizleyip kaydedin.",
+                }
+              - {
+                  label: "Baş Harfler",
+                  name: "initials",
+                  widget: "string",
+                  required: false,
+                  hint: "Profil Fotoğrafı yüklemediyseniz, adınızın solunda küçük yuvarlak bir rozette görünen 1-2 harf (ör. 'UD'). Fotoğraf yüklüyse bu alan kullanılmaz.",
+                }
           - {
               label: "Kısa Slogan",
               name: "tagline",

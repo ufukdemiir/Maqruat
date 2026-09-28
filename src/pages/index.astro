@@ -9,10 +9,9 @@ import { withBase } from "../lib/url";
 import { getCurrentlyReading, getRecentlyFinished } from "../lib/books";
 
 const settings = await getEntry("settings", "main");
-const avatarEntry = await getEntry("avatar", "main");
 const readerName = settings?.data.readerName || "Ufuk Demir";
-const avatarInitials = avatarEntry?.data.initials ?? "";
-const avatarImage = avatarEntry?.data.image ?? "";
+const avatarInitials = (settings?.data.avatar.initials ?? "").trim();
+const avatarImage = (settings?.data.avatar.image ?? "").trim();
 const tagline = settings?.data.tagline ?? "";
 const bio = settings?.data.bio ?? "";
 const social = settings?.data.social;

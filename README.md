@@ -41,7 +41,7 @@ npm run preview    # üretilen siteyi yerelde önizler
 ├── src/
 │   ├── content.config.ts     # Content Collections şeması (books, settings)
 │   ├── content/books/*.md    # Her dosya bir kitap (örnek veri içerir)
-│   ├── data/site.json        # Okur bilgileri, yıllık hedef, sosyal linkler
+│   ├── data/site.json        # Okur bilgileri, avatar, yıllık hedef, sosyal linkler (DÜZ JSON — bkz. aşağıdaki not)
 │   ├── components/           # Header, SearchModal, BookCard, vb.
 │   ├── layouts/BaseLayout.astro
 │   ├── lib/                  # Veri sorguları, istatistik, slug, tarih yardımcıları
@@ -100,6 +100,12 @@ Aşağıdaki 3 dosyayı kendi bilgilerinizle güncelleyin:
 | `astro.config.mjs` | `SITE_URL` ve `BASE_PATH` — GitHub kullanıcı adınız ve depo adınız |
 | `public/admin/config.yml` | `repo`, `base_url`, `site_url`, `display_url` |
 | `src/data/site.json` | Okur adı, biyografi, yıllık okuma hedefi, sosyal linkler |
+
+> **`site.json` biçimi hakkında önemli not:** Bu dosya **düz** bir JSON nesnesidir — alanlar
+> (`readerName`, `tagline`, `avatar`, `social`, …) doğrudan kökte durur; `"main"` gibi bir
+> sarmalayıcı anahtar **yoktur ve eklenmemelidir**. Decap CMS bu dosyayı tam olarak bu
+> biçimde okur ve yazar. Astro tarafında girdi kimliği (`"main"`) dosyanın içinde değil,
+> `src/lib/singleFileLoader.ts` tarafından atanır. Dosyayı elle düzenlerseniz düz yapıyı koruyun.
 
 **Depo adı `kullanici-adi.github.io` ise:**
 `site: "https://kullanici-adi.github.io"`, `base: "/"`
