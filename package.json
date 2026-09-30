@@ -1,8 +1,8 @@
 {
-  "name": "okurken",
+  "name": "maqruat",
   "version": "1.0.0",
   "private": true,
-  "description": "Okurken — Ufuk Demir'in kişisel okuma günlüğü. Statik, hızlı ve SEO odaklı bir Astro sitesi.",
+  "description": "Maqruat — Ufuk Demir'in kişisel okuma günlüğü. Statik, hızlı ve SEO odaklı bir Astro sitesi.",
   "type": "module",
   "scripts": {
     "dev": "astro dev",

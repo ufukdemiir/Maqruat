@@ -5,14 +5,14 @@ import tailwindcss from "@tailwindcss/vite";
 import { unified } from "@astrojs/markdown-remark";
 import { rehypeBasePathImages } from "./src/lib/rehype-base-path-images.mjs";
 
-// Okurken — GitHub Pages üzerinde tamamen statik olarak yayınlanır.
+// Maqruat — GitHub Pages üzerinde tamamen statik olarak yayınlanır.
 //
 // ÖNEMLİ: Aşağıdaki `site` ve `base` değerlerini kendi GitHub kullanıcı
 // adınıza ve depo adınıza göre güncelleyin.
 //   - Depo adı "kullaniciadi.github.io" ise: site: "https://kullaniciadi.github.io", base: "/"
-//   - Depo adı farklıysa (ör. "okurken"): site: "https://kullaniciadi.github.io", base: "/okurken"
+//   - Depo adı farklıysa (ör. "maqruat"): site: "https://kullaniciadi.github.io", base: "/maqruat"
 const SITE_URL = "https://ufukdemiir.github.io";
-const BASE_PATH = "/Okurken";
+const BASE_PATH = "/Maqruat";
 
 export default defineConfig({
   site: SITE_URL,
