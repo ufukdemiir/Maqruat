@@ -51,7 +51,7 @@ type PdfNode = Record<string, unknown>;
 // olduğu için) çöküyor. Salt-okunur bir string yol vermek bu sorunu tamamen
 // ortadan kaldırır; ayrıca `localAccessPolicy` de yalnızca bu klasöre izin
 // verecek şekilde daraltılır (aşağıya bakınız).
-const FONT_DIR = join(tmpdir(), "okurken-pdf-fonts");
+const FONT_DIR = join(tmpdir(), "maqruat-pdf-fonts");
 mkdirSync(FONT_DIR, { recursive: true });
 
 function materializeFont(fileName: string, base64: string): string {
@@ -125,7 +125,7 @@ function buildCover(data: ArchiveExportData): PdfNode[] {
   ].join("   ·   ");
 
   const nodes: (PdfNode | null)[] = [
-    { text: "OKURKEN", style: "coverKicker", alignment: "center", margin: [0, 90, 0, 0] },
+    { text: "MAQRUAT", style: "coverKicker", alignment: "center", margin: [0, 90, 0, 0] },
     { text: "Arşiv", style: "coverTitle", alignment: "center", margin: [0, 6, 0, 14] },
     data.site.tagline
       ? { text: data.site.tagline, style: "coverTagline", alignment: "center", margin: [0, 0, 0, 26] }
@@ -147,7 +147,7 @@ function buildCover(data: ArchiveExportData): PdfNode[] {
     { text: data.site.readerName, style: "coverReader", alignment: "center" },
     { text: statsLine, style: "coverStats", alignment: "center", margin: [0, 16, 0, 0] },
     {
-      text: `Bu arşiv ${formatDateTR(new Date(data.generatedAt))} tarihinde, Okurken'in "Arşivi indir" özelliğiyle oluşturuldu.`,
+      text: `Bu arşiv ${formatDateTR(new Date(data.generatedAt))} tarihinde, Maqruat'ın "Arşivi indir" özelliğiyle oluşturuldu.`,
       style: "coverMeta",
       alignment: "center",
       margin: [0, 60, 0, 0],
@@ -338,18 +338,18 @@ function buildDocDefinition(data: ArchiveExportData): PdfNode {
       if (currentPage === 1) return { text: "" };
       return {
         columns: [
-          { text: "Okurken — Arşiv", style: "coverMeta", margin: [50, 0, 0, 0] },
+          { text: "Maqruat — Arşiv", style: "coverMeta", margin: [50, 0, 0, 0] },
           { text: `${currentPage} / ${pageCount}`, style: "coverMeta", alignment: "right", margin: [0, 0, 50, 0] },
         ],
         margin: [0, 20, 0, 0],
       };
     },
     info: {
-      title: `Okurken — Arşiv (${data.site.readerName})`,
+      title: `Maqruat — Arşiv (${data.site.readerName})`,
       author: data.site.readerName,
       subject: "Kitaplar, incelemeler, notlar, alıntılar ve blog yazıları arşivi",
-      creator: "Okurken",
-      producer: "Okurken",
+      creator: "Maqruat",
+      producer: "Maqruat",
       creationDate: new Date(data.generatedAt),
     },
     language: "tr",

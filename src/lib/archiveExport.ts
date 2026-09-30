@@ -136,7 +136,7 @@ export async function getArchiveExportData(siteURL: URL | undefined): Promise<Ar
   return {
     generatedAt: new Date().toISOString(),
     site: {
-      name: "Okurken",
+      name: "Maqruat",
       readerName: settings?.data.readerName ?? "Ufuk Demir",
       tagline: settings?.data.tagline ?? "",
       url: siteURL ? siteURL.toString().replace(/\/$/, "") : "",

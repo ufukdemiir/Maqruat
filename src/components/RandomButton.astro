@@ -93,8 +93,8 @@ switch (kind) {
 <script>
   // Sayfada birden fazla "Rastgele ..." butonu olabileceği için tek bir
   // olay temsilcisi (event delegation) kullanılır.
-  if (!(window as any).__okurkenRandomBound) {
-    (window as any).__okurkenRandomBound = true;
+  if (!(window as any).__maqruatRandomBound) {
+    (window as any).__maqruatRandomBound = true;
     document.addEventListener("click", (event) => {
       const button = (event.target as HTMLElement)?.closest<HTMLButtonElement>("[data-random-pool]");
       if (!button) return;

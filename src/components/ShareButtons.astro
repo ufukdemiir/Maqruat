@@ -66,8 +66,8 @@ const shareLinks = [
 <script>
   // Aynı sayfada onlarca ShareButtons örneği olabilir (her alıntı/not için
   // bir tane); bu yüzden tek bir olay temsilcisi kullanılır.
-  if (!(window as any).__okurkenShareBound) {
-    (window as any).__okurkenShareBound = true;
+  if (!(window as any).__maqruatShareBound) {
+    (window as any).__maqruatShareBound = true;
 
     document.addEventListener("click", async (event) => {
       const target = event.target as HTMLElement;

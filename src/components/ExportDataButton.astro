@@ -14,9 +14,9 @@ const { variant = "button", class: className = "" } = Astro.props;
 // bkz. src/lib/archiveExport.ts. `download` özniteliği, sunucu başlıkları
 // ne olursa olsun tarayıcıyı doğrudan indirmeye zorlar.
 const formats: { label: string; href: string; filename: string }[] = [
-  { label: "JSON", href: withBase("/arsiv/okurken-arsiv.json"), filename: "okurken-arsiv.json" },
-  { label: "CSV", href: withBase("/arsiv/okurken-arsiv.csv"), filename: "okurken-arsiv.csv" },
-  { label: "PDF", href: withBase("/arsiv/okurken-arsiv.pdf"), filename: "okurken-arsiv.pdf" },
+  { label: "JSON", href: withBase("/arsiv/maqruat-arsiv.json"), filename: "maqruat-arsiv.json" },
+  { label: "CSV", href: withBase("/arsiv/maqruat-arsiv.csv"), filename: "maqruat-arsiv.csv" },
+  { label: "PDF", href: withBase("/arsiv/maqruat-arsiv.pdf"), filename: "maqruat-arsiv.pdf" },
 ];
 
 const wrapClass =

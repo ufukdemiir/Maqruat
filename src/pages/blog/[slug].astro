@@ -34,7 +34,7 @@ const structuredData = {
 };
 
 const breadcrumbList = buildBreadcrumbList([
-  { name: "Okurken", url: new URL(withBase("/"), Astro.site).toString() },
+  { name: "Maqruat", url: new URL(withBase("/"), Astro.site).toString() },
   { name: "Blog", url: new URL(withBase("/blog/"), Astro.site).toString() },
   { name: title, url: pageUrl },
 ]);
@@ -62,7 +62,7 @@ const breadcrumbList = buildBreadcrumbList([
       <ShareButtons url={pageUrl} title={title} class="mt-5" />
     </header>
 
-    <div class="prose-okurken prose mt-8 max-w-[68ch] dark:prose-invert">
+    <div class="prose-maqruat prose mt-8 max-w-[68ch] dark:prose-invert">
       <Content />
     </div>
   </article>

@@ -13,6 +13,6 @@ Bu sefer tam tersini denemek istiyorum: daha az ama daha bilinçli seçilmiş ki
 
 ## Sayı değil, süreç
 
-Okurken'i kurarken de aslında bu yaklaşımı destekleyecek bir yapı istedim. Yıllık hedef ilerleme çubuğu güzel bir motivasyon kaynağı, ama asıl değerli olan kısım benim için notlar ve alıntılar bölümleri. Bir kitabı bitirdikten aylar sonra o notlara geri dönüp "ne düşünmüşüm" diye bakabilmek, sadece "kaç kitap okudum" sayısından çok daha anlamlı geliyor bana.
+Maqruat'ı kurarken de aslında bu yaklaşımı destekleyecek bir yapı istedim. Yıllık hedef ilerleme çubuğu güzel bir motivasyon kaynağı, ama asıl değerli olan kısım benim için notlar ve alıntılar bölümleri. Bir kitabı bitirdikten aylar sonra o notlara geri dönüp "ne düşünmüşüm" diye bakabilmek, sadece "kaç kitap okudum" sayısından çok daha anlamlı geliyor bana.
 
 Yıl sonunda buraya dönüp bu hedefi ne kadar tuttuğuma bakacağım. Şimdilik ilerleme iyi gidiyor.

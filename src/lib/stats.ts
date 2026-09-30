@@ -26,7 +26,7 @@ export interface AuthorHighlight {
   count: number;
 }
 
-export interface OkurkenStats {
+export interface MaqruatStats {
   totalBooks: number;
   statusCounts: Record<BookEntry["data"]["status"], number>;
   totalPagesRead: number;
@@ -100,7 +100,7 @@ function actualPagesRead(book: BookEntry): number {
   return 0;
 }
 
-export async function computeStats(referenceYear = new Date().getFullYear()): Promise<OkurkenStats> {
+export async function computeStats(referenceYear = new Date().getFullYear()): Promise<MaqruatStats> {
   const books = await getPublishedBooks();
   const now = new Date();
 

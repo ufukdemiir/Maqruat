@@ -1,5 +1,5 @@
 /**
- * "Okurken" kimliğinin PDF'e taşınan renk paleti. Bir kağıt/mürekkep/deri
+ * "Maqruat" kimliğinin PDF'e taşınan renk paleti. Bir kağıt/mürekkep/deri
  * ciltli kitap dokusundan ilham alan bu değerler, src/styles/global.css
  * içindeki `@theme` bloğunun **açık mod** (light) tonlarıyla birebir
  * eşleşir — PDF her zaman açık zeminde üretilir (yazdırılabilirlik için).

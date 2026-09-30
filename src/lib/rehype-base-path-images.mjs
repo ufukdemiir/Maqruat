@@ -1,5 +1,5 @@
 /**
- * GitHub Pages bu projeyi bir alt yolda yayınlıyor (ör. "/Okurken"; bkz.
+ * GitHub Pages bu projeyi bir alt yolda yayınlıyor (ör. "/Maqruat"; bkz.
  * astro.config.mjs → BASE_PATH). Astro'nun `base` ayarı, kendi ürettiği TÜM
  * bağlantı ve varlık yollarına (Header, Footer, BaseHead, withBase() vb.)
  * bu ön eki otomatik ekler — ANCAK Markdown içeriğinin (blog yazıları,

@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: ufukdemiir/Okurken
+  repo: ufukdemiir/Maqruat
   branch: main
   # Bu URL, README.md içindeki "Decap CMS için GitHub OAuth Kurulumu"
   # bölümünde kendi Cloudflare Worker adresinizle değiştirilmelidir.
@@ -16,8 +16,8 @@ locale: "tr"
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
-site_url: https://ufukdemiir.github.io/Okurken
-display_url: https://ufukdemiir.github.io/Okurken
+site_url: https://ufukdemiir.github.io/Maqruat
+display_url: https://ufukdemiir.github.io/Maqruat
 logo_url: /favicon.svg
 
 collections:

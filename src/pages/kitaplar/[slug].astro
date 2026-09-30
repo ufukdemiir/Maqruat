@@ -89,7 +89,7 @@ const structuredData = {
 };
 
 const breadcrumbList = buildBreadcrumbList([
-  { name: "Okurken", url: new URL(withBase("/"), Astro.site).toString() },
+  { name: "Maqruat", url: new URL(withBase("/"), Astro.site).toString() },
   { name: "Kitaplar", url: new URL(withBase("/kitaplar/"), Astro.site).toString() },
   { name: pageTitle, url: pageUrl },
 ]);
@@ -207,7 +207,7 @@ const breadcrumbList = buildBreadcrumbList([
           <h2 class="font-serif text-xl text-ink">İnceleme</h2>
           <span class="text-sm text-ink-soft">{readingMinutes} dk okuma süresi</span>
         </div>
-        <div class="prose-okurken prose mt-5 max-w-[68ch] dark:prose-invert">
+        <div class="prose-maqruat prose mt-5 max-w-[68ch] dark:prose-invert">
           <Content />
         </div>
         <ShareButtons
