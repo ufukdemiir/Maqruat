@@ -3,6 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "description": "Maqruat — Ufuk Demir'in kişisel okuma günlüğü. Statik, hızlı ve SEO odaklı bir Astro sitesi.",
+  "author": "Ufuk Demir",
+  "license": "MIT",
+  "homepage": "https://ufukdemiir.github.io/Maqruat/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ufukdemiir/Maqruat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ufukdemiir/Maqruat/issues"
+  },
   "type": "module",
   "scripts": {
     "dev": "astro dev",

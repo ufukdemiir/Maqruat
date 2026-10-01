@@ -1,46 +1,65 @@
-# Telif, marka ve üçüncü taraf bildirimi
+# Lisans, telif ve marka bildirimi
 
-Bu depoda farklı nitelikte üç grup materyal bulunur ve her biri farklı koşullara
-tabidir.
+Bu depoda farklı nitelikte materyaller bulunur ve her biri farklı koşullara
+tabidir. Aşağıdaki tablo özetidir; ayrıntılar altında.
 
-## 1. Kaynak kod — MIT Lisansı
+| Materyal | Konum | Durum |
+|---|---|---|
+| Kaynak kod | `src/` (içerik ve veri klasörleri hariç), `public/admin/`, `.github/`, yapılandırma dosyaları | [MIT Lisansı](LICENSE) |
+| Kişisel içerik | `src/content/`, `src/data/` | Tüm hakları saklıdır |
+| Ad ve görsel kimlik | "Maqruat" adı, `public/favicon*`, `public/apple-touch-icon.png`, `public/og-image.png` | İzinsiz kullanılamaz |
+| Yüklenen görseller | `public/uploads/` | İlgili hak sahiplerine aittir |
+| Fontlar | `src/lib/pdf/fonts/` | SIL Open Font License 1.1 |
+| Bağımlılıklar | `node_modules/` (depoda bulunmaz) | Her paketin kendi lisansı |
 
-Sitenin kaynak kodu (Astro bileşenleri, sayfalar, `src/lib/` altındaki yardımcı
-kodlar, yapılandırma dosyaları ve GitHub Actions iş akışları)
-[MIT Lisansı](LICENSE) ile sunulur. Kodu, lisans metnindeki koşullara uyarak
-serbestçe kullanabilir, değiştirebilir ve dağıtabilirsiniz.
+## 1. Kaynak kod: MIT Lisansı
 
-## 2. Kişisel içerik — Tüm hakları saklıdır
+Sitenin kaynak kodu (Astro bileşenleri, sayfalar, `src/lib/` altındaki
+yardımcılar, yapılandırma dosyaları ve GitHub Actions iş akışları)
+[MIT Lisansı](LICENSE) ile sunulur. Lisans metnindeki koşullara uyarak kodu
+kullanabilir, değiştirebilir ve dağıtabilirsiniz.
 
-Aşağıdaki materyaller MIT Lisansı'nın **kapsamı dışındadır**; aksi açıkça
-belirtilmedikçe tüm hakları saklıdır. İzin almadan kopyalanamaz, yeniden
-yayımlanamaz veya kendi sitenizde kullanılamaz:
+## 2. Kişisel içerik: tüm hakları saklıdır
 
-- `src/content/` — kitap kayıtları, incelemeler, notlar, alıntı seçkileri ve blog yazıları
-- `src/data/` — kişisel bilgiler ve site ayarları
-- `public/uploads/` — yüklenen görseller
+Aşağıdaki materyaller MIT Lisansı'nın **kapsamı dışındadır**. Aksi açıkça
+belirtilmedikçe tüm hakları saklıdır; izin almadan kopyalanamaz, yeniden
+yayımlanamaz veya başka bir sitede kullanılamaz:
 
-İçerik, Ufuk Demir'e aittir. Kitap kapağı görselleri ve kitaplardan yapılan
-alıntılar gibi üçüncü taraf materyallerin hakları ise kendi hak sahiplerine
-aittir.
+- `src/content/`: kitap kayıtları, incelemeler, notlar, alıntı seçkileri ve blog yazıları
+- `src/data/`: kişisel bilgiler ve site ayarları
+
+Kitaplardan yapılan kısa alıntılar, ilgili kitabın kaydı altında, kitap ve
+sayfa bilgisiyle birlikte inceleme/değerlendirme amacıyla yer alır. Alıntılanan
+eserlerin hakları kendi sahiplerine aittir.
 
 Bu depoyu şablon olarak kullanmak isterseniz yukarıdaki klasörlerdeki içerikleri
 silip kendi içeriğinizle değiştirmeniz gerekir.
 
-## 3. Ad ve görsel kimlik — İzinsiz kullanılamaz
+## 3. Ad ve görsel kimlik
 
-**"Maqruat" adı**, site logosu/simgeleri (`public/favicon.svg`,
+**"Maqruat" adı**, logo/simge dosyaları (`public/favicon.svg`,
 `public/favicon-*.png`, `public/apple-touch-icon.png`) ve paylaşım görseli
-(`public/og-image.png`) Ufuk Demir'in marka ve görsel kimliğini oluşturur.
-MIT Lisansı bu öğeler üzerinde herhangi bir hak vermez.
+(`public/og-image.png`) bu projenin kimliğini oluşturur. MIT Lisansı bu öğeler
+için marka veya kullanım hakkı **vermez**.
 
-Bu projeden türetilmiş kendi sitenizi yayımlarsanız lütfen başka bir ad ve
-kendi görsellerinizi kullanın.
+Bu projeden türetilmiş kendi sitenizi yayımlarsanız lütfen başka bir ad ve kendi
+görsellerinizi kullanın.
 
-## 4. Üçüncü taraf bileşenler
+## 4. Yüklenen görseller
 
-- **Fontlar:** `src/lib/pdf/fonts/` klasöründeki Source Serif 4 ve Plus Jakarta
-  Sans, SIL Open Font License 1.1 ile lisanslıdır. Lisans metinleri
-  `src/lib/pdf/fonts/licenses/` altındadır.
-- **npm bağımlılıkları:** Astro, Tailwind CSS, Fuse.js, Chart.js, pdfmake vb.
+`public/uploads/` klasörüne CMS üzerinden yüklenen görsellerin hakları ilgili
+hak sahiplerine aittir. Bu görseller MIT Lisansı kapsamında lisanslanmış
+sayılmaz.
+
+## 5. Üçüncü taraf bileşenler
+
+- **Fontlar:** Source Serif 4 ve Plus Jakarta Sans, SIL Open Font License 1.1 ile
+  lisanslıdır. Lisans metinleri `src/lib/pdf/fonts/licenses/` altındadır.
+- **npm bağımlılıkları:** Astro, Tailwind CSS, Fuse.js, Chart.js, pdfmake ve diğer
   paketlerin her biri kendi lisansına tabidir (bkz. `package.json`).
+
+## İzin talepleri
+
+Yukarıdaki kısıtlamalar kapsamındaki bir kullanım için izin istemek ya da bir
+telif/marka konusunda iletişime geçmek için GitHub üzerinden
+[@ufukdemiir](https://github.com/ufukdemiir) ile iletişime geçebilirsiniz.
