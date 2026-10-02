@@ -60,12 +60,17 @@ kişisel notları tek bir yerde toplayan bir okuma günlüğüdür. Amaç karma�
 - Paylaşım düğmeleri: X, Facebook, LinkedIn, Pinterest, Tumblr, Telegram, WhatsApp
 - Açık/koyu tema (sistem tercihine uyar, seçim hatırlanır)
 
+**Bağlantılar ve marka**
+- Alt bilgide (footer) iki ayrı bağlantı grubu bulunur: **Maqruat'ı takip edin** (platformun @Maqruat hesapları) ve okur adının altındaki **kişisel bağlantılar**. İkisi birbirine karışmaz.
+- Tüm bağlantılar yönetim panelinden eklenir, değiştirilir ya da kaldırılır; boş bırakılan bağlantı sitede hiç görünmez. Mobilde çipler alt alta sarılır, yatay kaydırma gerektirmez.
+
 **Arşivi indir**
 - Sitedeki tüm içerik JSON, CSV ve PDF olarak indirilebilir. Dosyalar derleme anında üretilir; CSV, Excel'de Türkçe karakterlerin bozulmaması için UTF-8 BOM ile yazılır, PDF gömülü fontlarla hazırlanır.
 
 **SEO**
-- Site haritası, `robots.txt`, canonical bağlantılar, Open Graph ve Twitter kartları
-- JSON-LD yapılandırılmış veri: `WebSite`, `Person`, `Book`, `Review`, `BreadcrumbList`
+- Site haritası (`/sitemap-index.xml`), canonical bağlantılar, Open Graph ve Twitter kartları
+- JSON-LD yapılandırılmış veri: `WebSite`, `Organization` ve `Person` (resmî hesaplar `sameAs` ile), `Book`, `Review`, `BreadcrumbList`
+- Site sahipliği doğrulama etiketleri (Pinterest, Google Search Console, Bing, Yandex, Facebook) panelden girilir; kod düzenlemek gerekmez
 - 1200×630 paylaşım görseli ve Google'ın istediği PNG favicon seti
 
 ## Teknoloji
@@ -114,7 +119,7 @@ yolda (`/Maqruat`) yayınlandığı için yerelde de bu önekle çalışır.
 ├── public/
 │   ├── admin/                        # Decap CMS (config.yml, index.html)
 │   ├── uploads/                      # CMS medya kütüphanesi
-│   └── favicon.svg, favicon-*.png, apple-touch-icon.png, og-image.png
+│   └── favicon.svg, favicon-*.png, apple-touch-icon.png, logo.png, og-image.png
 ├── src/
 │   ├── components/                   # Header, Footer, SearchModal, BookCard, ...
 │   ├── content/
@@ -122,7 +127,7 @@ yolda (`/Maqruat`) yayınlandığı için yerelde de bu önekle çalışır.
 │   │   └── blog/                     # Her dosya bir blog yazısı
 │   ├── data/site.json                # Genel ayarlar (düz JSON)
 │   ├── layouts/BaseLayout.astro
-│   ├── lib/                          # Sorgular, istatistik, SEO, CSV/JSON/PDF dışa aktarma
+│   ├── lib/                          # Sorgular, istatistik, SEO, sosyal bağlantılar, CSV/JSON/PDF dışa aktarma
 │   ├── pages/                        # Tüm rotalar
 │   ├── styles/global.css             # Tasarım belirteçleri (renk, yazı tipi)
 │   └── content.config.ts             # İçerik şemaları
@@ -137,8 +142,8 @@ yolda (`/Maqruat`) yayınlandığı için yerelde de bu önekle çalışır.
 
 **Sayfalar:** `/`, `/kitaplar`, `/kitaplar/<slug>`, `/yazarlar`, `/yazarlar/<yazar>`,
 `/alintilar`, `/incelemeler`, `/notlar`, `/blog`, `/blog/<slug>`, `/istatistikler`,
-`/istatistikler/<yıl>`, `/arsiv` ve dışa aktarma dosyaları
-`/arsiv/maqruat-arsiv.json`, `.csv`, `.pdf`.
+`/istatistikler/<yıl>`, `/arsiv`, dışa aktarma dosyaları
+`/arsiv/maqruat-arsiv.json`, `.csv`, `.pdf` ve site haritası `/sitemap-index.xml`.
 
 ## İçerik yönetimi
 
@@ -180,13 +185,31 @@ quotes:
 |---|---|
 | `astro.config.mjs` | `SITE_URL = "https://ufukdemiir.github.io"` ve `BASE_PATH = "/Maqruat"` |
 | `public/admin/config.yml` | `repo: ufukdemiir/Maqruat`, `site_url`, `display_url`, OAuth Worker adresi (`base_url`) |
-| `src/data/site.json` | Okur adı, biyografi, slogan, yıllık okuma hedefi, sosyal bağlantılar |
+| `src/data/site.json` | Okur adı, biyografi, slogan, yıllık okuma hedefi, kişisel ve Maqruat sosyal bağlantıları, site doğrulama kodları |
+| `src/lib/social.ts` | Maqruat hesaplarının footer'daki görünme sırası ve etiketleri |
 
 > **`site.json` biçimi:** Dosya **düz** bir JSON nesnesidir. Alanlar (`readerName`,
 > `tagline`, `social`, ...) doğrudan kökte durur; `"main"` gibi bir sarmalayıcı
 > anahtar yoktur ve eklenmemelidir. Decap CMS dosyayı tam olarak bu biçimde okur
 > ve yazar. Girdi kimliğini (`"main"`) dosya değil, `src/lib/singleFileLoader.ts`
 > atar.
+
+### Sosyal bağlantılar ve doğrulama kodları
+
+Hepsi yönetim panelinde **Site Ayarları → Genel Ayarlar** altındadır:
+
+| Bölüm | Sitede nerede görünür |
+|---|---|
+| **Kişisel Bağlantılar (okur)** | Footer'da okur adının altında düz metin listesi; GitHub, LinkedIn ve Pinterest ayrıca ana sayfadaki okur kartında düğme olarak |
+| **Maqruat Hesapları (@Maqruat)** | Footer'da "Maqruat'ı takip edin" başlığı altında çipler; e-posta ise sağdaki "İletişim" bağlantısı olarak |
+| **Site Sahipliği Doğrulama** | Görünmez; her sayfanın `<head>` bölümüne `<meta>` etiketi olarak yazılır |
+
+- Bir alanı **boş bırakmak** o bağlantıyı siteden kaldırır; bir bölümün tüm alanları boşsa bölümün başlığı da kaybolur.
+- Bağlantılar `https://` ile başlamalıdır; panel başka biçimleri reddeder. Kod tarafında da yalnızca `http(s)` bağlantıları kabul edilir.
+- **Görünme sırası** sabittir ve `src/lib/social.ts` içindeki `MAQRUAT_PLATFORMS` listesinden gelir: Instagram, X, YouTube, Pinterest, Facebook, TikTok, Bluesky, Tumblr, SoundCloud, Slack, GitHub. Sıra, kitap ve alıntı paylaşımına uygun görsel ağlar önde, topluluk ve geliştirici odaklı olanlar sonda olacak şekilde belirlenmiştir.
+- Herkese açık profili olan Maqruat hesapları ve kişisel hesaplar, arama motorlarına resmî hesap olarak bildirilir (`sameAs`). Slack çalışma alanı ve kod deposu bunun dışındadır.
+
+**Yeni bir platform eklemek** için üç yeri güncelleyin: `src/lib/social.ts` (`MAQRUAT_PLATFORMS` ve `MaqruatPlatformKey`), `src/content.config.ts` (`maqruatSocial` şeması) ve `public/admin/config.yml` (aynı anahtarla bir alan).
 
 Renkler ve yazı tipleri `src/styles/global.css` içindeki tasarım belirteçlerinden
 gelir (kağıt, mürekkep ve deri ciltli kitap paleti; Source Serif 4 ve Plus
@@ -272,6 +295,35 @@ Değişiklikleri push'layıp site yeniden yayınlandıktan sonra
 </details>
 
 <details>
+<summary><strong>Site sahipliği doğrulaması ve Search Console</strong> (Pinterest, Google, Bing)</summary>
+
+<br>
+
+Pinterest, Google Search Console gibi servisler siteye sahip olduğunuzu kanıtlamanız
+için bir `<meta>` etiketi ister. Etiketi koda elle yazmak yerine kodu panele
+yapıştırmanız yeterlidir:
+
+1. Servisten doğrulama kodunu alın. Verilen satır şuna benzer: `<meta name="p:domain_verify" content="e28c…" />`
+2. [`/admin`](https://ufukdemiir.github.io/Maqruat/admin/) → **Site Ayarları → Genel Ayarlar → Site Sahipliği Doğrulama** bölümünde ilgili alana yapıştırın. Satırın tamamını da yapıştırabilirsiniz; yalnızca `content="…"` içindeki kod ayıklanır.
+3. **Kaydedin** ve site yeniden yayınlanana kadar (genelde 1-2 dakika, **Actions** sekmesinde yeşil tik) bekleyin.
+4. Servise dönüp **Doğrula**'ya basın.
+
+Pinterest kodu bu depoda zaten tanımlıdır. Google için alan adının altındaki
+mülkü **URL öneki** türünde, tam adresle (`https://ufukdemiir.github.io/Maqruat/`)
+ekleyin ve **HTML etiketi** yöntemini seçin. Doğrulandıktan sonra
+**Site haritaları** bölümüne `sitemap-index.xml` yazıp gönderin.
+
+Doğrulama tamamlandıktan sonra da etiketi kaldırmayın; Google gibi servisler
+sahipliği zaman zaman yeniden kontrol eder.
+
+> **Not:** Bu depodaki `robots.txt`, GitHub Pages proje sitelerinde alan adının
+> kökünde değil `/Maqruat/` altında yayınlandığından arama motorları tarafından
+> okunmaz; zararsızdır, ancak site haritası bu yüzden Search Console'dan elle
+> gönderilmelidir.
+
+</details>
+
+<details>
 <summary><strong>Bağımlılık güncellemelerinin otomatikleştirilmesi</strong> (Dependabot ve CI)</summary>
 
 <br>
@@ -300,6 +352,7 @@ bulunur:
 - **Admin paneli "Not Found" veriyor:** İlk dağıtım henüz tamamlanmamış olabilir; **Actions** sekmesinde derlemenin yeşil olduğunu doğrulayın.
 - **Girişte "Something went wrong" hatası:** `ALLOWED_DOMAINS` değerinin alan adıyla (protokol olmadan) birebir eşleştiğinden ve `config.yml` içindeki `base_url`'in worker adresinizle aynı olduğundan emin olun.
 - **Giriş sonrası panel eski depoya bakıyor gibi:** Tarayıcıda `ufukdemiir.github.io` için site verilerini temizleyin ya da gizli pencerede yeniden giriş yapın.
+- **Pinterest/Search Console "etiket bulunamadı" diyor:** Değişikliğin yayında olduğundan emin olun (Actions yeşil) ve sayfa kaynağında (`Ctrl+U`) `<meta name="p:domain_verify"` satırını arayın. Tarayıcı ve servis önbelleği nedeniyle bir-iki dakika bekleyip yeniden deneyin.
 - **Paylaşım görseli güncellenmiyor:** Sosyal ağlar önizlemeleri önbelleğe alır. Adresi LinkedIn Post Inspector veya Facebook Sharing Debugger ile yeniden taratın.
 
 </details>
@@ -324,12 +377,18 @@ içerdiği için, alan adı değişmedikçe dokunmak gerekmez.
 
 </details>
 
-## Paylaşım görseli
+## Paylaşım görseli ve marka varlıkları
 
 `public/og-image.png`, bağlantı paylaşımlarında görünen 1200×630 pikselli kartır.
-Başlık, görselin ortasındaki 630×630'luk karede kalacak şekilde ortalanmıştır; böylece
-küçük önizlemeyi kare kırpan uygulamalarda da adı eksiksiz görünür. Görseli
-değiştirirseniz bu ölçüyü ve ortalı yerleşimi koruyun.
+Başlık ve alt başlık, görselin ortasındaki 630×630'luk karede kalacak şekilde
+ortalanmıştır; böylece küçük önizlemeyi kare kırpan uygulamalarda da adı eksiksiz
+görünür. Görseli değiştirirseniz bu ölçüyü ve ortalı yerleşimi koruyun.
+
+Tarayıcı sekmesi ve Google sonuçları için `favicon.svg` ile `favicon-48.png` /
+`favicon-96.png` (Google, 48'in katı kare PNG ister), iOS için
+`apple-touch-icon.png`, yapılandırılmış veride (`Organization.logo`) kullanılan
+`logo.png` da aynı kimliği taşır: deri zemin üzerinde krem italik **M**. Bu
+dosyaların kullanım koşulları için bkz. [NOTICE.md](NOTICE.md).
 
 ## Katkı
 
@@ -338,11 +397,17 @@ açabilirsiniz. İçerik kişisel olduğundan içerik katkısı kabul edilmemekt
 
 ## Lisans
 
-- **Kaynak kod:** [MIT Lisansı](LICENSE)
-- **İçerik** (kitap kayıtları, incelemeler, notlar, blog yazıları), **"Maqruat" adı ve görsel kimliği** ile **yüklenen görseller** MIT kapsamı dışındadır.
-- **Fontlar ve bağımlılıklar** kendi lisanslarına tabidir.
+Kod serbesttir; içerik ve kimlik sahibine aittir.
 
-Ayrıntılar için [NOTICE.md](NOTICE.md) dosyasına bakın.
+| Materyal | Durum |
+|---|---|
+| **Kaynak kod** | [MIT Lisansı](LICENSE): kullanabilir, değiştirebilir ve dağıtabilirsiniz |
+| **İçerik** (kitap kayıtları, incelemeler, notlar, blog yazıları) | Tüm hakları saklıdır; bağlantı vermek ve kaynak göstererek kısa alıntı yapmak serbesttir |
+| **"Maqruat" adı ve görsel kimliği** (logo, simge, paylaşım görseli) | Tüm hakları saklıdır; kendi projenizde kullanılamaz |
+| **Yüklenen görseller** | İlgili hak sahiplerine aittir |
+| **Fontlar ve bağımlılıklar** | Kendi lisanslarına tabidir |
+
+Ayrıntılar ve izin verilen kullanımlar için [NOTICE.md](NOTICE.md) dosyasına bakın.
 
 ---
 
