@@ -10,20 +10,19 @@ const readerName = settings?.data.readerName || "Ufuk Demir";
 const footerBlurb =
   settings?.data.tagline ||
   settings?.data.siteDescription ||
-  "Okuduğum kitapları, alıntılarımı, incelemelerimi ve notlarımı bir araya getirdiğim kişisel okuma günlüğüm.";
+  "Okuduğum kitapları, alıntılarımı, incelemelerimi ve notlarımı bir araya getirdiğim kişisel okuma takibi ve kütüphanem.";
 const foundingYear = settings?.data.foundingYear ?? new Date().getFullYear();
 const currentYear = new Date().getFullYear();
 const yearLabel = currentYear > foundingYear ? `${foundingYear}–${currentYear}` : String(foundingYear);
 
-// İKİ AYRI GRUP — birbirine karışmaz:
-//   1. Maqruat hesapları (@Maqruat): "Maqruat'ı takip edin" bölümünde çip olarak.
+// BAĞLANTI GRUPLARI — birbirine karışmaz:
+//   1. Maqruat hesapları (@Maqruat): "Maqruat'ı takip edin" bölümünde, ortalı çipler.
 //   2. Kişisel hesaplar (okurun kendisi): okur adı başlığı altında düz metin.
+//   3. İletişim: e-posta; kişisel bağlantıların altında kendi başlığıyla.
 // Sıralama ve etiketler src/lib/social.ts'te, değerler CMS'te (Genel Ayarlar)
 // tutulur. Boş bırakılan bağlantı hiç üretilmez; bir grubun tamamı boşsa
 // bölümün kendisi de görünmez.
 const allMaqruatLinks = getMaqruatLinks(settings?.data.maqruatSocial);
-// İletişim e-postası "takip edilecek bir hesap" değil; çiplerden ayrı, başlık
-// satırının yanında düz bir bağlantı olarak gösterilir.
 const maqruatLinks = allMaqruatLinks.filter((link) => link.key !== "email");
 const contactLink = allMaqruatLinks.find((link) => link.key === "email");
 const personalLinks = getPersonalLinks(settings?.data.social);
@@ -35,16 +34,16 @@ const linkTarget = (link: SocialLink) => (link.external ? "_blank" : undefined);
 
 <footer class="border-t border-rule">
   <div class="mx-auto max-w-5xl px-5 py-12">
-    <!--
+    {/*
       Düzen (DOM sırası = mobil sırası):
         mobil / sm : marka → Maqruat hesapları → site haritası → kişisel bağlantılar
         lg         : marka | site haritası | kişisel bağlantılar
                      ─────────────────────────────────────────────
                      Maqruat hesapları (tam genişlik, üst çizgili)
       `order-*` sınıfları bu iki sıralamayı aynı işaretlemeyle sağlar.
-    -->
+    */}
     <div class="grid grid-cols-1 gap-10 text-center sm:grid-cols-2 sm:text-left lg:grid-cols-[1.2fr_1fr_1fr] lg:gap-12">
-      <!-- Marka / kısa tanıtım -->
+      {/* Marka / kısa tanıtım */}
       <div class="order-1 sm:col-span-2 lg:col-span-1">
         <a href={withBase("/")} class="font-serif text-xl font-semibold italic text-ink">
           Maqruat
@@ -54,45 +53,35 @@ const linkTarget = (link: SocialLink) => (link.external ? "_blank" : undefined);
         </p>
       </div>
 
-      <!-- Maqruat hesapları (yalnızca doldurulmuş olanlar görünür) -->
+      {/* Maqruat hesapları (yalnızca doldurulmuş olanlar görünür) */}
       {
-        (maqruatLinks.length > 0 || contactLink) && (
+        maqruatLinks.length > 0 && (
           <nav
             aria-labelledby="footer-maqruat-heading"
-            class="order-2 grid grid-cols-1 gap-y-4 sm:col-span-2 sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-x-6 lg:order-4 lg:col-span-3 lg:border-t lg:border-rule lg:pt-8"
+            class="order-2 text-center sm:col-span-2 lg:order-4 lg:col-span-3 lg:border-t lg:border-rule lg:pt-8"
           >
-            <p id="footer-maqruat-heading" class={`${headingClass} sm:col-start-1 sm:row-start-1`}>
+            <p id="footer-maqruat-heading" class={headingClass}>
               Maqruat'ı takip edin
             </p>
-            {maqruatLinks.length > 0 && (
-              <ul class="flex flex-wrap justify-center gap-2 sm:col-span-2 sm:row-start-2 sm:justify-start">
-                {maqruatLinks.map((link) => (
-                  <li>
-                    <a
-                      href={link.href}
-                      target={linkTarget(link)}
-                      rel={linkRel(link)}
-                      class="inline-flex items-center rounded-full border border-rule px-3.5 py-2 text-sm leading-none text-ink-soft transition-colors hover:border-leather hover:text-leather"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {contactLink && (
-              <a
-                href={contactLink.href}
-                class="text-sm text-ink-soft transition-colors hover:text-leather sm:col-start-2 sm:row-start-1"
-              >
-                İletişim: <span class="underline decoration-rule underline-offset-4">E-posta</span>
-              </a>
-            )}
+            <ul class="mt-4 flex flex-wrap justify-center gap-2">
+              {maqruatLinks.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    target={linkTarget(link)}
+                    rel={linkRel(link)}
+                    class="inline-flex items-center rounded-full border border-rule px-3.5 py-2 text-sm leading-none text-ink-soft transition-colors hover:border-leather hover:text-leather"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </nav>
         )
       }
 
-      <!-- Site haritası: üst menüyle aynı kaynaktan (src/lib/nav.ts) geliyor -->
+      {/* Site haritası: üst menüyle aynı kaynaktan (src/lib/nav.ts) geliyor */}
       <nav aria-label="Site haritası" class="order-3 lg:order-2">
         <p class={headingClass}>Site</p>
         <ul class="mt-3 space-y-2 text-sm">
@@ -108,37 +97,56 @@ const linkTarget = (link: SocialLink) => (link.external ? "_blank" : undefined);
         </ul>
       </nav>
 
-      <!-- Kişisel bağlantılar: platformun sahibine ait hesaplar. Ana sayfadaki
-           okur kartında da buton olarak yer alırlar; burada ayrıca bulunmaları,
-           bir kitap ya da blog yazısı gibi iç sayfalardayken de erişilebilir
-           olmalarını sağlar. Düz metin kullanılması bilinçlidir. -->
+      {/* Kişisel bağlantılar + İletişim: aynı sütunda, iki ayrı başlıkla.
+           Kişisel bağlantılar ana sayfadaki okur kartında da buton olarak yer
+           alır; burada ayrıca bulunmaları, bir kitap ya da blog yazısı gibi iç
+           sayfalardayken de erişilebilir olmalarını sağlar. Düz metin kullanılması
+           bilinçlidir. E-posta, Maqruat'ın iletişim adresidir. */}
       {
-        personalLinks.length > 0 && (
-          <nav aria-labelledby="footer-personal-heading" class="order-4 lg:order-3">
-            <p id="footer-personal-heading" class={headingClass}>
-              {readerName}
-            </p>
-            <ul class="mt-3 space-y-2 text-sm">
-              {personalLinks.map((link) => (
-                <li>
-                  <a
-                    href={link.href}
-                    target={linkTarget(link)}
-                    rel={linkRel(link)}
-                    class="text-ink-soft transition-colors hover:text-leather"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
+        (personalLinks.length > 0 || contactLink) && (
+          <div class="order-4 space-y-8 lg:order-3">
+            {personalLinks.length > 0 && (
+              <nav aria-labelledby="footer-personal-heading">
+                <p id="footer-personal-heading" class={headingClass}>
+                  {readerName}
+                </p>
+                <ul class="mt-3 space-y-2 text-sm">
+                  {personalLinks.map((link) => (
+                    <li>
+                      <a
+                        href={link.href}
+                        target={linkTarget(link)}
+                        rel={linkRel(link)}
+                        class="text-ink-soft transition-colors hover:text-leather"
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
+            {contactLink && (
+              <section aria-labelledby="footer-contact-heading">
+                <p id="footer-contact-heading" class={headingClass}>
+                  İletişim
+                </p>
+                <ul class="mt-3 text-sm">
+                  <li>
+                    <a href={contactLink.href} class="text-ink-soft transition-colors hover:text-leather">
+                      {contactLink.label}
+                    </a>
+                  </li>
+                </ul>
+              </section>
+            )}
+          </div>
         )
       }
     </div>
 
     <div class="mt-10 flex flex-col items-center gap-4 border-t border-rule pt-8">
-      <nav class="flex flex-wrap items-center justify-center divide-x divide-rule text-sm text-ink-soft" aria-label="Site araçları">
+      <nav class="flex flex-col items-center gap-3 text-sm text-ink-soft sm:flex-row sm:flex-wrap sm:justify-center sm:gap-0 sm:divide-x sm:divide-rule" aria-label="Site araçları">
         <span class="px-4 first:pl-0 last:pr-0">
           <a href={withBase("/admin/")} class="transition-colors hover:text-leather">Yönetim paneli</a>
         </span>

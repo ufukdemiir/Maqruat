@@ -1,24 +1,31 @@
 {
-  "maqruatSocial": {
-    "youtube": "https://www.youtube.com/@Maqruat",
-    "github": "https://github.com/ufukdemiir/Maqruat",
-    "soundcloud": "https://soundcloud.com/maqruat",
-    "facebook": "https://www.facebook.com/Maqruat/",
-    "bluesky": "https://bsky.app/profile/maqruat.bsky.social",
-    "slack": "https://maqruat.slack.com/",
-    "instagram": "https://www.instagram.com/maqruat/",
-    "x": "https://x.com/maqruat",
-    "tiktok": "https://www.tiktok.com/@maqruat",
-    "pinterest": "https://tr.pinterest.com/maqruat/",
-    "email": "maqruat@gmail.com",
-    "tumblr": "https://maqruat.tumblr.com/"
-  },
   "bio": "Maqruat; okuduğum kitapları takip ettiğim, kişisel kütüphanemi oluşturduğum, öne çıkan alıntılarımı, incelemelerimi ve notlarımı bir araya getirdiğim bir platform. Bitirdiğim her kitap burada bir yer buluyor.",
   "social": {
     "website": "",
     "github": "https://github.com/ufukdemiir",
     "linkedin": "https://www.linkedin.com/in/ufukdemiir/",
     "pinterest": "https://tr.pinterest.com/demiirufuk/"
+  },
+  "maqruatSocial": {
+    "instagram": "https://www.instagram.com/maqruat/",
+    "x": "https://x.com/maqruat",
+    "youtube": "https://www.youtube.com/@Maqruat",
+    "pinterest": "https://tr.pinterest.com/maqruat/",
+    "facebook": "https://www.facebook.com/Maqruat/",
+    "tiktok": "https://www.tiktok.com/@maqruat",
+    "bluesky": "https://bsky.app/profile/maqruat.bsky.social",
+    "tumblr": "https://maqruat.tumblr.com/",
+    "soundcloud": "https://soundcloud.com/maqruat",
+    "slack": "https://maqruat.slack.com/",
+    "github": "https://github.com/ufukdemiir/Maqruat",
+    "email": "maqruat@gmail.com"
+  },
+  "verification": {
+    "pinterest": "e28c1e98a890a6b058af4089ae7bbdfa",
+    "google": "",
+    "bing": "",
+    "yandex": "",
+    "facebook": ""
   },
   "readerName": "Ufuk Demir",
   "tagline": "Okuma takibi ve kişisel kütüphane platformum.",
@@ -27,13 +34,6 @@
   "avatar": {
     "initials": "",
     "image": ""
-  },
-  "verification": {
-    "pinterest": "e28c1e98a890a6b058af4089ae7bbdfa",
-    "google": "",
-    "bing": "",
-    "yandex": "",
-    "facebook": ""
   },
   "yearlyGoal": 12,
   "foundingYear": 2026

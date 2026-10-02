@@ -23,7 +23,7 @@ const { title, description, ogType = "website", structuredData, image = "/og-ima
 const settings = await getEntry("settings", "main");
 const readerName = settings?.data.readerName || "Ufuk Demir";
 const metaDescription =
-  description || settings?.data.siteDescription || "Ufuk Demir'in kişisel okuma günlüğü ve kütüphanesi.";
+  description || settings?.data.siteDescription || "Ufuk Demir'in kişisel okuma takibi ve kütüphanesi.";
 
 const siteName = "Maqruat";
 const fullTitle = title === siteName ? siteName : `${title} · ${siteName}`;
@@ -38,9 +38,9 @@ const ogImageURL = new URL(withBase(image), Astro.site);
 // birleştiriliyor.
 const siteUrl = new URL(withBase("/"), Astro.site).toString();
 const logoURL = new URL(withBase("/logo.png"), Astro.site).toString();
-const maqruatSameAs = getMaqruatLinks(settings?.data.maqruatSocial)
-  .filter((link) => link.sameAs)
-  .map((link) => link.href);
+const maqruatLinks = getMaqruatLinks(settings?.data.maqruatSocial);
+const maqruatSameAs = maqruatLinks.filter((link) => link.sameAs).map((link) => link.href);
+const contactEmail = maqruatLinks.find((link) => link.key === "email")?.href.replace(/^mailto:/i, "");
 const personalSameAs = getPersonalLinks(settings?.data.social)
   .filter((link) => link.sameAs)
   .map((link) => link.href);
@@ -63,6 +63,10 @@ const organizationSchema = {
   url: siteUrl,
   logo: logoURL,
   founder: { "@id": `${siteUrl}#person` },
+  ...(contactEmail && {
+    email: contactEmail,
+    contactPoint: { "@type": "ContactPoint", email: contactEmail, contactType: "general inquiries", availableLanguage: "tr" },
+  }),
   ...(maqruatSameAs.length > 0 && { sameAs: maqruatSameAs }),
 };
 
@@ -92,12 +96,12 @@ const extraSchemas = structuredData
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
-<!-- Favicon: Google Arama, sonuçlarda göstereceği site simgesi için SVG'yi
+{/* Favicon: Google Arama, sonuçlarda göstereceği site simgesi için SVG'yi
      DESTEKLEMEZ (yalnızca PNG/ICO/GIF/BMP/statik WebP kabul eder ve karenin
      48'in katı bir boyutta olmasını ister) — bu yüzden asıl kaynak (PNG),
      modern tarayıcılar için de SVG birlikte tanımlanıyor. sizes="any" olan
      SVG, onu destekleyen tarayıcılarda PNG'nin önüne geçer; PNG ise hem
-     eski tarayıcılar hem de Google'ın kendisi için birincil kaynaktır. -->
+     eski tarayıcılar hem de Google'ın kendisi için birincil kaynaktır. */}
 <link rel="icon" type="image/png" sizes="96x96" href={withBase("/favicon-96.png")} />
 <link rel="icon" type="image/png" sizes="48x48" href={withBase("/favicon-48.png")} />
 <link rel="icon" type="image/svg+xml" sizes="any" href={withBase("/favicon.svg")} />
@@ -109,10 +113,10 @@ const extraSchemas = structuredData
 <meta name="description" content={metaDescription} />
 <meta name="author" content={readerName} />
 
-<!-- Site sahipliği doğrulamaları (yalnızca doldurulmuş olanlar yazılır) -->
+{/* Site sahipliği doğrulamaları (yalnızca doldurulmuş olanlar yazılır) */}
 {verificationTags.map((tag) => <meta name={tag.name} content={tag.content} />)}
 
-<!-- Open Graph / Facebook -->
+{/* Open Graph / Facebook */}
 <meta property="og:type" content={ogType} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={fullTitle} />
@@ -124,14 +128,14 @@ const extraSchemas = structuredData
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content={`${siteName} — ${readerName}`} />
 
-<!-- Twitter -->
+{/* Twitter */}
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={metaDescription} />
 <meta name="twitter:image" content={ogImageURL} />
 <meta name="twitter:image:alt" content={`${siteName} — ${readerName}`} />
 
-<!-- Fontlar: Source Serif 4 (okuma metinleri) + Plus Jakarta Sans (arayüz) -->
+{/* Fontlar: Source Serif 4 (okuma metinleri) + Plus Jakarta Sans (arayüz) */}
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
