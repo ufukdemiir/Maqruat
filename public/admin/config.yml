@@ -316,43 +316,138 @@ collections:
               required: false,
               hint: "O yıl için kendinize koyduğunuz kitap sayısı hedefi. Ana sayfadaki ilerleme çubuğunda 'bitirilen / hedef' şeklinde gösterilir.",
             }
-          - label: "Sosyal Bağlantılar"
+          - label: "Kişisel Bağlantılar (okur)"
             name: "social"
             widget: "object"
-            hint: "Bu alanların tamamı isteğe bağlıdır. Bir bağlantıyı boş bırakırsanız, o bağlantıya ait buton veya satır sitede hiç görünmez — herhangi bir sorun oluşturmaz."
+            hint: "Platformun sahibinin KİŞİSEL hesapları. Sitenin altında okur adınızın başlığı altında ayrı bir liste olarak görünür; Maqruat'a ait hesaplardan bilinçli olarak ayrıdır (onlar için bir alt bölüme bakın). Alanların tamamı isteğe bağlıdır: boş bıraktığınız bağlantı sitede hiç görünmez."
             fields:
-              - {
-                  label: "Web Sitesi (isteğe bağlı)",
-                  name: "website",
-                  widget: "string",
-                  required: false,
-                  hint: "Doldurulursa sitenin tüm sayfalarının footer'ında (en alt kısmında) 'Web sitesi' adıyla bir bağlantı olarak görünür.",
-                }
-              - {
-                  label: "GitHub linki (isteğe bağlı)",
-                  name: "github",
-                  widget: "string",
-                  required: false,
-                  hint: "Doldurulursa ana sayfada, adınızın yanında bir GitHub butonu olarak görünür.",
-                }
-              - {
-                  label: "LinkedIn linki (isteğe bağlı)",
-                  name: "linkedin",
-                  widget: "string",
-                  required: false,
-                  hint: "Doldurulursa ana sayfada, adınızın yanında bir LinkedIn butonu olarak görünür.",
-                }
-              - {
-                  label: "Pinterest linki (isteğe bağlı)",
-                  name: "pinterest",
-                  widget: "string",
-                  required: false,
-                  hint: "Doldurulursa ana sayfada, adınızın yanında bir Pinterest butonu olarak görünür.",
-                }
-              - {
-                  label: "E-posta (isteğe bağlı)",
-                  name: "email",
-                  widget: "string",
-                  required: false,
-                  hint: "Doldurulursa sitenin tüm sayfalarının footer'ında 'E-posta' adıyla, tıklandığında e-posta uygulamanızı açan bir bağlantı olarak görünür (mailto:).",
-                }
+              - label: "Web Sitesi (isteğe bağlı)"
+                name: "website"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Doldurulursa sitenin tüm sayfalarının alt kısmında, okur adınızın altında 'Web sitesi' adıyla bir bağlantı olarak görünür."
+              - label: "GitHub linki (isteğe bağlı)"
+                name: "github"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Doldurulursa ana sayfada adınızın yanında bir GitHub butonu olarak, ayrıca sitenin alt kısmında okur adınızın altında görünür."
+              - label: "LinkedIn linki (isteğe bağlı)"
+                name: "linkedin"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Doldurulursa ana sayfada adınızın yanında bir LinkedIn butonu olarak, ayrıca sitenin alt kısmında okur adınızın altında görünür."
+              - label: "Pinterest linki (isteğe bağlı)"
+                name: "pinterest"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Doldurulursa ana sayfada adınızın yanında bir Pinterest butonu olarak, ayrıca sitenin alt kısmında okur adınızın altında görünür."
+          - label: "Maqruat Hesapları (@Maqruat)"
+            name: "maqruatSocial"
+            widget: "object"
+            hint: "Maqruat'ın KENDİ sosyal medya hesapları. Sitenin tüm sayfalarının altında, \"Maqruat'ı takip edin\" bölümünde, aşağıdaki sırayla çip olarak görünür (sıra sabittir). Bir alanı boş bırakırsanız o platform görünmez; tüm alanlar boşsa bölümün kendisi de görünmez. Adresi eksiksiz, https:// ile yapıştırın."
+            fields:
+              - label: "Instagram"
+                name: "instagram"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Maqruat'ın Instagram hesabının adresi. Doldurulursa sitenin tüm sayfalarının alt kısmında, \"Maqruat'ı takip edin\" bölümünde \"Instagram\" adıyla bir bağlantı olarak görünür. Boş bırakırsanız hiç görünmez; silmek için alanı temizleyip kaydedin."
+              - label: "X"
+                name: "x"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Maqruat'ın X hesabının adresi. Doldurulursa sitenin tüm sayfalarının alt kısmında, \"Maqruat'ı takip edin\" bölümünde \"X\" adıyla bir bağlantı olarak görünür. Boş bırakırsanız hiç görünmez; silmek için alanı temizleyip kaydedin."
+              - label: "YouTube"
+                name: "youtube"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Maqruat'ın YouTube hesabının adresi. Doldurulursa sitenin tüm sayfalarının alt kısmında, \"Maqruat'ı takip edin\" bölümünde \"YouTube\" adıyla bir bağlantı olarak görünür. Boş bırakırsanız hiç görünmez; silmek için alanı temizleyip kaydedin."
+              - label: "Pinterest"
+                name: "pinterest"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Maqruat'ın Pinterest hesabının adresi. Doldurulursa sitenin tüm sayfalarının alt kısmında, \"Maqruat'ı takip edin\" bölümünde \"Pinterest\" adıyla bir bağlantı olarak görünür. Boş bırakırsanız hiç görünmez; silmek için alanı temizleyip kaydedin."
+              - label: "Facebook"
+                name: "facebook"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Maqruat'ın Facebook hesabının adresi. Doldurulursa sitenin tüm sayfalarının alt kısmında, \"Maqruat'ı takip edin\" bölümünde \"Facebook\" adıyla bir bağlantı olarak görünür. Boş bırakırsanız hiç görünmez; silmek için alanı temizleyip kaydedin."
+              - label: "TikTok"
+                name: "tiktok"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Maqruat'ın TikTok hesabının adresi. Doldurulursa sitenin tüm sayfalarının alt kısmında, \"Maqruat'ı takip edin\" bölümünde \"TikTok\" adıyla bir bağlantı olarak görünür. Boş bırakırsanız hiç görünmez; silmek için alanı temizleyip kaydedin."
+              - label: "Bluesky"
+                name: "bluesky"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Maqruat'ın Bluesky hesabının adresi. Doldurulursa sitenin tüm sayfalarının alt kısmında, \"Maqruat'ı takip edin\" bölümünde \"Bluesky\" adıyla bir bağlantı olarak görünür. Boş bırakırsanız hiç görünmez; silmek için alanı temizleyip kaydedin."
+              - label: "Tumblr"
+                name: "tumblr"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Maqruat'ın Tumblr hesabının adresi. Doldurulursa sitenin tüm sayfalarının alt kısmında, \"Maqruat'ı takip edin\" bölümünde \"Tumblr\" adıyla bir bağlantı olarak görünür. Boş bırakırsanız hiç görünmez; silmek için alanı temizleyip kaydedin."
+              - label: "SoundCloud"
+                name: "soundcloud"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Maqruat'ın SoundCloud hesabının adresi. Doldurulursa sitenin tüm sayfalarının alt kısmında, \"Maqruat'ı takip edin\" bölümünde \"SoundCloud\" adıyla bir bağlantı olarak görünür. Boş bırakırsanız hiç görünmez; silmek için alanı temizleyip kaydedin."
+              - label: "Slack"
+                name: "slack"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Maqruat'ın Slack hesabının adresi. Doldurulursa sitenin tüm sayfalarının alt kısmında, \"Maqruat'ı takip edin\" bölümünde \"Slack\" adıyla bir bağlantı olarak görünür. Boş bırakırsanız hiç görünmez; silmek için alanı temizleyip kaydedin. (Slack çalışma alanları davetle girildiğinden ziyaretçilerin çoğu için giriş ekranı açılır.)"
+              - label: "GitHub"
+                name: "github"
+                widget: "string"
+                required: false
+                pattern: ['^$|^https?://\S+$', 'Bağlantı https:// ile başlamalıdır (ör. https://www.instagram.com/maqruat/).']
+                hint: "Maqruat'ın GitHub hesabının adresi. Doldurulursa sitenin tüm sayfalarının alt kısmında, \"Maqruat'ı takip edin\" bölümünde \"GitHub\" adıyla bir bağlantı olarak görünür. Boş bırakırsanız hiç görünmez; silmek için alanı temizleyip kaydedin. (Bu, projenin kod deposudur; geliştiricilere yöneliktir.)"
+              - label: "İletişim e-postası"
+                name: "email"
+                widget: "string"
+                required: false
+                hint: "Doldurulursa \"Maqruat'ı takip edin\" bölümünün sonunda 'E-posta' adıyla, tıklandığında e-posta uygulamanızı açan bir bağlantı (mailto:) olarak görünür. Yalnızca adresi yazın (ör. ornek@gmail.com)."
+          - label: "Site Sahipliği Doğrulama"
+            name: "verification"
+            widget: "object"
+            hint: "Pinterest, Google Search Console gibi servisler, siteye sahip olduğunuzu kanıtlamanız için size bir doğrulama kodu verir. Kodu burada ilgili alana yapıştırın; site her sayfanın başlığına gerekli etiketi kendisi ekler, kod yazmanız gerekmez. Servisin verdiği satırın tamamını (`<meta ... />`) yapıştırsanız da yalnızca content=\"...\" içindeki kısım otomatik ayıklanır. Kaydettikten ve site yeniden yayınlandıktan (yaklaşık 1-2 dakika) sonra ilgili serviste 'Doğrula'ya basın."
+            fields:
+              - label: "Pinterest"
+                name: "pinterest"
+                widget: "string"
+                required: false
+                hint: "Pinterest → Ayarlar → Hesap ayarları → Talep → Web sitesi bölümünde verilen `<meta name=\"p:domain_verify\" ... />` etiketindeki content değeri."
+              - label: "Google Search Console"
+                name: "google"
+                widget: "string"
+                required: false
+                hint: "Search Console → Mülk ekle → URL öneki → 'HTML etiketi' yöntemindeki `<meta name=\"google-site-verification\" ... />` etiketindeki content değeri."
+              - label: "Bing Webmaster Tools"
+                name: "bing"
+                widget: "string"
+                required: false
+                hint: "Bing Webmaster Tools'un 'HTML Meta Etiketi' yönteminde verdiği `<meta name=\"msvalidate.01\" ... />` etiketindeki content değeri."
+              - label: "Yandex Webmaster"
+                name: "yandex"
+                widget: "string"
+                required: false
+                hint: "Yandex Webmaster'ın 'Meta etiketi' yönteminde verdiği `<meta name=\"yandex-verification\" ... />` etiketindeki content değeri."
+              - label: "Facebook (alan adı doğrulama)"
+                name: "facebook"
+                widget: "string"
+                required: false
+                hint: "Meta İş Yöneticisi → Marka Güvenliği → Alan Adları bölümünde 'Meta etiketi' yönteminde verilen `<meta name=\"facebook-domain-verification\" ... />` etiketindeki content değeri."

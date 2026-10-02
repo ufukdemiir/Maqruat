@@ -88,7 +88,27 @@ const wholeNumber = (fallback: number, positive = false) =>
   );
 
 const currentYear = new Date().getFullYear();
-const defaultSocial = { website: "", github: "", linkedin: "", pinterest: "", email: "" };
+// Kişisel hesaplar (Ufuk Demir).
+const defaultSocial = { website: "", github: "", linkedin: "", pinterest: "" };
+// Maqruat'a ait hesaplar (@Maqruat) + iletişim e-postası. Sıra ve etiketler
+// için bkz. src/lib/social.ts.
+const defaultMaqruatSocial = {
+  instagram: "",
+  x: "",
+  youtube: "",
+  pinterest: "",
+  facebook: "",
+  tiktok: "",
+  bluesky: "",
+  tumblr: "",
+  soundcloud: "",
+  slack: "",
+  github: "",
+  email: "",
+};
+// Site sahipliği doğrulama kodları (Pinterest, Google Search Console, ...).
+// Etiketlerin üretildiği yer: src/lib/seo.ts → getVerificationTags().
+const defaultVerification = { pinterest: "", google: "", bing: "", yandex: "", facebook: "" };
 const defaultAvatar = { initials: "", image: "" };
 
 const settings = defineCollection({
@@ -132,11 +152,39 @@ const settings = defineCollection({
           github: text().catch(""),
           linkedin: text().catch(""),
           pinterest: text().catch(""),
-          email: text().catch(""),
         })
         .nullish()
         .transform((v) => v ?? defaultSocial)
         .catch(defaultSocial),
+      maqruatSocial: z
+        .object({
+          instagram: text().catch(""),
+          x: text().catch(""),
+          youtube: text().catch(""),
+          pinterest: text().catch(""),
+          facebook: text().catch(""),
+          tiktok: text().catch(""),
+          bluesky: text().catch(""),
+          tumblr: text().catch(""),
+          soundcloud: text().catch(""),
+          slack: text().catch(""),
+          github: text().catch(""),
+          email: text().catch(""),
+        })
+        .nullish()
+        .transform((v) => v ?? defaultMaqruatSocial)
+        .catch(defaultMaqruatSocial),
+      verification: z
+        .object({
+          pinterest: text().catch(""),
+          google: text().catch(""),
+          bing: text().catch(""),
+          yandex: text().catch(""),
+          facebook: text().catch(""),
+        })
+        .nullish()
+        .transform((v) => v ?? defaultVerification)
+        .catch(defaultVerification),
     })
     .catch({
       readerName: "Ufuk Demir",
@@ -148,6 +196,8 @@ const settings = defineCollection({
       goalYear: currentYear,
       yearlyGoal: 12,
       social: defaultSocial,
+      maqruatSocial: defaultMaqruatSocial,
+      verification: defaultVerification,
     }),
 });
 

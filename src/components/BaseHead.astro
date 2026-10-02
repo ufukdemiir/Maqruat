@@ -1,6 +1,8 @@
 ---
 import { getEntry } from "astro:content";
 import { withBase } from "../lib/url";
+import { getMaqruatLinks, getPersonalLinks } from "../lib/social";
+import { getVerificationTags } from "../lib/seo";
 
 interface Props {
   title: string;
@@ -28,23 +30,57 @@ const fullTitle = title === siteName ? siteName : `${title} · ${siteName}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(withBase(image), Astro.site);
 
+// Arama motorlarına, bu sitenin ve sahibinin resmî hesaplarını bildiren
+// schema.org `sameAs` listeleri (bkz. src/lib/social.ts). Yalnızca herkese
+// açık profil sayfaları dahil edilir; boş bağlantılar zaten üretilmez.
+// Sitenin GERÇEK kök adresi alt yolu da içerir (https://.../Maqruat/);
+// `Astro.site` tek başına yalnızca alan adını verdiği için `withBase` ile
+// birleştiriliyor.
+const siteUrl = new URL(withBase("/"), Astro.site).toString();
+const logoURL = new URL(withBase("/logo.png"), Astro.site).toString();
+const maqruatSameAs = getMaqruatLinks(settings?.data.maqruatSocial)
+  .filter((link) => link.sameAs)
+  .map((link) => link.href);
+const personalSameAs = getPersonalLinks(settings?.data.social)
+  .filter((link) => link.sameAs)
+  .map((link) => link.href);
+
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": `${siteUrl}#person`,
   name: readerName,
-  url: Astro.site?.toString(),
+  url: siteUrl,
   description: settings?.data.tagline || metaDescription,
+  ...(personalSameAs.length > 0 && { sameAs: personalSameAs }),
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${siteUrl}#organization`,
+  name: siteName,
+  url: siteUrl,
+  logo: logoURL,
+  founder: { "@id": `${siteUrl}#person` },
+  ...(maqruatSameAs.length > 0 && { sameAs: maqruatSameAs }),
 };
 
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": `${siteUrl}#website`,
   name: siteName,
-  url: Astro.site?.toString(),
+  url: siteUrl,
   description: settings?.data.siteDescription || metaDescription,
-  author: { "@type": "Person", name: readerName },
+  author: { "@id": `${siteUrl}#person` },
+  publisher: { "@id": `${siteUrl}#organization` },
   inLanguage: "tr-TR",
 };
+
+// Site sahipliği doğrulama etiketleri (Pinterest, Google Search Console, ...).
+// Kodlar CMS'ten girilir: Genel Ayarlar → Site Sahipliği Doğrulama.
+const verificationTags = getVerificationTags(settings?.data.verification);
 
 const extraSchemas = structuredData
   ? Array.isArray(structuredData)
@@ -72,6 +108,9 @@ const extraSchemas = structuredData
 <title>{fullTitle}</title>
 <meta name="description" content={metaDescription} />
 <meta name="author" content={readerName} />
+
+<!-- Site sahipliği doğrulamaları (yalnızca doldurulmuş olanlar yazılır) -->
+{verificationTags.map((tag) => <meta name={tag.name} content={tag.content} />)}
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={ogType} />
@@ -115,6 +154,7 @@ const extraSchemas = structuredData
 </script>
 
 <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
 <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
 {
   extraSchemas.map((schema) => (

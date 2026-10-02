@@ -2,10 +2,10 @@
 import { getEntry } from "astro:content";
 import { withBase } from "../lib/url";
 import { navItems } from "../lib/nav";
+import { getMaqruatLinks, getPersonalLinks, type SocialLink } from "../lib/social";
 import ExportDataButton from "./ExportDataButton.astro";
 
 const settings = await getEntry("settings", "main");
-const social = settings?.data.social;
 const readerName = settings?.data.readerName || "Ufuk Demir";
 const footerBlurb =
   settings?.data.tagline ||
@@ -15,25 +15,37 @@ const foundingYear = settings?.data.foundingYear ?? new Date().getFullYear();
 const currentYear = new Date().getFullYear();
 const yearLabel = currentYear > foundingYear ? `${foundingYear}–${currentYear}` : String(foundingYear);
 
-// GitHub/LinkedIn/Pinterest ana sayfadaki okur kartında da buton olarak
-// gösteriliyor; burada AYRICA yer almaları, ana sayfaya dönmeden — bir kitap
-// ya da blog yazısı gibi herhangi bir iç sayfadayken de — doğrudan
-// erişilebilir olmalarını sağlıyor. Homepage'teki metin-tabanlı bağlantı
-// üslubuyla tutarlı kalması için burada da simge değil düz metin kullanılıyor.
-const socialLinks = [
-  { href: social?.github, label: "GitHub" },
-  { href: social?.linkedin, label: "LinkedIn" },
-  { href: social?.pinterest, label: "Pinterest" },
-  { href: social?.website, label: "Web sitesi" },
-  { href: social?.email ? `mailto:${social.email}` : undefined, label: "E-posta" },
-].filter((link): link is { href: string; label: string } => Boolean(link.href));
+// İKİ AYRI GRUP — birbirine karışmaz:
+//   1. Maqruat hesapları (@Maqruat): "Maqruat'ı takip edin" bölümünde çip olarak.
+//   2. Kişisel hesaplar (okurun kendisi): okur adı başlığı altında düz metin.
+// Sıralama ve etiketler src/lib/social.ts'te, değerler CMS'te (Genel Ayarlar)
+// tutulur. Boş bırakılan bağlantı hiç üretilmez; bir grubun tamamı boşsa
+// bölümün kendisi de görünmez.
+const allMaqruatLinks = getMaqruatLinks(settings?.data.maqruatSocial);
+// İletişim e-postası "takip edilecek bir hesap" değil; çiplerden ayrı, başlık
+// satırının yanında düz bir bağlantı olarak gösterilir.
+const maqruatLinks = allMaqruatLinks.filter((link) => link.key !== "email");
+const contactLink = allMaqruatLinks.find((link) => link.key === "email");
+const personalLinks = getPersonalLinks(settings?.data.social);
+
+const headingClass = "text-xs font-semibold uppercase tracking-wider text-ink-soft/60";
+const linkRel = (link: SocialLink) => (link.external ? "noopener noreferrer" : undefined);
+const linkTarget = (link: SocialLink) => (link.external ? "_blank" : undefined);
 ---
 
 <footer class="border-t border-rule">
   <div class="mx-auto max-w-5xl px-5 py-12">
+    <!--
+      Düzen (DOM sırası = mobil sırası):
+        mobil / sm : marka → Maqruat hesapları → site haritası → kişisel bağlantılar
+        lg         : marka | site haritası | kişisel bağlantılar
+                     ─────────────────────────────────────────────
+                     Maqruat hesapları (tam genişlik, üst çizgili)
+      `order-*` sınıfları bu iki sıralamayı aynı işaretlemeyle sağlar.
+    -->
     <div class="grid grid-cols-1 gap-10 text-center sm:grid-cols-2 sm:text-left lg:grid-cols-[1.2fr_1fr_1fr] lg:gap-12">
       <!-- Marka / kısa tanıtım -->
-      <div class="sm:col-span-2 lg:col-span-1">
+      <div class="order-1 sm:col-span-2 lg:col-span-1">
         <a href={withBase("/")} class="font-serif text-xl font-semibold italic text-ink">
           Maqruat
         </a>
@@ -42,9 +54,47 @@ const socialLinks = [
         </p>
       </div>
 
+      <!-- Maqruat hesapları (yalnızca doldurulmuş olanlar görünür) -->
+      {
+        (maqruatLinks.length > 0 || contactLink) && (
+          <nav
+            aria-labelledby="footer-maqruat-heading"
+            class="order-2 grid grid-cols-1 gap-y-4 sm:col-span-2 sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-x-6 lg:order-4 lg:col-span-3 lg:border-t lg:border-rule lg:pt-8"
+          >
+            <p id="footer-maqruat-heading" class={`${headingClass} sm:col-start-1 sm:row-start-1`}>
+              Maqruat'ı takip edin
+            </p>
+            {maqruatLinks.length > 0 && (
+              <ul class="flex flex-wrap justify-center gap-2 sm:col-span-2 sm:row-start-2 sm:justify-start">
+                {maqruatLinks.map((link) => (
+                  <li>
+                    <a
+                      href={link.href}
+                      target={linkTarget(link)}
+                      rel={linkRel(link)}
+                      class="inline-flex items-center rounded-full border border-rule px-3.5 py-2 text-sm leading-none text-ink-soft transition-colors hover:border-leather hover:text-leather"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {contactLink && (
+              <a
+                href={contactLink.href}
+                class="text-sm text-ink-soft transition-colors hover:text-leather sm:col-start-2 sm:row-start-1"
+              >
+                İletişim: <span class="underline decoration-rule underline-offset-4">E-posta</span>
+              </a>
+            )}
+          </nav>
+        )
+      }
+
       <!-- Site haritası: üst menüyle aynı kaynaktan (src/lib/nav.ts) geliyor -->
-      <nav aria-label="Site haritası">
-        <p class="text-xs font-semibold uppercase tracking-wider text-ink-soft/60">Site</p>
+      <nav aria-label="Site haritası" class="order-3 lg:order-2">
+        <p class={headingClass}>Site</p>
         <ul class="mt-3 space-y-2 text-sm">
           {
             navItems.map((item) => (
@@ -58,18 +108,23 @@ const socialLinks = [
         </ul>
       </nav>
 
-      <!-- Sosyal / dış bağlantılar (yalnızca doldurulmuş olanlar görünür) -->
+      <!-- Kişisel bağlantılar: platformun sahibine ait hesaplar. Ana sayfadaki
+           okur kartında da buton olarak yer alırlar; burada ayrıca bulunmaları,
+           bir kitap ya da blog yazısı gibi iç sayfalardayken de erişilebilir
+           olmalarını sağlar. Düz metin kullanılması bilinçlidir. -->
       {
-        socialLinks.length > 0 && (
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-wider text-ink-soft/60">Bağlantılar</p>
+        personalLinks.length > 0 && (
+          <nav aria-labelledby="footer-personal-heading" class="order-4 lg:order-3">
+            <p id="footer-personal-heading" class={headingClass}>
+              {readerName}
+            </p>
             <ul class="mt-3 space-y-2 text-sm">
-              {socialLinks.map((link) => (
+              {personalLinks.map((link) => (
                 <li>
                   <a
                     href={link.href}
-                    target={link.href.startsWith("mailto:") ? undefined : "_blank"}
-                    rel="noopener noreferrer"
+                    target={linkTarget(link)}
+                    rel={linkRel(link)}
                     class="text-ink-soft transition-colors hover:text-leather"
                   >
                     {link.label}
@@ -77,7 +132,7 @@ const socialLinks = [
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
         )
       }
     </div>
