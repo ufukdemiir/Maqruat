@@ -2,7 +2,7 @@
   "name": "maqruat",
   "version": "1.4.0",
   "private": true,
-  "description": "Maqruat — Ufuk Demir'in kişisel okuma günlüğü. Statik, hızlı ve SEO odaklı bir Astro sitesi.",
+  "description": "Maqruat — Ufuk Demir'in kişisel okuma takibi ve kütüphanesi. Statik, hızlı ve SEO odaklı bir Astro sitesi.",
   "author": "Ufuk Demir",
   "license": "MIT",
   "homepage": "https://ufukdemiir.github.io/Maqruat/",

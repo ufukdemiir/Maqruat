@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="public/og-image.png" alt="Maqruat: kişisel okuma günlüğü ve kütüphane" width="720">
+  <img src="public/og-image.png" alt="Maqruat: kişisel okuma takibi ve kütüphane. Ufuk Demir" width="720">
 </p>
 
 <h1 align="center">Maqruat</h1>
 
 <p align="center">
-  Kişisel okuma günlüğü ve kütüphane platformu.<br>
+  Kişisel okuma takibi ve kütüphane platformu.<br>
   Tamamen statik, hızlı ve SEO odaklı bir <a href="https://astro.build">Astro</a> sitesi.
 </p>
 
@@ -28,7 +28,8 @@
 ## Hakkında
 
 Maqruat; okunan kitapları, bu kitaplardan seçilen alıntıları, incelemeleri ve
-kişisel notları tek bir yerde toplayan bir okuma günlüğüdür. Amaç karmaşık bir
+kişisel notları tek bir yerde toplayan kişisel bir okuma takibi ve kütüphane
+platformudur. Amaç karmaşık bir
 "kitap sosyal ağı" değil, sade ve kalıcı bir kişisel arşivdir.
 
 - **Sunucusuz:** Sayfalar derleme anında üretilir ve [GitHub Pages](https://pages.github.com) üzerinde ücretsiz yayınlanır.
@@ -61,7 +62,7 @@ kişisel notları tek bir yerde toplayan bir okuma günlüğüdür. Amaç karma�
 - Açık/koyu tema (sistem tercihine uyar, seçim hatırlanır)
 
 **Bağlantılar ve marka**
-- Alt bilgide (footer) iki ayrı bağlantı grubu bulunur: **Maqruat'ı takip edin** (platformun @Maqruat hesapları) ve okur adının altındaki **kişisel bağlantılar**. İkisi birbirine karışmaz.
+- Alt bilgide (footer) bağlantılar üç ayrı grupta toplanır ve birbirine karışmaz: ortalı çipler hâlindeki **Maqruat'ı takip edin** (platformun @Maqruat hesapları), okur adının altındaki **kişisel bağlantılar** ve onun altında kendi başlığıyla **İletişim** (e-posta).
 - Tüm bağlantılar yönetim panelinden eklenir, değiştirilir ya da kaldırılır; boş bırakılan bağlantı sitede hiç görünmez. Mobilde çipler alt alta sarılır, yatay kaydırma gerektirmez.
 
 **Arşivi indir**
@@ -69,7 +70,7 @@ kişisel notları tek bir yerde toplayan bir okuma günlüğüdür. Amaç karma�
 
 **SEO**
 - Site haritası (`/sitemap-index.xml`), canonical bağlantılar, Open Graph ve Twitter kartları
-- JSON-LD yapılandırılmış veri: `WebSite`, `Organization` ve `Person` (resmî hesaplar `sameAs` ile), `Book`, `Review`, `BreadcrumbList`
+- JSON-LD yapılandırılmış veri: `WebSite`, `Organization` (resmî hesaplar `sameAs` ile, iletişim e-postası `contactPoint` ile) ve `Person`, `Book`, `Review`, `BreadcrumbList`
 - Site sahipliği doğrulama etiketleri (Pinterest, Google Search Console, Bing, Yandex, Facebook) panelden girilir; kod düzenlemek gerekmez
 - 1200×630 paylaşım görseli ve Google'ın istediği PNG favicon seti
 
@@ -201,7 +202,7 @@ Hepsi yönetim panelinde **Site Ayarları → Genel Ayarlar** altındadır:
 | Bölüm | Sitede nerede görünür |
 |---|---|
 | **Kişisel Bağlantılar (okur)** | Footer'da okur adının altında düz metin listesi; GitHub, LinkedIn ve Pinterest ayrıca ana sayfadaki okur kartında düğme olarak |
-| **Maqruat Hesapları (@Maqruat)** | Footer'da "Maqruat'ı takip edin" başlığı altında çipler; e-posta ise sağdaki "İletişim" bağlantısı olarak |
+| **Maqruat Hesapları (@Maqruat)** | Footer'da ortalı "Maqruat'ı takip edin" başlığı altında çipler; **İletişim e-postası** ise "Ufuk Demir" sütununun altında, "İletişim" başlığıyla `E-posta` bağlantısı (`mailto:`) olarak |
 | **Site Sahipliği Doğrulama** | Görünmez; her sayfanın `<head>` bölümüne `<meta>` etiketi olarak yazılır |
 
 - Bir alanı **boş bırakmak** o bağlantıyı siteden kaldırır; bir bölümün tüm alanları boşsa bölümün başlığı da kaybolur.
@@ -379,10 +380,13 @@ içerdiği için, alan adı değişmedikçe dokunmak gerekmez.
 
 ## Paylaşım görseli ve marka varlıkları
 
-`public/og-image.png`, bağlantı paylaşımlarında görünen 1200×630 pikselli kartır.
-Başlık ve alt başlık, görselin ortasındaki 630×630'luk karede kalacak şekilde
-ortalanmıştır; böylece küçük önizlemeyi kare kırpan uygulamalarda da adı eksiksiz
-görünür. Görseli değiştirirseniz bu ölçüyü ve ortalı yerleşimi koruyun.
+`public/og-image.png`, bağlantı paylaşımlarında ve bu README'nin başında görünen
+1200×630 pikselli kartır. Üç satırdan oluşur: **Maqruat**, *Kişisel okuma takibi
+ve kütüphane* ve **Ufuk Demir**; böylece bağlantıyı gören herkes kimin kütüphanesi
+olduğunu hemen anlar. Metin bloğu, görselin ortasındaki 630×630'luk karede
+kalacak şekilde ortalanmıştır; küçük önizlemeyi kare kırpan uygulamalarda da adı
+eksiksiz görünür. Görseli değiştirirseniz bu ölçüyü ve ortalı yerleşimi koruyun.
+Sosyal medya kapakları da aynı metin bloğunu kullanır.
 
 Tarayıcı sekmesi ve Google sonuçları için `favicon.svg` ile `favicon-48.png` /
 `favicon-96.png` (Google, 48'in katı kare PNG ister), iOS için
