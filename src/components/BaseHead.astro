@@ -135,13 +135,30 @@ const extraSchemas = structuredData
 <meta name="twitter:image" content={ogImageURL} />
 <meta name="twitter:image:alt" content={`${siteName} — ${readerName}`} />
 
-{/* Fontlar: Source Serif 4 (okuma metinleri) + Plus Jakarta Sans (arayüz) */}
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+{/* RSS akışının otomatik keşfi: okuyucu uygulamaları ve tarayıcı eklentileri
+    akışı, sitenin herhangi bir sayfasından bulabilir. */}
 <link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+  rel="alternate"
+  type="application/rss+xml"
+  title="Maqruat — RSS akışı"
+  href={new URL(withBase("/rss.xml"), Astro.site).toString()}
 />
+
+{/* Fontlar kendi sitemizden sunulur (@font-face tanımları: src/styles/global.css).
+    Her sayfada kullanılan dosyalar önceden yüklenir: böylece metin, yedek
+    fontla çizilip sonradan "zıplamaz". Tüm font dosyaları aynı kökenden olsa
+    da, tarayıcı gereği font ön yüklemeleri `crossorigin` ister. */}
+{
+  [
+    "maqruat-serif-latin-roman.woff2",
+    "maqruat-serif-latin-ext-roman.woff2",
+    "maqruat-serif-latin-italic.woff2",
+    "plus-jakarta-sans-latin.woff2",
+    "plus-jakarta-sans-latin-ext.woff2",
+  ].map((file) => (
+    <link rel="preload" href={withBase(`/fonts/${file}`)} as="font" type="font/woff2" crossorigin />
+  ))
+}
 
 <script is:inline define:vars={{ storageKey: "maqruat-theme" }}>
   // Koyu/aydınlık mod tercihini sayfa boyanmadan ÖNCE uygula (FOUC engelleme).

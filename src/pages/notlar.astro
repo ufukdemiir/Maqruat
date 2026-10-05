@@ -26,7 +26,7 @@ const notes = await getAllNotes();
               <p class="max-w-[68ch] text-ink">{note.text}</p>
               <a href={withBase(relativeUrl)} class="group mt-2 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
                 <span class="text-sm text-ink-soft group-hover:text-leather">{note.book.data.title}</span>
-                {date && <span class="text-xs text-ink-soft/70">{formatDateTR(date)}</span>}
+                {date && <span class="text-xs text-ink-muted">{formatDateTR(date)}</span>}
               </a>
               <ShareButtons
                 url={absoluteUrl}

@@ -9,6 +9,13 @@ sorunları yaşanmasını da engeller).
 
 ## Kaynak ve lisans
 
+> **Not (yeniden adlandırma):** Source Serif 4'ün telif bildirimi
+> "Reserved Font Name 'Source'" ibaresini taşıdığından, bu klasördeki Source Serif
+> kopyaları (statikleştirilmiş ve alt kümelenmiş, yani *değiştirilmiş*) SIL OFL'nin
+> gereği olarak **"Maqruat Serif"** adıyla kaydedilmiştir (yalnızca `name` tablosu ve
+> üretici kodu; harf çizimleri aynıdır). Plus Jakarta Sans'ta böyle bir kısıt yoktur.
+> Ayrıntı: `NOTICE.md` §5.
+
 Fontlar, sitenin kendi arayüzünde de kullanılan **Source Serif 4** ve
 **Plus Jakarta Sans** ailelerinden, Google Fonts deposundaki (google/fonts,
 `ofl/` dizini) değişken (variable) font dosyalarından türetilmiştir.

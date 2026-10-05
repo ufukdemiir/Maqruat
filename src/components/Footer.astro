@@ -20,20 +20,26 @@ const yearLabel = currentYear > foundingYear ? `${foundingYear}–${currentYear}
 //   2. Kişisel hesaplar (okurun kendisi): okur adı başlığı altında düz metin.
 //   3. İletişim: e-posta; kişisel bağlantıların altında kendi başlığıyla.
 // Sıralama ve etiketler src/lib/social.ts'te, değerler CMS'te (Genel Ayarlar)
-// tutulur. Boş bırakılan bağlantı hiç üretilmez; bir grubun tamamı boşsa
-// bölümün kendisi de görünmez.
+// tutulur. Boş bırakılan bağlantı hiç üretilmez; kişisel bağlantı ve e-posta
+// grupları tamamen boşsa bölümleri de görünmez. "Maqruat'ı takip edin"
+// bölümünde ise RSS çipi her zaman bulunur.
 const allMaqruatLinks = getMaqruatLinks(settings?.data.maqruatSocial);
-const maqruatLinks = allMaqruatLinks.filter((link) => link.key !== "email");
+// RSS akışı sitenin kendisine aittir (CMS alanı gerekmez) ve her zaman son çip
+// olarak yer alır; böylece "Maqruat'ı takip edin" bölümü hiçbir zaman boş kalmaz.
+const rssLink: SocialLink = { key: "rss", label: "RSS", href: withBase("/rss.xml"), external: true, sameAs: false };
+const maqruatLinks = [...allMaqruatLinks.filter((link) => link.key !== "email"), rssLink];
 const contactLink = allMaqruatLinks.find((link) => link.key === "email");
 const personalLinks = getPersonalLinks(settings?.data.social);
 
-const headingClass = "text-xs font-semibold uppercase tracking-wider text-ink-soft/60";
+const headingClass = "text-xs font-semibold uppercase tracking-wider text-ink-muted";
 const linkRel = (link: SocialLink) => (link.external ? "noopener noreferrer" : undefined);
 const linkTarget = (link: SocialLink) => (link.external ? "_blank" : undefined);
 ---
 
 <footer class="border-t border-rule">
-  <div class="mx-auto max-w-5xl px-5 py-12">
+  {/* Alt boşluk (lg altında): sayfanın en altındayken "başa dön" düğmesi
+        altbilgi içeriğinin üstüne binmesin. */}
+  <div class="mx-auto max-w-5xl px-5 pb-20 pt-12 lg:pb-12">
     {/*
       Düzen (DOM sırası = mobil sırası):
         mobil / sm : marka → Maqruat hesapları → site haritası → kişisel bağlantılar
@@ -53,7 +59,7 @@ const linkTarget = (link: SocialLink) => (link.external ? "_blank" : undefined);
         </p>
       </div>
 
-      {/* Maqruat hesapları (yalnızca doldurulmuş olanlar görünür) */}
+      {/* Maqruat hesapları (yalnızca doldurulmuş olanlar görünür) + RSS */}
       {
         maqruatLinks.length > 0 && (
           <nav
@@ -70,6 +76,7 @@ const linkTarget = (link: SocialLink) => (link.external ? "_blank" : undefined);
                     href={link.href}
                     target={linkTarget(link)}
                     rel={linkRel(link)}
+                    aria-label={link.key === "rss" ? "RSS akışı (yeni sekmede açılır)" : undefined}
                     class="inline-flex items-center rounded-full border border-rule px-3.5 py-2 text-sm leading-none text-ink-soft transition-colors hover:border-leather hover:text-leather"
                   >
                     {link.label}
@@ -155,7 +162,7 @@ const linkTarget = (link: SocialLink) => (link.external ? "_blank" : undefined);
         </span>
       </nav>
 
-      <p class="text-center text-xs text-ink-soft/60">© {yearLabel} Maqruat — {readerName}. Tüm hakları saklıdır.</p>
+      <p class="text-center text-xs text-ink-muted">© {yearLabel} Maqruat — {readerName}. Tüm hakları saklıdır.</p>
     </div>
   </div>
 </footer>

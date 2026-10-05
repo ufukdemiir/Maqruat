@@ -1,0 +1,69 @@
+---
+// "Sayfanın başına dön" düğmesi: yalnızca sayfa belirgin biçimde aşağı
+// kaydırıldığında belirir. Başlıktaki yuvarlak simge düğmeleriyle aynı dili
+// (ince çerçeve, deri rengi vurgu) kullanır; dokunmatik ekranlar için 44 px.
+//  - Klavye/ekran okuyucu: gizliyken `inert` olduğundan sekme sırasına girmez.
+//  - Hareket tercihi: `prefers-reduced-motion` açıksa kaydırma ve geçiş
+//    animasyonları global.css'teki kuralla devre dışı kalır.
+//  - Odak: tıklanınca odak sayfanın başına (site adı bağlantısına) taşınır;
+//    klavye kullanıcısı kaldığı yerden değil, sayfanın başından devam eder.
+---
+
+<button
+  id="back-to-top"
+  type="button"
+  aria-label="Sayfanın başına dön"
+  inert
+  class="invisible fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-30 grid size-11 translate-y-3 place-items-center rounded-full border border-rule bg-paper/90 text-ink-soft opacity-0 shadow-sm backdrop-blur transition-[opacity,transform,visibility,color,border-color] duration-200 hover:border-leather hover:text-leather print:hidden"
+>
+  <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5"></path>
+    <path d="m5 12 7-7 7 7"></path>
+  </svg>
+</button>
+
+<script>
+  const button = document.getElementById("back-to-top") as HTMLButtonElement | null;
+
+  if (button) {
+    const HIDDEN = ["invisible", "translate-y-3", "opacity-0"];
+    let visible = false;
+    let ticking = false;
+
+    // Eşik: en az 600 px ya da ekran yüksekliğinin ~%80'i kadar aşağıdayken göster.
+    const threshold = () => Math.max(600, window.innerHeight * 0.8);
+
+    function update() {
+      ticking = false;
+      const shouldShow = window.scrollY > threshold();
+      if (shouldShow === visible) return;
+      visible = shouldShow;
+      button!.classList.toggle("invisible", !visible);
+      button!.classList.toggle("translate-y-3", !visible);
+      button!.classList.toggle("opacity-0", !visible);
+      button!.toggleAttribute("inert", !visible);
+    }
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true },
+    );
+    window.addEventListener("resize", update, { passive: true });
+    update();
+
+    button.addEventListener("click", () => {
+      window.scrollTo({ top: 0 });
+      // Odağı sayfanın başına taşı (kaydırmayı tetiklemeden).
+      document.querySelector<HTMLElement>("header a")?.focus({ preventScroll: true });
+    });
+
+    // `HIDDEN` yalnızca belgeleme amaçlı: başlangıç durumu işaretlemede tanımlıdır.
+    void HIDDEN;
+  }
+</script>

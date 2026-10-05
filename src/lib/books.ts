@@ -23,6 +23,118 @@ export async function getPublishedBooks(): Promise<BookEntry[]> {
   return getCollection("books", ({ data }) => !data.draft);
 }
 
+// ---------------------------------------------------------------------------
+// OKUMA KAYITLARI (tekrar okuma desteği)
+//
+// Her kitabın bir "ilk okuması" vardır (kitap dosyasının en üstündeki
+// startDate / endDate / status / pagesRead alanları) ve isteğe bağlı olarak
+// ondan sonraki okumaları (`rereads`). İstatistikler iki ayrı şeyi sayar:
+//   - OKUMA OLAYLARI (bitirilen kitap sayısı, okunan sayfa, bitirme süresi,
+//     aylık/yıllık grafikler): her okuma — tekrar okumalar dahil — ayrı sayılır.
+//   - KİTABA AİT NİTELİKLER (yazar, tür, puan, not, alıntı, inceleme): her
+//     kitap, kaç kez okunmuş olursa olsun TEK sefer sayılır.
+// Hiç tekrar okuma yoksa iki küme birebir aynıdır; yani mevcut hesaplar
+// hiçbir şekilde değişmez.
+// ---------------------------------------------------------------------------
+
+export type ReadingStatus = BookEntry["data"]["status"];
+
+export interface ReadingRecord {
+  /** 1 = ilk okuma, 2 = ilk tekrar okuma, ... (tarih sırasına göre) */
+  number: number;
+  isReread: boolean;
+  status: ReadingStatus;
+  startDate?: Date;
+  endDate?: Date;
+  pagesRead?: number;
+}
+
+/** Tekrar okuma kayıtlarını eklenme sırasından bağımsız, tarih sırasına dizer
+ * (tarihsizler sonda, kendi aralarında eklenme sırasıyla). */
+function rereadSortKey(r: { startDate?: Date; endDate?: Date }): number {
+  const date = r.startDate ?? r.endDate;
+  return date ? date.getTime() : Number.POSITIVE_INFINITY;
+}
+
+/** Kitabın tüm okumaları: önce ilk okuma, ardından tekrar okumalar. */
+export function getReadingRecords(book: BookEntry): ReadingRecord[] {
+  const d = book.data;
+  const first: ReadingRecord = {
+    number: 1,
+    isReread: false,
+    status: d.status,
+    startDate: d.startDate,
+    endDate: d.endDate,
+    pagesRead: d.pagesRead,
+  };
+  const rest = (d.rereads ?? [])
+    .map((r, index) => ({ r, index }))
+    .sort((a, b) => rereadSortKey(a.r) - rereadSortKey(b.r) || a.index - b.index)
+    .map(({ r }, i): ReadingRecord => ({
+      number: i + 2,
+      isReread: true,
+      status: r.status,
+      startDate: r.startDate,
+      endDate: r.endDate,
+      pagesRead: r.pagesRead,
+    }));
+  return [first, ...rest];
+}
+
+/** Kitabın kaç kez BİTİRİLEREK okunduğu (yarım bırakılan ve süren okumalar sayılmaz). */
+export function getCompletedReadCount(book: BookEntry): number {
+  return getReadingRecords(book).filter((r) => r.status === "completed").length;
+}
+
+// Tekrar okumalar için üretilen "sanal" kayıtların hangi okumaya ait olduğunu
+// tutar (kitap nesnesinin kendisine yeni alan eklememek için).
+const RECORD_OF = new WeakMap<object, ReadingRecord>();
+
+/** Bir okumayı, mevcut tüm hesapların olduğu gibi işleyebileceği bir kitap
+ * kaydına çevirir. İLK okuma için kitabın kendisi (aynı nesne) döner; tekrar
+ * okumalar için tarih/durum/sayfa alanları o okumayla değiştirilmiş bir kopya
+ * döner (kimlik, başlık, yazar, puan vb. aynı kalır). */
+export function toReadingEntry(book: BookEntry, record: ReadingRecord): BookEntry {
+  if (!record.isReread) return book;
+  const entry: BookEntry = {
+    ...book,
+    data: {
+      ...book.data,
+      status: record.status,
+      startDate: record.startDate,
+      endDate: record.endDate,
+      pagesRead: record.pagesRead,
+    },
+  };
+  RECORD_OF.set(entry, record);
+  return entry;
+}
+
+/** Verilen kayıt bir tekrar okumaya mı ait? */
+export function isRereadEntry(entry: BookEntry): boolean {
+  return RECORD_OF.has(entry);
+}
+
+/** Tüm kitapların tüm okumalarını (ilk + tekrar) tek bir listede döndürür.
+ * Sıra: kitap sırası korunur, her kitabın okumaları kendi içinde sıralıdır. */
+export function expandReadings(books: BookEntry[]): BookEntry[] {
+  return books.flatMap((book) => getReadingRecords(book).map((record) => toReadingEntry(book, record)));
+}
+
+/** Aynı kitaba ait okuma kayıtlarını tekilleştirir ve her biri için kitabın
+ * ASIL kaydını döndürür (ilk görülme sırası korunur). */
+export function distinctBooksOf(entries: BookEntry[], books: BookEntry[]): BookEntry[] {
+  const byId = new Map(books.map((b) => [b.id, b] as const));
+  const seen = new Set<string>();
+  const result: BookEntry[] = [];
+  for (const entry of entries) {
+    if (seen.has(entry.id)) continue;
+    seen.add(entry.id);
+    result.push(byId.get(entry.id) ?? entry);
+  }
+  return result;
+}
+
 function timeOf(book: BookEntry): number {
   const date = book.data.endDate ?? book.data.startDate;
   return date ? date.getTime() : 0;
@@ -35,31 +147,38 @@ export function sortByRecency(books: BookEntry[]): BookEntry[] {
 
 export async function getCurrentlyReading(): Promise<BookEntry[]> {
   const books = await getPublishedBooks();
-  return sortByRecency(books.filter((b) => b.data.status === "reading"));
+  // Süren bir TEKRAR okuma da "şu an okunuyor" sayılır; bu durumda kitap,
+  // o okumanın başlangıç tarihi ve "Okunuyor" durumuyla gösterilir.
+  const reading = sortByRecency(expandReadings(books).filter((b) => b.data.status === "reading"));
+  // Aynı kitabın birden fazla süren okuması varsa kitap listede yalnızca bir kez görünür.
+  const seen = new Set<string>();
+  return reading.filter((b) => (seen.has(b.id) ? false : (seen.add(b.id), true)));
 }
 
 export async function getRecentlyFinished(limit = 6): Promise<BookEntry[]> {
   const books = await getPublishedBooks();
-  const finished = books.filter((b) => b.data.status === "completed" && b.data.endDate);
-  return sortByRecency(finished).slice(0, limit);
+  const finished = expandReadings(books).filter((b) => b.data.status === "completed" && b.data.endDate);
+  // Aynı kitap hem ilk hem tekrar okumasıyla listeye girebilir: yalnızca en
+  // yeni bitirilişi sayılır ve kart kitabın asıl kaydıyla gösterilir.
+  return distinctBooksOf(sortByRecency(finished), books).slice(0, limit);
 }
 
 export async function getThisMonthFinished(reference: Date = new Date()): Promise<BookEntry[]> {
   const books = await getPublishedBooks();
-  return sortByRecency(
-    books.filter((b) => {
-      if (b.data.status !== "completed" || !b.data.endDate) return false;
-      return (
-        b.data.endDate.getFullYear() === reference.getFullYear() &&
-        b.data.endDate.getMonth() === reference.getMonth()
-      );
-    }),
-  );
+  const finished = expandReadings(books).filter((b) => {
+    if (b.data.status !== "completed" || !b.data.endDate) return false;
+    return (
+      b.data.endDate.getFullYear() === reference.getFullYear() &&
+      b.data.endDate.getMonth() === reference.getMonth()
+    );
+  });
+  return distinctBooksOf(sortByRecency(finished), books);
 }
 
+/** Yıllık hedef için: o yıl bitirilen okuma sayısı (tekrar okumalar dahil). */
 export async function getFinishedCountForYear(year: number): Promise<number> {
   const books = await getPublishedBooks();
-  return books.filter(
+  return expandReadings(books).filter(
     (b) => b.data.status === "completed" && b.data.endDate && b.data.endDate.getFullYear() === year,
   ).length;
 }

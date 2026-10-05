@@ -220,6 +220,21 @@ function buildBookBlock(data: ArchiveExportData, book: ArchiveExportData["books"
   blocks.push({ text: metaParts.join("   ·   "), style: "bookMeta", margin: [0, 0, 0, 6] });
   blocks.push(viewOnSiteRun(siteLink(data, book.path)));
 
+  // Tekrar okuma geçmişi (yalnızca kitap birden fazla kez okunduysa).
+  if (book.rereads.length > 0) {
+    blocks.push({ text: "OKUMA GEÇMİŞİ", style: "subLabel", margin: [0, 12, 0, 4] });
+    const firstTR = [isoToTR(book.startDate), isoToTR(book.endDate)].filter(Boolean).join(" – ");
+    blocks.push({ text: `1. okuma${firstTR ? `: ${firstTR}` : ""} (${book.statusLabel})`, style: "bookMeta", margin: [0, 0, 0, 2] });
+    for (const reread of book.rereads) {
+      const rangeTR = [isoToTR(reread.startDate), isoToTR(reread.endDate)].filter(Boolean).join(" – ");
+      blocks.push({
+        text: `${reread.number}. okuma${rangeTR ? `: ${rangeTR}` : ""} (${reread.statusLabel})`,
+        style: "bookMeta",
+        margin: [0, 0, 0, 2],
+      });
+    }
+  }
+
   if (book.review) {
     blocks.push({ text: "İNCELEME", style: "subLabel", margin: [0, 16, 0, 6] });
     blocks.push(...(markdownToPdfContent(book.review) as unknown as PdfNode[]));

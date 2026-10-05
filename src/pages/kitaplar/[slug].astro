@@ -4,7 +4,14 @@ import { getEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ShareButtons from "../../components/ShareButtons.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
-import { getPublishedBooks, getSeriesVolumes, type BookEntry } from "../../lib/books";
+import {
+  getPublishedBooks,
+  getSeriesVolumes,
+  getReadingRecords,
+  getCompletedReadCount,
+  type BookEntry,
+  type ReadingRecord,
+} from "../../lib/books";
 import { getSpineColor } from "../../lib/spine";
 import { withBase } from "../../lib/url";
 import { turkishSlugify } from "../../lib/slugify";
@@ -53,6 +60,22 @@ const readingMinutes = estimateReadingMinutes(reviewText);
 const pageTitle = volumeNumber ? `${title} — Cilt ${volumeNumber}` : title;
 const seriesVolumes = await getSeriesVolumes(book);
 const otherVolumes = seriesVolumes.filter((v) => v.id !== book.id);
+
+// Tekrar okuma: kitap birden fazla kez okunduysa "N kez okundu" etiketi ve
+// açılır "Okuma geçmişi" gösterilir. Tek okumalı kitaplarda hiçbir şey eklenmez.
+const readings = getReadingRecords(book);
+const hasRereads = readings.length > 1;
+const completedReads = getCompletedReadCount(book);
+
+function describeReading(r: ReadingRecord): string {
+  const parts: string[] = [];
+  if (r.startDate && r.endDate) parts.push(`${formatDateTR(r.startDate)} – ${formatDateTR(r.endDate)}`);
+  else if (r.startDate) parts.push(`Başlangıç: ${formatDateTR(r.startDate)}`);
+  else if (r.endDate) parts.push(`Bitiş: ${formatDateTR(r.endDate)}`);
+  else parts.push("Tarih belirtilmemiş");
+  if (r.status !== "completed" && typeof r.pagesRead === "number") parts.push(`${r.pagesRead} sayfa okundu`);
+  return parts.join(" · ");
+}
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -140,6 +163,33 @@ const breadcrumbList = buildBreadcrumbList([
             <dt class="sr-only">Durum</dt>
             <dd><StatusBadge status={status} /></dd>
           </div>
+          {completedReads >= 2 && (
+            <div>
+              <dt class="sr-only">Okuma sayısı</dt>
+              <dd>
+                <span class="inline-flex items-center gap-1.5 rounded-full border border-leather/30 bg-leather/10 px-2.5 py-0.5 text-sm font-medium text-leather">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m17 2 4 4-4 4" />
+                    <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+                    <path d="m7 22-4-4 4-4" />
+                    <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+                  </svg>
+                  {completedReads} kez okundu
+                </span>
+              </dd>
+            </div>
+          )}
           {rating && (
             <div>
               <dt class="sr-only">Puan</dt>
@@ -165,6 +215,38 @@ const breadcrumbList = buildBreadcrumbList([
             </div>
           )}
         </dl>
+
+        {hasRereads && (
+          <details class="group mt-4 max-w-md rounded-lg border border-rule text-sm">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-2.5 text-ink-soft transition-colors hover:text-leather [&::-webkit-details-marker]:hidden">
+              <span>Okuma geçmişi</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="shrink-0 transition-transform duration-200 group-open:rotate-180"
+                aria-hidden="true"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </summary>
+            <ol class="flex flex-col divide-y divide-rule border-t border-rule">
+              {readings.map((r) => (
+                <li class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-4 py-2.5">
+                  <span class="font-medium text-ink">{r.number}. okuma</span>
+                  <span class="text-ink-soft">{describeReading(r)}</span>
+                  <StatusBadge status={r.status} />
+                </li>
+              ))}
+            </ol>
+          </details>
+        )}
 
         {genres.length > 0 && (
           <ul class="mt-4 flex flex-wrap gap-2">

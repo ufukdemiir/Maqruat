@@ -63,6 +63,24 @@ export function buildArchiveCsv(data: ArchiveExportData): string {
       absoluteUrl(data, book.path),
     ]);
 
+    // Tekrar okumalar (yalnızca varsa): her biri ayrı bir satır.
+    for (const reread of book.rereads) {
+      const range = [reread.startDate, reread.endDate].filter(Boolean).join(" – ");
+      out += row([
+        "Tekrar Okuma",
+        reread.endDate ?? reread.startDate ?? "",
+        book.displayTitle,
+        book.author,
+        reread.statusLabel,
+        "",
+        "",
+        "",
+        "",
+        `${reread.number}. okuma${range ? `: ${range}` : ""}${reread.pagesRead !== null ? ` (${reread.pagesRead} sayfa okundu)` : ""}`,
+        absoluteUrl(data, book.path),
+      ]);
+    }
+
     if (book.review) {
       out += row([
         "İnceleme",

@@ -1,5 +1,12 @@
 import { getEntry } from "astro:content";
-import { getPublishedBooks, getDisplayTitle, STATUS_LABELS_TR, type BookEntry } from "./books";
+import {
+  getPublishedBooks,
+  getDisplayTitle,
+  getReadingRecords,
+  getCompletedReadCount,
+  STATUS_LABELS_TR,
+  type BookEntry,
+} from "./books";
 import { getPublishedPosts, type BlogEntry } from "./blog";
 import { withBase } from "./url";
 
@@ -18,6 +25,17 @@ export interface ArchiveExportQuote {
   page: number | null;
 }
 
+/** İlk okumadan sonraki (2., 3., ...) bir okuma. */
+export interface ArchiveExportReread {
+  /** Kitabın kaçıncı okuması (2 = ilk tekrar okuma). */
+  number: number;
+  status: BookEntry["data"]["status"];
+  statusLabel: string;
+  startDate: string | null;
+  endDate: string | null;
+  pagesRead: number | null;
+}
+
 export interface ArchiveExportBook {
   title: string;
   /** Çok ciltli eserlerde "Cilt N" ekini de içeren görüntüleme başlığı. */
@@ -34,6 +52,10 @@ export interface ArchiveExportBook {
   genres: string[];
   seriesTitle: string | null;
   volumeNumber: number | null;
+  /** Kitabın kaç kez BİTİRİLEREK okunduğu (ilk okuma dahil). */
+  readCount: number;
+  /** İlk okumadan sonraki okumalar; hiç yoksa boş dizi. */
+  rereads: ArchiveExportReread[];
   notes: string[];
   quotes: ArchiveExportQuote[];
   /** İncelemenin ham Markdown metni; inceleme yoksa null. */
@@ -67,6 +89,8 @@ export interface ArchiveExportData {
     notes: number;
     quotes: number;
     blogPosts: number;
+    /** Kayıtlı toplam tekrar okuma sayısı (her durumdan). */
+    rereads: number;
   };
   books: ArchiveExportBook[];
   blogPosts: ArchiveExportBlogPost[];
@@ -94,6 +118,17 @@ function bookToExport(book: BookEntry): ArchiveExportBook {
     genres: d.genres,
     seriesTitle: d.seriesTitle ?? null,
     volumeNumber: d.volumeNumber ?? null,
+    readCount: getCompletedReadCount(book),
+    rereads: getReadingRecords(book)
+      .filter((r) => r.isReread)
+      .map((r) => ({
+        number: r.number,
+        status: r.status,
+        statusLabel: STATUS_LABELS_TR[r.status],
+        startDate: toISODate(r.startDate),
+        endDate: toISODate(r.endDate),
+        pagesRead: r.pagesRead ?? null,
+      })),
     notes: d.notes,
     quotes: d.quotes.map((q) => ({ text: q.text, page: q.page ?? null })),
     review: reviewBody.length > 0 ? reviewBody : null,
@@ -148,6 +183,7 @@ export async function getArchiveExportData(siteURL: URL | undefined): Promise<Ar
       notes: exportBooks.reduce((sum, b) => sum + b.notes.length, 0),
       quotes: exportBooks.reduce((sum, b) => sum + b.quotes.length, 0),
       blogPosts: exportPosts.length,
+      rereads: exportBooks.reduce((sum, b) => sum + b.rereads.length, 0),
     },
     books: exportBooks,
     blogPosts: exportPosts,

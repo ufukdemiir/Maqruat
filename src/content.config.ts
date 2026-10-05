@@ -8,42 +8,71 @@ import { singleFile } from "./lib/singleFileLoader";
 // İNCELEMESİ (review) olarak render edilir; notlar ve alıntılar ayrı
 // frontmatter alanlarıdır.
 // ---------------------------------------------------------------------------
+// Bir kitabın İLK okumasından sonraki her okuma (tekrar okuma). Kitabın en
+// üstteki başlangıç/bitiş/durum/pagesRead alanları her zaman İLK okumayı
+// anlatır; buradaki her kayıt 2., 3., ... okumadır. Hiç tekrar okuma yoksa
+// bu alan boştur ve sitenin hiçbir hesabı, hiçbir görünümü değişmez.
+const reread = z.object({
+  startDate: z.coerce.date().optional(),
+  endDate: z.coerce.date().optional(),
+  status: z.enum(["reading", "completed", "dropped"]).default("completed"),
+  // Yalnızca yarım bırakılan tekrar okumalar için anlamlıdır (bkz. stats.ts →
+  // actualPagesRead); tamamlanan okumada boş bırakılır, kitabın tam sayfa
+  // sayısı kullanılır.
+  pagesRead: z.number().int().nonnegative().optional(),
+});
+
 const books = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/books" }),
-  schema: z.object({
-    title: z.string(),
-    author: z.string(),
-    publisher: z.string().optional().default(""),
-    pageCount: z.number().int().positive().optional(),
-    startDate: z.coerce.date().optional(),
-    endDate: z.coerce.date().optional(),
-    status: z.enum(["reading", "completed", "want-to-read", "dropped"]),
-    rating: z.number().min(1).max(10).optional(),
-    // Yarım bırakılan ya da şu an okunmakta olan kitaplarda o ana kadar
-    // okunan gerçek sayfa sayısı. "Günde okunan ortalama sayfa" gibi
-    // istatistiklerin doğru hesaplanabilmesi için önemlidir — belirtilmezse
-    // (tamamlanmış kitaplar hariç) o kitaptan hiç sayfa okunmamış kabul
-    // edilir; kitabın TAM sayfa sayısı asla varsayılan olarak kullanılmaz.
-    pagesRead: z.number().int().nonnegative().optional(),
-    genres: z.array(z.string()).default([]),
-    // Her biri kısa bir Markdown parçası olabilen kişisel notlar.
-    notes: z.array(z.string()).default([]),
-    // Kitaptan seçilen alıntılar, isteğe bağlı sayfa numarasıyla.
-    quotes: z
-      .array(
-        z.object({
-          text: z.string(),
-          page: z.number().int().positive().optional(),
-        }),
-      )
-      .default([]),
-    // Birden fazla ciltten oluşan eserler için (ör. "Savaş ve Barış - Cilt 2").
-    // seriesTitle aynı olan kayıtlar otomatik olarak birbirine bağlanır.
-    seriesTitle: z.string().optional(),
-    volumeNumber: z.number().int().positive().optional(),
-    // Decap CMS'in "editöryal iş akışı" (taslak) kullanımı için.
-    draft: z.boolean().default(false),
-  }),
+  schema: z
+    .object({
+      title: z.string(),
+      author: z.string(),
+      publisher: z.string().optional().default(""),
+      pageCount: z.number().int().positive().optional(),
+      startDate: z.coerce.date().optional(),
+      endDate: z.coerce.date().optional(),
+      status: z.enum(["reading", "completed", "want-to-read", "dropped"]),
+      rating: z.number().min(1).max(10).optional(),
+      // Yarım bırakılan ya da şu an okunmakta olan kitaplarda o ana kadar
+      // okunan gerçek sayfa sayısı. "Günde okunan ortalama sayfa" gibi
+      // istatistiklerin doğru hesaplanabilmesi için önemlidir — belirtilmezse
+      // (tamamlanmış kitaplar hariç) o kitaptan hiç sayfa okunmamış kabul
+      // edilir; kitabın TAM sayfa sayısı asla varsayılan olarak kullanılmaz.
+      pagesRead: z.number().int().nonnegative().optional(),
+      genres: z.array(z.string()).default([]),
+      // Her biri kısa bir Markdown parçası olabilen kişisel notlar.
+      notes: z.array(z.string()).default([]),
+      // Kitaptan seçilen alıntılar, isteğe bağlı sayfa numarasıyla.
+      quotes: z
+        .array(
+          z.object({
+            text: z.string(),
+            page: z.number().int().positive().optional(),
+          }),
+        )
+        .default([]),
+      // Birden fazla ciltten oluşan eserler için (ör. "Savaş ve Barış - Cilt 2").
+      // seriesTitle aynı olan kayıtlar otomatik olarak birbirine bağlanır.
+      seriesTitle: z.string().optional(),
+      volumeNumber: z.number().int().positive().optional(),
+      // Decap CMS'in "editöryal iş akışı" (taslak) kullanımı için.
+      draft: z.boolean().default(false),
+      // İlk okumadan sonraki okumalar (bkz. yukarıdaki `reread`).
+      rereads: z.array(reread).default([]),
+    })
+    .superRefine((data, ctx) => {
+      // Bir kitabın "tekrar okuması" ancak ilk okuması sonuçlanmışsa
+      // (bitirilmiş ya da yarım bırakılmışsa) anlamlıdır.
+      if (data.rereads.length > 0 && data.status !== "completed" && data.status !== "dropped") {
+        ctx.addIssue({
+          code: "custom",
+          path: ["rereads"],
+          message:
+            'Tekrar okuma girilen kitabın durumu "Okundu" ya da "Yarım Bırakıldı" olmalıdır (ilk okuma sonuçlanmadan tekrar okuma eklenemez).',
+        });
+      }
+    }),
 });
 
 // ---------------------------------------------------------------------------

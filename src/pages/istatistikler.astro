@@ -152,7 +152,10 @@ const chartPayload = {
             <p class="text-sm text-ink-soft">{w.label}</p>
             <p class="mt-1 font-serif text-xl text-ink">{w.booksFinished} kitap</p>
             <p class="text-sm text-ink-soft">{w.pagesRead.toLocaleString("tr-TR")} sayfa</p>
-            <p class="mt-1 text-xs text-ink-soft/70">
+            {w.rereadsFinished > 0 && (
+              <p class="text-xs text-ink-soft">{w.rereadsFinished} tekrar okuma dahil</p>
+            )}
+            <p class="mt-1 text-xs text-ink-muted">
               Günde ortalama {w.averagePagesPerDay ?? 0} sayfa
             </p>
           </div>
@@ -172,6 +175,14 @@ const chartPayload = {
                 <span class="text-ink">{count}</span>
               </div>
             ))
+          }
+          {
+            stats.rereadCount > 0 && (
+              <div class="flex items-center justify-between border-b border-rule py-2 text-sm last:border-none">
+                <span class="text-ink-soft">Tekrar okuma (bitirilen)</span>
+                <span class="text-ink">{stats.rereadCount}</span>
+              </div>
+            )
           }
         </div>
         <p class="mb-3 mt-4 border-t border-dashed border-rule pt-4 text-sm font-semibold text-ink">İçerik</p>
@@ -208,7 +219,7 @@ const chartPayload = {
                     aria-hidden="true"
                   />
                   <span class="text-ink-soft">{g.genre}</span>
-                  <span class="text-ink-soft/70">{g.count}</span>
+                  <span class="text-ink-muted">{g.count}</span>
                 </li>
               ))}
             </ul>

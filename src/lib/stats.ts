@@ -1,10 +1,19 @@
-import { getPublishedBooks, sortByRecency, type BookEntry } from "./books";
+import {
+  getPublishedBooks,
+  sortByRecency,
+  expandReadings,
+  distinctBooksOf,
+  isRereadEntry,
+  type BookEntry,
+} from "./books";
 import { daysBetween } from "./reading";
 import { turkishSlugify } from "./slugify";
 
 export interface TimeWindowStat {
   label: string;
   booksFinished: number;
+  /** booksFinished içinde kaç tanesinin tekrar okuma olduğu. */
+  rereadsFinished: number;
   pagesRead: number;
   averagePagesPerDay: number | null;
 }
@@ -53,6 +62,8 @@ export interface MaqruatStats {
   firstCompletedBook: BookEntry | null;
   mostRecentCompletedBook: BookEntry | null;
   trackingStartYear: number;
+  /** Bitirilen tekrar okumaların sayısı (bitirilen okuma sayılarına dahildir). */
+  rereadCount: number;
 }
 
 /** Puana/sayıya göre sırala; eşitlik durumunda en son bitirileni öne al, ve
@@ -101,8 +112,22 @@ function actualPagesRead(book: BookEntry): number {
 }
 
 export async function computeStats(referenceYear = new Date().getFullYear()): Promise<MaqruatStats> {
-  const books = await getPublishedBooks();
-  const now = new Date();
+  return computeStatsFrom(await getPublishedBooks(), referenceYear, new Date());
+}
+
+/**
+ * computeStats'in saf (veri dışarıdan verilen) hâli — hesapların kendisi
+ * burada yapılır, böylece otomatik testlerle doğrulanabilir.
+ *
+ * TEKRAR OKUMA: `readings` her okumayı (ilk + tekrar) ayrı bir kayıt olarak
+ * içerir ve "okuma olayı" hesaplarında (bitirilen sayısı, okunan sayfa,
+ * bitirme süreleri, aylık/yıllık dağılım, zaman dilimleri) kullanılır.
+ * Kitaba ait nitelikler (yazar, tür, puan, not, alıntı, inceleme) ise `books`
+ * üzerinden, her kitap tek sefer sayılarak hesaplanır. Hiç tekrar okuma yoksa
+ * `readings` ile `books` birebir aynı nesnelerdir.
+ */
+export function computeStatsFrom(books: BookEntry[], referenceYear: number, now: Date): MaqruatStats {
+  const readings = expandReadings(books);
 
   const statusCounts: Record<BookEntry["data"]["status"], number> = {
     reading: 0,
@@ -112,13 +137,14 @@ export async function computeStats(referenceYear = new Date().getFullYear()): Pr
   };
   books.forEach((b) => statusCounts[b.data.status]++);
 
-  const completed = books.filter((b) => b.data.status === "completed");
+  const completed = readings.filter((b) => b.data.status === "completed");
   const pageCounts = completed
     .map((b) => b.data.pageCount)
     .filter((p): p is number => typeof p === "number");
-  // "Okunan sayfa" — tamamlanan kitapların tamamı + yarım bırakılanlardan
-  // gerçekten okunduğu belirtilen kısım (bkz. actualPagesRead).
-  const totalPagesRead = books.reduce((sum, b) => sum + actualPagesRead(b), 0);
+  // "Okunan sayfa" — tamamlanan okumaların tamamı + yarım bırakılanlardan
+  // gerçekten okunduğu belirtilen kısım (bkz. actualPagesRead). Tekrar
+  // okumalar da gerçekten okunduğu için dahildir.
+  const totalPagesRead = readings.reduce((sum, b) => sum + actualPagesRead(b), 0);
   const averagePagesPerBook = pageCounts.length
     ? Math.round(pageCounts.reduce((sum, p) => sum + p, 0) / pageCounts.length)
     : null;
@@ -190,7 +216,7 @@ export async function computeStats(referenceYear = new Date().getFullYear()): Pr
   //    kitaplardan, bitiş tarihi o dönemin içine düşenlerden gelir (bkz.
   //    actualPagesRead). "Okunuyor" durumundaki kitaplar, henüz bir bitiş
   //    tarihi olmadığından hiçbir zaman dilimine dahil edilmez.
-  const trackingDates = books
+  const trackingDates = readings
     .flatMap((b) => [b.data.startDate, b.data.endDate])
     .filter((d): d is Date => d instanceof Date);
   const trackingStart = trackingDates.length
@@ -198,7 +224,7 @@ export async function computeStats(referenceYear = new Date().getFullYear()): Pr
     : now;
 
   function windowStat(label: string, periodStart: Date, periodEndNominal: Date): TimeWindowStat {
-    const relevant = books.filter(
+    const relevant = readings.filter(
       (b) =>
         (b.data.status === "completed" || b.data.status === "dropped") &&
         b.data.endDate &&
@@ -206,7 +232,9 @@ export async function computeStats(referenceYear = new Date().getFullYear()): Pr
         b.data.endDate <= periodEndNominal,
     );
     const pagesReadInWindow = relevant.reduce((sum, b) => sum + actualPagesRead(b), 0);
-    const booksFinished = relevant.filter((b) => b.data.status === "completed").length;
+    const finishedInWindow = relevant.filter((b) => b.data.status === "completed");
+    const booksFinished = finishedInWindow.length;
+    const rereadsFinished = finishedInWindow.filter(isRereadEntry).length;
 
     const periodEndEffective = now < periodEndNominal ? now : periodEndNominal;
     const nominalDays = daysBetween(periodStart, periodEndNominal) + 1;
@@ -217,6 +245,7 @@ export async function computeStats(referenceYear = new Date().getFullYear()): Pr
     return {
       label,
       booksFinished,
+      rereadsFinished,
       pagesRead: pagesReadInWindow,
       averagePagesPerDay: pagesReadInWindow > 0 ? Math.round((pagesReadInWindow / denominatorDays) * 10) / 10 : 0,
     };
@@ -307,6 +336,7 @@ export async function computeStats(referenceYear = new Date().getFullYear()): Pr
     firstCompletedBook,
     mostRecentCompletedBook,
     trackingStartYear: trackingStart.getFullYear(),
+    rereadCount: completed.filter(isRereadEntry).length,
   };
 }
 
@@ -349,14 +379,19 @@ export interface YearStats {
   mostReadAuthor: AuthorHighlight | null;
   firstCompletedBook: BookEntry | null;
   mostRecentCompletedBook: BookEntry | null;
+  /** completedCount içinde kaç tanesinin tekrar okuma olduğu. */
+  rereadCount: number;
 }
 
 /** İstatistik sayfasında yıl seçici oluşturmak için: en az bir kitabın
  * bitiş tarihine sahip olduğu yılların listesi, en yeniden en eskiye. */
 export async function getAvailableStatsYears(): Promise<number[]> {
-  const books = await getPublishedBooks();
+  return getAvailableStatsYearsFrom(await getPublishedBooks());
+}
+
+export function getAvailableStatsYearsFrom(books: BookEntry[]): number[] {
   const years = new Set<number>();
-  books.forEach((b) => {
+  expandReadings(books).forEach((b) => {
     if ((b.data.status === "completed" || b.data.status === "dropped") && b.data.endDate) {
       years.add(b.data.endDate.getFullYear());
     }
@@ -367,15 +402,21 @@ export async function getAvailableStatsYears(): Promise<number[]> {
 /** Belirli bir yıla ait istatistik anlık görüntüsü. O yıla ait hiçbir
  * kayıt yoksa null döner (getStaticPaths bu durumda sayfa üretmez). */
 export async function computeYearStats(year: number): Promise<YearStats | null> {
-  const books = await getPublishedBooks();
-  const now = new Date();
+  return computeYearStatsFrom(await getPublishedBooks(), year, new Date());
+}
 
-  const relevant = books.filter(
+/** computeYearStats'in saf hâli (bkz. computeStatsFrom açıklaması). `relevant`
+ * o yıl SONUÇLANAN okumalardır (tekrar okumalar dahil); kitaba ait nitelikler
+ * ise o yıl en az bir okuması sonuçlanan kitaplar üzerinden, her kitap tek
+ * sefer sayılarak hesaplanır (`relevantBooks`). */
+export function computeYearStatsFrom(books: BookEntry[], year: number, now: Date): YearStats | null {
+  const relevant = expandReadings(books).filter(
     (b) =>
       (b.data.status === "completed" || b.data.status === "dropped") &&
       b.data.endDate?.getFullYear() === year,
   );
   if (relevant.length === 0) return null;
+  const relevantBooks = distinctBooksOf(relevant, books);
 
   const completed = relevant.filter((b) => b.data.status === "completed");
   const droppedCount = relevant.length - completed.length;
@@ -395,26 +436,26 @@ export async function computeYearStats(year: number): Promise<YearStats | null> 
     ? Math.round(durations.reduce((sum, d) => sum + d.days, 0) / durations.length)
     : null;
 
-  const totalQuotes = relevant.reduce((sum, b) => sum + b.data.quotes.length, 0);
-  const totalNotes = relevant.reduce((sum, b) => sum + b.data.notes.length, 0);
-  const totalReviews = relevant.filter((b) => (b.body ?? "").trim().length > 0).length;
+  const totalQuotes = relevantBooks.reduce((sum, b) => sum + b.data.quotes.length, 0);
+  const totalNotes = relevantBooks.reduce((sum, b) => sum + b.data.notes.length, 0);
+  const totalReviews = relevantBooks.filter((b) => (b.body ?? "").trim().length > 0).length;
 
-  const ratedBooks = relevant.map((b) => b.data.rating).filter((r): r is number => typeof r === "number");
+  const ratedBooks = relevantBooks.map((b) => b.data.rating).filter((r): r is number => typeof r === "number");
   const averageRating = ratedBooks.length
     ? Math.round((ratedBooks.reduce((sum, r) => sum + r, 0) / ratedBooks.length) * 10) / 10
     : null;
 
-  const distinctAuthorCount = new Set(relevant.map((b) => b.data.author)).size;
+  const distinctAuthorCount = new Set(relevantBooks.map((b) => b.data.author)).size;
 
   const genreMap = new Map<string, number>();
-  relevant.forEach((b) => b.data.genres.forEach((g) => genreMap.set(g, (genreMap.get(g) ?? 0) + 1)));
+  relevantBooks.forEach((b) => b.data.genres.forEach((g) => genreMap.set(g, (genreMap.get(g) ?? 0) + 1)));
   const genreDistribution = [...genreMap.entries()]
     .map(([genre, count]) => ({ genre, count }))
     .sort((a, b) => b.count - a.count);
 
   const ratingHistogram = Array.from({ length: 10 }, (_, i) => {
     const rating = i + 1;
-    return { rating, count: relevant.filter((b) => Math.round(b.data.rating ?? -1) === rating).length };
+    return { rating, count: relevantBooks.filter((b) => Math.round(b.data.rating ?? -1) === rating).length };
   });
 
   const monthFormatter = new Intl.DateTimeFormat("tr-TR", { month: "short" });
@@ -424,9 +465,9 @@ export async function computeYearStats(year: number): Promise<YearStats | null> 
     return { label, count };
   });
 
-  const topRated = rankBooks(relevant, (b) => b.data.rating ?? 0, 5);
-  const mostQuoted = rankBooks(relevant, (b) => b.data.quotes.length, 5);
-  const mostNoted = rankBooks(relevant, (b) => b.data.notes.length, 5);
+  const topRated = rankBooks(relevantBooks, (b) => b.data.rating ?? 0, 5);
+  const mostQuoted = rankBooks(relevantBooks, (b) => b.data.quotes.length, 5);
+  const mostNoted = rankBooks(relevantBooks, (b) => b.data.notes.length, 5);
 
   const withPages = completed.filter((b) => typeof b.data.pageCount === "number");
   const longestBook = withPages.length
@@ -440,7 +481,7 @@ export async function computeYearStats(year: number): Promise<YearStats | null> 
   const slowestRead = durations.length ? durations.reduce((a, b) => (b.days > a.days ? b : a)) : null;
 
   const authorCounts = new Map<string, number>();
-  relevant.forEach((b) => authorCounts.set(b.data.author, (authorCounts.get(b.data.author) ?? 0) + 1));
+  relevantBooks.forEach((b) => authorCounts.set(b.data.author, (authorCounts.get(b.data.author) ?? 0) + 1));
   let mostReadAuthor: AuthorHighlight | null = null;
   for (const [name, count] of authorCounts) {
     if (!mostReadAuthor || count > mostReadAuthor.count) {
@@ -495,5 +536,6 @@ export async function computeYearStats(year: number): Promise<YearStats | null> 
     mostReadAuthor,
     firstCompletedBook,
     mostRecentCompletedBook,
+    rereadCount: completed.filter(isRereadEntry).length,
   };
 }

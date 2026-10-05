@@ -14,7 +14,15 @@ const percent = yearlyGoal > 0 ? Math.min(100, Math.round((finished / yearlyGoal
     <h2 class="font-serif text-lg text-ink">{goalYear} okuma hedefi</h2>
     <span class="shrink-0 text-sm text-ink-soft">{finished}/{yearlyGoal} kitap</span>
   </div>
-  <div class="mt-3 h-2 overflow-hidden rounded-full bg-rule" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}>
+  <div
+    class="mt-3 h-2 overflow-hidden rounded-full bg-rule"
+    role="progressbar"
+    aria-label={`${goalYear} okuma hedefi ilerlemesi`}
+    aria-valuenow={percent}
+    aria-valuemin={0}
+    aria-valuemax={100}
+    aria-valuetext={`${yearlyGoal} kitaplık hedefin ${finished} kitabı tamamlandı (%${percent})`}
+  >
     <div class="h-full rounded-full bg-leather transition-[width] duration-500" style={`width:${percent}%`}></div>
   </div>
   <p class="mt-2 text-sm text-ink-soft">%{percent} tamamlandı</p>

@@ -83,7 +83,7 @@ export function createPager(options: PagerOptions): Pager {
       if (entry === "ellipsis") {
         const span = document.createElement("span");
         span.textContent = "…";
-        span.className = "grid size-8 place-items-center text-ink-soft/70";
+        span.className = "grid size-8 place-items-center text-ink-muted";
         nav.appendChild(span);
       } else {
         addButton(String(entry), entry, { current: entry === currentPage });

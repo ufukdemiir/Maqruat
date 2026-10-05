@@ -157,6 +157,7 @@ const pageDescription = `${stats.year} yılında bitirilen ${stats.completedCoun
       <div class="rounded-xl border border-rule bg-surface p-4">
         <p class="text-sm text-ink-soft">Bitirilen</p>
         <p class="mt-1 font-serif text-xl text-ink">{stats.completedCount} kitap</p>
+        {stats.rereadCount > 0 && <p class="text-xs text-ink-soft">{stats.rereadCount} tekrar okuma dahil</p>}
       </div>
       <div class="rounded-xl border border-rule bg-surface p-4">
         <p class="text-sm text-ink-soft">Yarım bırakılan</p>
@@ -202,7 +203,7 @@ const pageDescription = `${stats.year} yılında bitirilen ${stats.completedCoun
                   <li class="flex items-center gap-2 text-sm">
                     <span class="size-2.5 shrink-0 rounded-full" style={`background-color:${g.color}`} aria-hidden="true" />
                     <span class="text-ink-soft">{g.genre}</span>
-                    <span class="text-ink-soft/70">{g.count}</span>
+                    <span class="text-ink-muted">{g.count}</span>
                   </li>
                 ))}
               </ul>
