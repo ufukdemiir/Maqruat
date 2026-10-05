@@ -1,0 +1,3 @@
+# GitHub'ın dil istatistiğinde ve fark (diff) görünümünde, yönetim panelinin
+# hazır (vendored) kodu depoyu "JavaScript projesi" gibi göstermesin.
+public/admin/vendor/** linguist-vendored linguist-generated -diff
