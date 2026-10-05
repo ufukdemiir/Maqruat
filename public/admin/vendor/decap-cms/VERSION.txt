@@ -1,0 +1,6 @@
+decap-cms 3.16.3
+Lisans: MIT (bkz. decap-cms.js.LICENSE.txt)
+npm tarball bütünlüğü (sha512): sha512-hf+dPlCh7TJmWl8+6VRzHYOWhri5xgUknrZbDewaWe4s9B7xJ8PQugp2QHeSldMUKzav6+z0oIpwUYhUJDYtYw==
+Doğrulamak için: npm view decap-cms@3.16.3 dist.integrity
+Kurulum tarihi: 2026-10-03
+Kuran betik: scripts/update-decap-cms.mjs
