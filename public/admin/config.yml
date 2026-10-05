@@ -18,7 +18,7 @@ public_folder: "/uploads"
 
 site_url: https://ufukdemiir.github.io/Maqruat
 display_url: https://ufukdemiir.github.io/Maqruat
-logo_url: /favicon.svg
+logo_url: https://ufukdemiir.github.io/Maqruat/favicon.svg
 
 collections:
   - name: "books"
@@ -80,7 +80,7 @@ collections:
           date_format: "YYYY-MM-DD",
           time_format: false,
           required: false,
-          hint: "Kitaba başladığınız tarih. Bitiş Tarihi ile birlikte 'ortalama bitirme süresi' ve 'en hızlı/en yavaş okunan kitap' istatistiklerinde kullanılır.",
+          hint: "Kitaba başladığınız tarih. Bitiş Tarihi ile birlikte 'ortalama bitirme süresi' ve 'en hızlı/en yavaş okunan kitap' istatistiklerinde kullanılır. Kitabı birden fazla kez okuyorsanız bu alanlar İLK okumayı anlatır; sonraki okumalar için aşağıdaki 'Tekrar Okumalar' alanını kullanın.",
         }
       - {
           label: "Bitiş Tarihi",
@@ -90,12 +90,12 @@ collections:
           date_format: "YYYY-MM-DD",
           time_format: false,
           required: false,
-          hint: "Kitabı bitirdiğiniz ya da yarım bıraktığınız tarih. İstatistikler sayfasındaki aylık/yıllık grafiklerde ve '[yıl] İstatistikleri' sayfalarında kitabın hangi yıla sayılacağını bu tarih belirler.",
+          hint: "Kitabı bitirdiğiniz ya da yarım bıraktığınız tarih. İstatistikler sayfasındaki aylık/yıllık grafiklerde ve '[yıl] İstatistikleri' sayfalarında kitabın hangi yıla sayılacağını bu tarih belirler. Kitabı birden fazla kez okuyorsanız bu alanlar İLK okumayı anlatır; sonraki okumalar için aşağıdaki 'Tekrar Okumalar' alanını kullanın.",
         }
       - label: "Durum"
         name: "status"
         widget: "select"
-        hint: "Kitabın şu anki durumu. 'Okunuyor' → ana sayfada 'şu an okunuyor' bölümünde görünür. 'Okundu' → tamamlanmış sayılır, istatistiklere (puan, sayfa, süre ortalamaları) dahil olur. 'Okunacak' → henüz başlanmamış kitap olarak listelenir. 'Yarım Bırakıldı' → ayrı sayılır, tamamlanmış ortalamalarına dahil edilmez."
+        hint: "Kitabın şu anki durumu. 'Okunuyor' → ana sayfada 'şu an okunuyor' bölümünde görünür. 'Okundu' → tamamlanmış sayılır, istatistiklere (puan, sayfa, süre ortalamaları) dahil olur. 'Okunacak' → henüz başlanmamış kitap olarak listelenir. 'Yarım Bırakıldı' → ayrı sayılır, tamamlanmış ortalamalarına dahil edilmez. Kitabı tekrar okuyorsanız bu alan ilk okumanın sonucunu gösterir (ilk okumayı bitirdiyseniz 'Okundu' kalır); tekrar okumalar için 'Tekrar Okumalar' alanını kullanın."
         options:
           - { label: "Okunuyor", value: "reading" }
           - { label: "Okundu", value: "completed" }
@@ -120,6 +120,54 @@ collections:
           required: false,
           hint: "Yalnızca 'Okunuyor' veya 'Yarım Bırakıldı' durumundaki kitaplar için doldurun. İstatistiklerdeki 'günde okunan ortalama sayfa' hesaplamasının doğru olması için önemlidir.",
         }
+      # DİKKAT: Bu listenin alt alanlarına `default:` EKLEMEYİN. Decap, alt
+      # alanlarda varsayılan değer görürse her yeni kitaba otomatik olarak boş
+      # bir "tekrar okuma" kaydı ekler ve istatistikleri bozar.
+      - label: "Tekrar Okumalar"
+        label_singular: "Tekrar Okuma"
+        name: "rereads"
+        widget: "list"
+        required: false
+        summary: "{{fields.startDate}} → {{fields.endDate}}"
+        hint: "Yalnızca kitabı İLK okumanızdan sonra yeniden okuduysanız doldurun; her okuma için bir kayıt ekleyin (2. okuma, 3. okuma ...). İlk okumanın bilgileri yukarıdaki alanlarda kalır. Kitabın durumu 'Okundu' ya da 'Yarım Bırakıldı' olmalıdır. Bitirilen tekrar okumalar İstatistikler'de, yıllık hedefte ve aylık özette yeni bir okuma olarak sayılır (okunan sayfa, bitirme süresi, aylık/yıllık grafikler); yazar, tür, puan, not ve alıntı sayıları ise kitap tek sefer sayılarak hesaplanır. Kitap sayfasında 'N kez okundu' etiketi ve 'Okuma geçmişi' otomatik görünür. Süren bir tekrar okuma 'Okunuyor' olarak girilirse ana sayfadaki 'şu an okunuyor' bölümünde de yer alır."
+        fields:
+          - {
+              label: "Başlangıç Tarihi",
+              name: "startDate",
+              widget: "datetime",
+              format: "YYYY-MM-DD",
+              date_format: "YYYY-MM-DD",
+              time_format: false,
+              required: false,
+              hint: "Bu okumaya başladığınız tarih.",
+            }
+          - {
+              label: "Bitiş Tarihi",
+              name: "endDate",
+              widget: "datetime",
+              format: "YYYY-MM-DD",
+              date_format: "YYYY-MM-DD",
+              time_format: false,
+              required: false,
+              hint: "Bu okumayı bitirdiğiniz ya da yarım bıraktığınız tarih. İstatistiklerde okumanın hangi ay ve yıla sayılacağını bu tarih belirler; 'Okunuyor' durumunda boş bırakın.",
+            }
+          - label: "Durum"
+            name: "status"
+            widget: "select"
+            hint: "Bu okumanın durumu (zorunlu). 'Okundu' → bitirilmiş bir okuma olarak sayılır. 'Okunuyor' → henüz bitmedi; istatistiklere girmez, ana sayfada 'şu an okunuyor' bölümünde görünür. 'Yarım Bırakıldı' → ayrı sayılır."
+            options:
+              - { label: "Okundu", value: "completed" }
+              - { label: "Okunuyor", value: "reading" }
+              - { label: "Yarım Bırakıldı", value: "dropped" }
+          - {
+              label: "Şu Ana Kadar Okunan Sayfa",
+              name: "pagesRead",
+              widget: "number",
+              value_type: "int",
+              min: 0,
+              required: false,
+              hint: "Yalnızca 'Yarım Bırakıldı' durumundaki tekrar okumalar için doldurun; 'Okundu' durumunda boş bırakın (kitabın tam sayfa sayısı kullanılır).",
+            }
       - {
           label: "Türler",
           name: "genres",
@@ -348,7 +396,7 @@ collections:
           - label: "Maqruat Hesapları (@Maqruat)"
             name: "maqruatSocial"
             widget: "object"
-            hint: "Maqruat'ın KENDİ sosyal medya hesapları. Sitenin tüm sayfalarının altında, \"Maqruat'ı takip edin\" bölümünde, aşağıdaki sırayla çip olarak görünür (sıra sabittir). Bir alanı boş bırakırsanız o platform görünmez; tüm alanlar boşsa bölümün kendisi de görünmez. Adresi eksiksiz, https:// ile yapıştırın."
+            hint: "Maqruat'ın KENDİ sosyal medya hesapları. Sitenin tüm sayfalarının altında, \"Maqruat'ı takip edin\" bölümünde, aşağıdaki sırayla çip olarak görünür (sıra sabittir). Bir alanı boş bırakırsanız o platform görünmez. Çiplerin sonunda, sitenin kendi RSS akışı her zaman yer alır (bunun için bir alan gerekmez). Adresi eksiksiz, https:// ile yapıştırın."
             fields:
               - label: "Instagram"
                 name: "instagram"

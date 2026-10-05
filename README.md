@@ -41,6 +41,7 @@ platformudur. Amaç karmaşık bir
 **Kütüphane**
 - Dört okuma durumu: okunuyor, okundu, okunacak, yarım bırakıldı
 - 1–10 arası puan, tür, yayınevi, sayfa sayısı, başlangıç ve bitiş tarihi
+- **Tekrar okuma:** Aynı kitabı yeniden okuduğunuzda her okuma ayrı kaydedilir; kitap sayfasında yalnızca birden fazla kez okunmuş kitaplarda "N kez okundu" etiketi ve açılır "Okuma geçmişi" görünür
 - Çok ciltli eserler için otomatik seri bağlantısı
 - Duruma, türe ve baş harfe göre filtreleme, sayfalama
 - Kitap kayıtlarından otomatik oluşan yazar sayfaları
@@ -53,6 +54,7 @@ platformudur. Amaç karmaşık bir
 - Genel ve yıllık (`/istatistikler/<yıl>`) istatistik sayfaları: okunan sayfa, ortalama puan, ortalama bitirme süresi, tür dağılımı, puan histogramı, aylık ve yıllık kitap sayısı
 - En yüksek puanlı, en çok alıntılanan ve en çok not alınan kitap listeleri; en uzun/en kısa ve en hızlı/en yavaş okunan kitaplar
 - Yıllık okuma hedefi ilerleme çubuğu ve aylık özet
+- Bitirilen **tekrar okumalar** istatistiklere ayrı okuma olarak dahil edilir ve ilgili yerde "N tekrar okuma dahil" notuyla belirtilir (kurallar için bkz. [Tekrar okuma](#tekrar-okuma))
 - [Chart.js](https://www.chartjs.org) ile grafikler
 
 **Keşif ve kullanım**
@@ -60,16 +62,19 @@ platformudur. Amaç karmaşık bir
 - Rastgele kitap, alıntı, inceleme, not ve blog yazısı
 - Paylaşım düğmeleri: X, Facebook, LinkedIn, Pinterest, Tumblr, Telegram, WhatsApp
 - Açık/koyu tema (sistem tercihine uyar, seçim hatırlanır)
+- **RSS akışı** (`/rss.xml`): blog yazıları ve bitirilen okumalar; tarayıcılar ve okuyucu uygulamaları akışı her sayfadan otomatik bulur
+- Erişilebilirlik: "İçeriğe geç" bağlantısı, WCAG AA renk kontrastı, adlandırılmış ilerleme çubuğu ve sayfa aşağı kaydırıldığında beliren "Sayfanın başına dön" düğmesi (klavye ve ekran okuyucu uyumlu, hareket azaltma tercihine saygılı)
 
 **Bağlantılar ve marka**
-- Alt bilgide (footer) bağlantılar üç ayrı grupta toplanır ve birbirine karışmaz: ortalı çipler hâlindeki **Maqruat'ı takip edin** (platformun @Maqruat hesapları), okur adının altındaki **kişisel bağlantılar** ve onun altında kendi başlığıyla **İletişim** (e-posta).
+- Alt bilgide (footer) bağlantılar üç ayrı grupta toplanır ve birbirine karışmaz: ortalı çipler hâlindeki **Maqruat'ı takip edin** (platformun @Maqruat hesapları), okur adının altındaki **kişisel bağlantılar** ve onun altında kendi başlığıyla **İletişim** (e-posta). Çiplerin sonunda her zaman **RSS** yer alır.
 - Tüm bağlantılar yönetim panelinden eklenir, değiştirilir ya da kaldırılır; boş bırakılan bağlantı sitede hiç görünmez. Mobilde çipler alt alta sarılır, yatay kaydırma gerektirmez.
 
 **Arşivi indir**
-- Sitedeki tüm içerik JSON, CSV ve PDF olarak indirilebilir. Dosyalar derleme anında üretilir; CSV, Excel'de Türkçe karakterlerin bozulmaması için UTF-8 BOM ile yazılır, PDF gömülü fontlarla hazırlanır.
+- Sitedeki tüm içerik (tekrar okuma geçmişi dahil) JSON, CSV ve PDF olarak indirilebilir. Dosyalar derleme anında üretilir; CSV, Excel'de Türkçe karakterlerin bozulmaması için UTF-8 BOM ile yazılır, PDF gömülü fontlarla hazırlanır.
 
 **SEO**
-- Site haritası (`/sitemap-index.xml`), canonical bağlantılar, Open Graph ve Twitter kartları
+- Site haritası (`/sitemap-index.xml`) her sayfa için içeriğin **gerçek son değişiklik tarihini** (`lastmod`) içerir; tarihler içerik dosyalarının Git commit tarihlerinden gelir (bkz. [Site haritası ve `lastmod`](#site-haritası-ve-lastmod))
+- Canonical bağlantılar, Open Graph ve Twitter kartları, RSS otomatik keşif bağlantısı
 - JSON-LD yapılandırılmış veri: `WebSite`, `Organization` (resmî hesaplar `sameAs` ile, iletişim e-postası `contactPoint` ile) ve `Person`, `Book`, `Review`, `BreadcrumbList`
 - Site sahipliği doğrulama etiketleri (Pinterest, Google Search Console, Bing, Yandex, Facebook) panelden girilir; kod düzenlemek gerekmez
 - 1200×630 paylaşım görseli ve Google'ın istediği PNG favicon seti
@@ -81,7 +86,8 @@ platformudur. Amaç karmaşık bir
 | Framework | [Astro](https://astro.build) 7 (statik site üretimi) |
 | Stil | [Tailwind CSS](https://tailwindcss.com) v4 + Typography eklentisi |
 | İçerik | Markdown + Astro Content Collections (Zod ile tip güvenli şema) |
-| CMS | [Decap CMS](https://decapcms.org) 3 (GitHub backend, Cloudflare Worker üzerinden OAuth) |
+| CMS | [Decap CMS](https://decapcms.org) 3 (GitHub backend, Cloudflare Worker üzerinden OAuth); panelin kodu sitenin kendi dosyalarından sunulur |
+| Yazı tipleri | Maqruat Serif (Source Serif 4 türevi) ve Plus Jakarta Sans, SIL OFL 1.1; kendi sitemizden sunulur (Google Fonts yok) |
 | Arama | Fuse.js (istemci taraflı) |
 | Grafik / PDF | Chart.js / pdfmake |
 | Dil | TypeScript |
@@ -119,6 +125,8 @@ yolda (`/Maqruat`) yayınlandığı için yerelde de bu önekle çalışır.
 │   └── dependabot.yml
 ├── public/
 │   ├── admin/                        # Decap CMS (config.yml, index.html)
+│   │   └── vendor/decap-cms/         # Panelin kodu (resmî npm paketinden, bkz. scripts/)
+│   ├── fonts/                        # Yazı tipleri (woff2) ve lisans metinleri
 │   ├── uploads/                      # CMS medya kütüphanesi
 │   └── favicon.svg, favicon-*.png, apple-touch-icon.png, logo.png, og-image.png
 ├── src/
@@ -128,11 +136,13 @@ yolda (`/Maqruat`) yayınlandığı için yerelde de bu önekle çalışır.
 │   │   └── blog/                     # Her dosya bir blog yazısı
 │   ├── data/site.json                # Genel ayarlar (düz JSON)
 │   ├── layouts/BaseLayout.astro
-│   ├── lib/                          # Sorgular, istatistik, SEO, sosyal bağlantılar, CSV/JSON/PDF dışa aktarma
+│   ├── lib/                          # Sorgular, istatistik, SEO, sosyal bağlantılar, RSS, lastmod, CSV/JSON/PDF dışa aktarma
 │   ├── pages/                        # Tüm rotalar
 │   ├── styles/global.css             # Tasarım belirteçleri (renk, yazı tipi)
 │   └── content.config.ts             # İçerik şemaları
+├── scripts/update-decap-cms.mjs      # Yönetim paneli kodunu güvenle güncelleyen betik
 ├── astro.config.mjs                  # Site adresi ve alt yol (site, base)
+├── .gitattributes                    # Hazır (vendored) panel kodunu dil istatistiğinden hariç tutar
 ├── LICENSE
 └── NOTICE.md
 ```
@@ -144,7 +154,7 @@ yolda (`/Maqruat`) yayınlandığı için yerelde de bu önekle çalışır.
 **Sayfalar:** `/`, `/kitaplar`, `/kitaplar/<slug>`, `/yazarlar`, `/yazarlar/<yazar>`,
 `/alintilar`, `/incelemeler`, `/notlar`, `/blog`, `/blog/<slug>`, `/istatistikler`,
 `/istatistikler/<yıl>`, `/arsiv`, dışa aktarma dosyaları
-`/arsiv/maqruat-arsiv.json`, `.csv`, `.pdf` ve site haritası `/sitemap-index.xml`.
+`/arsiv/maqruat-arsiv.json`, `.csv`, `.pdf`, RSS akışı `/rss.xml` ve site haritası `/sitemap-index.xml`.
 
 ## İçerik yönetimi
 
@@ -180,6 +190,40 @@ quotes:
 - `draft: true` olan kayıtlar sitede yayınlanmaz.
 - Blog yazıları için alanlar: `title`, `publishDate`, `excerpt`, `tags`, `draft`.
 
+### Tekrar okuma
+
+Bir kitabı yeniden okuduğunuzda yeni bir kitap kaydı açmayın. Kitabın dosyasına (ya da panelde **Tekrar Okumalar** alanına) her okuma için bir kayıt ekleyin. Kitabın en üstündeki `startDate`, `endDate`, `status` ve `pagesRead` alanları her zaman **ilk okumayı** anlatır; `rereads` altındaki kayıtlar 2., 3., … okumalardır:
+
+```md
+status: "completed"          # ilk okuma bitti
+startDate: 2026-07-01
+endDate: 2026-07-30
+rereads:
+  - startDate: 2027-03-01    # 2. okuma
+    endDate: 2027-03-12
+    status: completed        # completed | dropped | reading
+  - startDate: 2027-09-01    # 3. okuma, yarım bırakıldı
+    endDate: 2027-09-04
+    status: dropped
+    pagesRead: 200           # yalnızca yarım bırakılanlarda
+```
+
+- Tekrar okuma girilen kitabın kendi `status` değeri `completed` ya da `dropped` olmalıdır; aksi hâlde derleme, hangi dosyada neyin düzeltileceğini söyleyen bir hatayla durur (yayındaki site etkilenmez).
+- Kayıtlar eklenme sırasından bağımsız olarak **tarih sırasına** dizilir; "2. okuma", "3. okuma" numaraları bu sıradan gelir.
+- `status: reading` ile girilen süren bir tekrar okuma ana sayfadaki "Şu an okunuyor" bölümünde görünür; bitince `completed` yapıp `endDate` ekleyin.
+
+**İstatistiklere nasıl yansır?** Hesaplar iki ayrı şeyi sayar:
+
+| Okuma olayı sayılanlar (her okuma ayrı) | Kitaba ait sayılanlar (kitap tek sefer) |
+|---|---|
+| Bitirilen kitap sayısı, yıllık hedef, aylık özet | Yazar sayısı ve en çok okunan yazar |
+| Okunan sayfa, günlük ortalama sayfa | Tür dağılımı |
+| Bitirme süresi (ortalama, en hızlı, en yavaş) | Puan ortalaması ve puan dağılımı |
+| Aylık ve yıllık kitap grafikleri, zaman dilimi kartları | Not, alıntı ve inceleme sayıları; en yüksek puanlı / en çok alıntılanan / en çok not alınan listeleri |
+| "En uzun/en kısa" ve "ilk/son bitirilen" seçimleri | Toplam kitap ve durum dağılımı |
+
+Hiç tekrar okuma yoksa tüm sayılar tekrar okuma özelliğinden önceki hâliyle birebir aynıdır. Bir tekrar okuma, **bittiği yılın** istatistik sayfasında sayılır ve o yıl için sayfa oluşturur.
+
 ## Yapılandırma
 
 | Dosya | İçerik |
@@ -205,7 +249,7 @@ Hepsi yönetim panelinde **Site Ayarları → Genel Ayarlar** altındadır:
 | **Maqruat Hesapları (@Maqruat)** | Footer'da ortalı "Maqruat'ı takip edin" başlığı altında çipler; **İletişim e-postası** ise "Ufuk Demir" sütununun altında, "İletişim" başlığıyla `E-posta` bağlantısı (`mailto:`) olarak |
 | **Site Sahipliği Doğrulama** | Görünmez; her sayfanın `<head>` bölümüne `<meta>` etiketi olarak yazılır |
 
-- Bir alanı **boş bırakmak** o bağlantıyı siteden kaldırır; bir bölümün tüm alanları boşsa bölümün başlığı da kaybolur.
+- Bir alanı **boş bırakmak** o bağlantıyı siteden kaldırır; kişisel bağlantıların ve e-postanın tamamı boşsa ilgili bölümler de kaybolur. "Maqruat'ı takip edin" bölümünde ise sitenin kendi **RSS** çipi her zaman bulunur.
 - Bağlantılar `https://` ile başlamalıdır; panel başka biçimleri reddeder. Kod tarafında da yalnızca `http(s)` bağlantıları kabul edilir.
 - **Görünme sırası** sabittir ve `src/lib/social.ts` içindeki `MAQRUAT_PLATFORMS` listesinden gelir: Instagram, X, YouTube, Pinterest, Facebook, TikTok, Bluesky, Tumblr, SoundCloud, Slack, GitHub. Sıra, kitap ve alıntı paylaşımına uygun görsel ağlar önde, topluluk ve geliştirici odaklı olanlar sonda olacak şekilde belirlenmiştir.
 - Herkese açık profili olan Maqruat hesapları ve kişisel hesaplar, arama motorlarına resmî hesap olarak bildirilir (`sameAs`). Slack çalışma alanı ve kod deposu bunun dışındadır.
@@ -213,8 +257,45 @@ Hepsi yönetim panelinde **Site Ayarları → Genel Ayarlar** altındadır:
 **Yeni bir platform eklemek** için üç yeri güncelleyin: `src/lib/social.ts` (`MAQRUAT_PLATFORMS` ve `MaqruatPlatformKey`), `src/content.config.ts` (`maqruatSocial` şeması) ve `public/admin/config.yml` (aynı anahtarla bir alan).
 
 Renkler ve yazı tipleri `src/styles/global.css` içindeki tasarım belirteçlerinden
-gelir (kağıt, mürekkep ve deri ciltli kitap paleti; Source Serif 4 ve Plus
-Jakarta Sans).
+gelir (kağıt, mürekkep ve deri ciltli kitap paleti; Maqruat Serif ve Plus
+Jakarta Sans). İkincil metinler için `ink-muted` belirteci kullanılır: her iki
+temada ve tüm kart zeminlerinde WCAG AA (4,5:1) kontrastını karşılar; yeni bir
+soluk metin gerektiğinde `text-ink-soft/60` gibi opaklıklı sınıflar yerine bunu kullanın.
+
+### Yazı tipleri
+
+Yazı tipleri **kendi sitemizden** (`public/fonts/`) sunulur; Google Fonts'a bağlantı yoktur.
+Bu, ziyaretçi IP adreslerinin üçüncü bir tarafa gitmemesi, bir bağlantı daha az kurulması
+ve yazı tiplerinin dış bir servise bağımlı olmaması demektir. Kullanılan dosyalar:
+
+- **Maqruat Serif** (`maqruat-serif-*.woff2`): Source Serif 4'ün Latin + Latin Genişletilmiş (Türkçe dahil)
+  alt kümesi; ağırlık (200–900) ve optik boyut (8–60) eksenleri korunmuştur. Source Serif 4'ün lisansındaki
+  "Reserved Font Name" kuralı gereği, değiştirilmiş sürüm özgün adla dağıtılamadığından yeniden adlandırılmıştır
+  (harf çizimleri değişmemiştir).
+- **Plus Jakarta Sans** (`plus-jakarta-sans-*.woff2`): özgün, değiştirilmemiş dosyalar.
+
+Tarayıcı, `unicode-range` sayesinde yalnızca sayfada kullanılan karakter kümesinin dosyasını indirir.
+Kiril, Yunanca ve Vietnamca karakter kümeleri bilinçli olarak dahil edilmemiştir; bu karakterler
+yazılırsa sistemin yedek serif yazı tipiyle gösterilir. Lisans metinleri: `public/fonts/licenses/`, ayrıntı: [NOTICE.md](NOTICE.md).
+
+### Yönetim paneli kodu (Decap CMS)
+
+Panel, GitHub'a yazma yetkili bir belirteçle çalıştığı için kodu üçüncü bir sunucudan (CDN)
+çekilmez; resmî npm paketinden alınıp `public/admin/vendor/decap-cms/` altından sunulur.
+Sürüm ve paketin bütünlük değeri `VERSION.txt` dosyasındadır. Sessizce güncellenmez;
+güncellemek için (Node 22+ ve npm gerekir), önce sürüm notlarını okuyun, sonra:
+
+```bash
+node scripts/update-decap-cms.mjs 3.16.3   # istediğiniz sürüm
+npm run build                               # derleyip /admin/ sayfasını deneyin
+```
+
+Betik paketi indirir (npm, kayıt defterinin bütünlük değerini kendisi doğrular), yalnızca panelin
+çalışması için gereken dosyaları kopyalar ve `VERSION.txt`'yi günceller.
+
+> **Dikkat (CMS yapılandırması):** `public/admin/config.yml` içindeki **Tekrar Okumalar** listesinin
+> alt alanlarına `default:` eklemeyin. Decap, alt alanda varsayılan görürse her yeni kitaba otomatik
+> olarak boş bir tekrar okuma ekler ve istatistikleri bozar.
 
 **Kendi kopyanızı yayınlayacaksanız** `SITE_URL` ve `BASE_PATH` değerlerini kendi
 GitHub kullanıcı adınıza ve depo adınıza göre değiştirin:
@@ -230,6 +311,8 @@ projenin adını, logosunu ve görsellerini kullanmayın (bkz. [Lisans](#lisans)
 1. Depo **Settings → Pages** sayfasında **Source** olarak **GitHub Actions**'ı seçin.
 2. `main` branch'e her push'ta `.github/workflows/deploy.yml` siteyi derleyip yayınlar. İş akışı önce derler, yalnızca başarılıysa yayınlar; bozuk bir derleme canlı siteyi asla etkilemez.
 3. İsterseniz **Actions** sekmesinden iş akışını *Run workflow* ile elle de başlatabilirsiniz.
+
+İş akışı depoyu tüm Git geçmişiyle (`fetch-depth: 0`) klonlar; site haritasındaki `lastmod` tarihleri buradan üretilir (bkz. [Site haritası ve `lastmod`](#site-haritası-ve-lastmod)). Bu ayarı kaldırmayın.
 
 CMS panelinden yapılan her kayıt da `main` branch'ine commit atar ve aynı iş akışını tetikler.
 
@@ -324,6 +407,20 @@ sahipliği zaman zaman yeniden kontrol eder.
 
 </details>
 
+### Site haritası ve `lastmod`
+
+`/sitemap-index.xml`, her sayfa için `lastmod` (son değişiklik tarihi) içerir. Arama motorları bu bilgiyle
+değişmeyen sayfaları tekrar tekrar taramaz, değişenleri daha çabuk fark eder. Bilgi yalnızca **doğruysa**
+işe yarar; bu yüzden "şimdi" yazılmaz, içerik dosyalarının gerçek Git commit tarihlerinden üretilir
+(CMS'ten yapılan her kayıt bir commit'tir):
+
+- Bir kitap veya blog sayfası → kendi dosyasının son commit tarihi.
+- Diğer tüm sayfalar (ana sayfa, listeler, yazarlar, istatistikler, arşiv…) bu içeriklerden derlendiği için →
+  herhangi bir içerik veya ayar dosyasının son commit tarihi.
+
+Git geçmişi okunamıyorsa (Git yok, depo değil ya da sığ klon) `lastmod` hiç yazılmaz; yanlış tarih yazmaktan
+iyidir. Bu yüzden dağıtım iş akışı `fetch-depth: 0` ile çalışır. Ayrıntı: `src/lib/lastmod.mjs`.
+
 <details>
 <summary><strong>Bağımlılık güncellemelerinin otomatikleştirilmesi</strong> (Dependabot ve CI)</summary>
 
@@ -354,6 +451,9 @@ bulunur:
 - **Girişte "Something went wrong" hatası:** `ALLOWED_DOMAINS` değerinin alan adıyla (protokol olmadan) birebir eşleştiğinden ve `config.yml` içindeki `base_url`'in worker adresinizle aynı olduğundan emin olun.
 - **Giriş sonrası panel eski depoya bakıyor gibi:** Tarayıcıda `ufukdemiir.github.io` için site verilerini temizleyin ya da gizli pencerede yeniden giriş yapın.
 - **Pinterest/Search Console "etiket bulunamadı" diyor:** Değişikliğin yayında olduğundan emin olun (Actions yeşil) ve sayfa kaynağında (`Ctrl+U`) `<meta name="p:domain_verify"` satırını arayın. Tarayıcı ve servis önbelleği nedeniyle bir-iki dakika bekleyip yeniden deneyin.
+- **Derleme "Tekrar okuma girilen kitabın durumu…" hatasıyla duruyor:** Hata mesajı hangi kitap dosyasından söz ettiğini gösterir. `rereads` girilen kitabın en üstteki `status` değeri `completed` ya da `dropped` olmalıdır (bkz. [Tekrar okuma](#tekrar-okuma)).
+- **Her kitapta "2 kez okundu" görünüyor / istatistikler şişti:** Kitaplarda boş bir `rereads` kaydı (ör. `- status: completed`) kalmış olabilir. Dosyada `rereads:` altındaki tarihsiz, boş kayıtları silin. `config.yml` içinde Tekrar Okumalar alt alanlarına `default:` eklenmediğinden emin olun.
+- **Yönetim paneli açılmıyor:** `public/admin/vendor/decap-cms/` klasörünün depoda eksiksiz olduğunu kontrol edin; eksikse `node scripts/update-decap-cms.mjs 3.16.3` ile yeniden kurun.
 - **Paylaşım görseli güncellenmiyor:** Sosyal ağlar önizlemeleri önbelleğe alır. Adresi LinkedIn Post Inspector veya Facebook Sharing Debugger ile yeniden taratın.
 
 </details>
@@ -409,7 +509,7 @@ Kod serbesttir; içerik ve kimlik sahibine aittir.
 | **İçerik** (kitap kayıtları, incelemeler, notlar, blog yazıları) | Tüm hakları saklıdır; bağlantı vermek ve kaynak göstererek kısa alıntı yapmak serbesttir |
 | **"Maqruat" adı ve görsel kimliği** (logo, simge, paylaşım görseli) | Tüm hakları saklıdır; kendi projenizde kullanılamaz |
 | **Yüklenen görseller** | İlgili hak sahiplerine aittir |
-| **Fontlar ve bağımlılıklar** | Kendi lisanslarına tabidir |
+| **Fontlar, yönetim paneli kodu ve bağımlılıklar** | Kendi lisanslarına tabidir (fontlar: SIL OFL 1.1; Decap CMS: MIT) |
 
 Ayrıntılar ve izin verilen kullanımlar için [NOTICE.md](NOTICE.md) dosyasına bakın.
 

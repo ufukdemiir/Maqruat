@@ -6,11 +6,12 @@ sahibine aittir.** Aşağıdaki tablo özetidir; ayrıntılar altında.
 
 | Materyal | Konum | Durum |
 |---|---|---|
-| Kaynak kod | `src/` (içerik ve veri klasörleri hariç), `public/admin/`, `.github/`, yapılandırma dosyaları | [MIT Lisansı](LICENSE) |
+| Kaynak kod | `src/` (içerik ve veri klasörleri ile `src/lib/pdf/fonts/` hariç), `public/admin/` (`vendor/` hariç), `scripts/`, `.github/`, yapılandırma dosyaları | [MIT Lisansı](LICENSE) |
 | Kişisel içerik | `src/content/`, `src/data/` | Tüm hakları saklıdır (bkz. §2) |
 | Ad ve görsel kimlik | "Maqruat" adı, `public/favicon*`, `public/apple-touch-icon.png`, `public/logo.png`, `public/og-image.png` | Tüm hakları saklıdır (bkz. §3) |
 | Yüklenen görseller | `public/uploads/` | İlgili hak sahiplerine aittir |
-| Fontlar | `src/lib/pdf/fonts/` | SIL Open Font License 1.1 |
+| Fontlar | `public/fonts/` (siteyi çizen), `src/lib/pdf/fonts/` (PDF arşivi) | SIL Open Font License 1.1 (bkz. §5) |
+| Yönetim paneli kodu | `public/admin/vendor/decap-cms/` | Decap CMS: MIT Lisansı (bkz. §5) |
 | Bağımlılıklar | `node_modules/` (depoda bulunmaz) | Her paketin kendi lisansı |
 
 ## 1. Kaynak kod: MIT Lisansı
@@ -74,8 +75,26 @@ sayılmaz.
 
 ## 5. Üçüncü taraf bileşenler
 
-- **Fontlar:** Source Serif 4 ve Plus Jakarta Sans, SIL Open Font License 1.1 ile
-  lisanslıdır. Lisans metinleri `src/lib/pdf/fonts/licenses/` altındadır.
+- **Fontlar:** Source Serif 4 (© Adobe) ve Plus Jakarta Sans (© The Plus Jakarta Sans
+  Project Authors), SIL Open Font License 1.1 ile lisanslıdır. Lisans metinleri
+  `public/fonts/licenses/` ve `src/lib/pdf/fonts/licenses/` altındadır. Fontlar
+  Google Fonts gibi bir üçüncü taraftan çağrılmaz; sitenin kendi dosyalarından sunulur.
+  - **Plus Jakarta Sans** özgün hâliyle, değiştirilmeden kullanılır
+    (`public/fonts/plus-jakarta-sans-*.woff2`).
+  - **Maqruat Serif**, Source Serif 4'ün değiştirilmiş bir sürümüdür
+    (`public/fonts/maqruat-serif-*.woff2` ve PDF arşivinde gömülü statik kopyalar):
+    web için Latin + Latin Genişletilmiş (Türkçe dahil) karakter kümesine
+    alt kümelenmiş / PDF için statikleştirilmiş ve yeniden adlandırılmıştır.
+    Source Serif 4'ün telif bildirimi "Reserved Font Name 'Source'" ibaresini
+    içerdiğinden, OFL'nin gereği olarak değiştirilmiş sürüm özgün adı taşımaz.
+    Harf çizimleri, ölçüler ve değişken eksenler (ağırlık, optik boyut)
+    değiştirilmemiştir; özgün telif ve lisans bildirimi dosya üst verilerinde ve
+    lisans metninde korunur. Adobe'nin marka bildirimi ("Source is a trademark of
+    Adobe") dosya üst verisinde aynen kalır.
+- **Yönetim paneli (Decap CMS):** MIT Lisansı ile dağıtılan Decap CMS, derlenmiş hâliyle
+  `public/admin/vendor/decap-cms/` altında, resmî npm paketinden değiştirilmeden
+  alınarak sunulur (`VERSION.txt` ve `decap-cms.js.LICENSE.txt` dosyalarına bakın;
+  güncelleme: `scripts/update-decap-cms.mjs`).
 - **npm bağımlılıkları:** Astro, Tailwind CSS, Fuse.js, Chart.js, pdfmake ve diğer
   paketlerin her biri kendi lisansına tabidir (bkz. `package.json`).
 

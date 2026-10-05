@@ -29,7 +29,7 @@ export default {
         gold: { DEFAULT: "#b4841f", soft: "#e0b14c" },
       },
       fontFamily: {
-        serif: ['"Source Serif 4"', "Georgia", "serif"],
+        serif: ['"Maqruat Serif"', "Georgia", "serif"],
         sans: ['"Plus Jakarta Sans"', "system-ui", "sans-serif"],
       },
     },

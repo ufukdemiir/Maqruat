@@ -4,6 +4,7 @@ import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { unified } from "@astrojs/markdown-remark";
 import { rehypeBasePathImages } from "./src/lib/rehype-base-path-images.mjs";
+import { createSitemapSerializer } from "./src/lib/lastmod.mjs";
 
 // Maqruat — GitHub Pages üzerinde tamamen statik olarak yayınlanır.
 //
@@ -23,6 +24,9 @@ export default defineConfig({
     sitemap({
       changefreq: "weekly",
       priority: 0.7,
+      // Her sayfa için içeriğin GERÇEK son değişiklik tarihi (Git geçmişinden);
+      // Git geçmişi okunamazsa lastmod yazılmaz. Ayrıntı: src/lib/lastmod.mjs
+      serialize: createSitemapSerializer(BASE_PATH),
     }),
   ],
   markdown: {

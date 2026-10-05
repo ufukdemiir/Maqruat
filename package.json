@@ -1,6 +1,6 @@
 {
   "name": "maqruat",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": true,
   "description": "Maqruat — Ufuk Demir'in kişisel okuma takibi ve kütüphanesi. Statik, hızlı ve SEO odaklı bir Astro sitesi.",
   "author": "Ufuk Demir",

@@ -9,13 +9,14 @@
   </head>
   <body>
     <!-- Decap CMS'i çalıştıran ve yönetim arayüzünü oluşturan betik.
-         Sürüm BİLİNÇLİ OLARAK sabitlenmiştir (^3.x gibi bir aralık DEĞİL).
-         Bir aralık kullanılsaydı, panele her girişte unpkg o an hangi sürüm
-         yayında ise onu getirirdi; bu da CMS'in hiç haberiniz olmadan
-         güncellenmesine (ve olası bir sürümün panel davranışını
-         değiştirmesine/bozmasına) yol açabilirdi. Güncellemek isterseniz,
-         önce Decap CMS'in sürüm notlarını okuyup buradaki numarayı elle
-         yükseltin. -->
-    <script src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"></script>
+         Bu kod, bu sitenin KENDİ dosyalarından sunulur (vendor/decap-cms/);
+         üçüncü bir sunucudan (CDN) çekilmez. Sebep: panel, GitHub'a yazma
+         yetkili bir belirteçle çalışır; kodu dışarıdan çekmek, o sunucunun ya
+         da paketin ele geçirilmesi hâlinde belirtecin çalınmasına yol açardı.
+         Sürüm ve bütünlük bilgisi vendor/decap-cms/VERSION.txt içindedir.
+         Güncellemek için (sessizce değil, bilerek):
+           node scripts/update-decap-cms.mjs <sürüm>
+         ve sürüm notlarını önceden okuyun. -->
+    <script src="./vendor/decap-cms/decap-cms.js"></script>
   </body>
 </html>
