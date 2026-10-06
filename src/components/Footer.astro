@@ -69,7 +69,11 @@ const linkTarget = (link: SocialLink) => (link.external ? "_blank" : undefined);
             <p id="footer-maqruat-heading" class={headingClass}>
               Maqruat'ı takip edin
             </p>
-            <ul class="mt-4 flex flex-wrap justify-center gap-2">
+            {/* Çipler 990 px ve üzerinde (içerik genişliği ≥ 950 px) tek satıra sığacak şekilde
+                biraz sıkılaştırılır: 12 çipin (11 platform + RSS) normal ölçüsü 1.040 px
+                tutar ve sonuncusu tek başına alt satıra düşerdi. Küçük ekranlarda
+                çipler her zaman sarılır. */}
+            <ul class="mt-4 flex flex-wrap justify-center gap-2 min-[990px]:gap-1.5">
               {maqruatLinks.map((link) => (
                 <li>
                   <a
@@ -77,7 +81,7 @@ const linkTarget = (link: SocialLink) => (link.external ? "_blank" : undefined);
                     target={linkTarget(link)}
                     rel={linkRel(link)}
                     aria-label={link.key === "rss" ? "RSS akışı (yeni sekmede açılır)" : undefined}
-                    class="inline-flex items-center rounded-full border border-rule px-3.5 py-2 text-sm leading-none text-ink-soft transition-colors hover:border-leather hover:text-leather"
+                    class="inline-flex items-center rounded-full border border-rule px-3.5 py-2 text-sm leading-none text-ink-soft transition-colors hover:border-leather hover:text-leather min-[990px]:px-3 min-[990px]:text-[13px]"
                   >
                     {link.label}
                   </a>

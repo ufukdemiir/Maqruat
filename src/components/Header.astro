@@ -10,13 +10,16 @@ function isActive(href: string) {
 }
 ---
 
+{/* Tam menü, sığabildiği genişlikten (≈862 px gerekir) itibaren, 900 px'te gösterilir;
+    daha dar ekranlarda (telefon ve dikey tabletler) hamburger menü kullanılır.
+    Eskiden eşik 768 px idi ve 768–860 px arasında başlık sayfayı yatay kaydırıyordu. */}
 <header class="sticky top-0 z-30 border-b border-rule bg-paper/90 backdrop-blur">
   <div class="mx-auto flex max-w-5xl items-center gap-4 px-5 py-4">
     <a href={withBase("/")} class="shrink-0 font-serif text-2xl font-semibold italic text-ink">
       Maqruat
     </a>
 
-    <nav class="hidden flex-1 items-center gap-5 md:flex" aria-label="Ana gezinme">
+    <nav class="hidden flex-1 items-center gap-5 min-[900px]:flex" aria-label="Ana gezinme">
       {
         navItems.map((item) => (
           <a
@@ -32,28 +35,28 @@ function isActive(href: string) {
       }
     </nav>
 
-    <div class="ml-auto flex items-center gap-2 md:ml-0">
+    <div class="ml-auto flex items-center gap-2 min-[900px]:ml-0">
       <button
         id="search-trigger"
         type="button"
         aria-label="Ara"
-        class="flex size-9 items-center justify-center gap-1.5 rounded-full border border-rule text-ink-soft transition-colors hover:border-leather hover:text-leather md:w-auto md:px-3"
+        class="flex size-9 items-center justify-center gap-1.5 rounded-full border border-rule text-ink-soft transition-colors hover:border-leather hover:text-leather min-[900px]:w-auto min-[900px]:px-3"
       >
         <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
           <circle cx="11" cy="11" r="7"></circle>
           <path d="m20 20-3.2-3.2"></path>
         </svg>
-        <span class="hidden text-sm md:inline">Ara</span>
+        <span class="hidden text-sm min-[900px]:inline">Ara</span>
         <kbd
           id="search-shortcut-hint"
-          class="hidden rounded border border-rule px-1.5 py-0.5 text-xs text-ink-soft md:inline"
+          class="hidden rounded border border-rule px-1.5 py-0.5 text-xs text-ink-soft min-[900px]:inline"
           >Ctrl+K</kbd
         >
       </button>
 
       <ThemeToggle />
 
-      <details class="relative md:hidden">
+      <details class="relative min-[900px]:hidden">
         <summary
           class="flex size-9 list-none cursor-pointer select-none items-center justify-center rounded-full border border-rule text-ink-soft [&::-webkit-details-marker]:hidden"
           aria-label="Menü"
