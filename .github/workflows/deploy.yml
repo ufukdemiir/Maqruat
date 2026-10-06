@@ -25,6 +25,9 @@ jobs:
       - name: Depoyu klonla
         uses: actions/checkout@v7
         with:
+          # Tüm Git geçmişi: site haritasındaki "son değişiklik" (lastmod)
+          # tarihleri içerik dosyalarının gerçek commit tarihlerinden üretilir
+          # (bkz. src/lib/lastmod.mjs). Sığ (shallow) klonda lastmod yazılmaz.
           fetch-depth: 0
 
       - name: Node.js kur
