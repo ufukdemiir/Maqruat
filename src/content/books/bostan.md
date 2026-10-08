@@ -78,5 +78,7 @@ quotes:
   - text: ‘Çifteli hayvana ağır yük gerek.’ diyen köy kocası ne güzel bir mesel
       söylemiş!
     page: 140
+  - text: Temeli sağlam olmayan binayı yükseltme. Şayet yükseltirsen ondan kork.
+    page: 140
 draft: false
 ---
