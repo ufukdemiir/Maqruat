@@ -27,5 +27,13 @@ quotes:
       “Bir insanın emrini kırmış olsam onunla karşılaşmak istemezdim. (Allah
       ile) nasıl karşılaşmayı isteyebilirim ki? O’nun emrini kırdım.”’"
     page: 233
+  - text: >-
+      İbrahim İbni Ethem'e (r.a.) ‘Nasılsın?’ diye sordular, aşağıdaki şiirle
+      cevap verdi:
+
+      “Yamadık dünyamızı, yırtarak dinimizden,
+
+      Sonunda din de gitti, dünya da gitti elimizden.”
+    page: 267
 draft: false
 ---
