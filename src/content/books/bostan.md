@@ -89,5 +89,11 @@ quotes:
       ki: ‘Sana benden iyi binlerce kul düşer, ama bana senin gibi efendi
       düşmez.’"
     page: 156
+  - text: Eğer sultanın huzurunda hizmet ediyorsan nimet için kendisinden gafil
+      olma. Erenler, Tanrıdan yalnız Tanrıyı isterler; Ondan gayrı bir şey
+      istemeleri Hak yoluna aykırıdır. Dostundan sadece ihsan umarsan onu değil,
+      kendini düşünmüş olursun. Ağzın hırsla açık kaldıkça gönül kulağına gayb
+      âleminin sırları girmez.
+    page: 161
 draft: false
 ---
