@@ -67,5 +67,11 @@ quotes:
       “Bir kalbi gözden geçirip içinde dünya ve ahiret sevgisi bulmadığım zaman
       onu kendi sevgimle doldururum ve onu himayem altına alırım.”’"
     page: 625
+  - text: "İmam-ı Şafii buyurur ki: ‘Kim Kur'an-ı Kerîm öğrenirse değeri yükselir.
+      Kim fıkıh öğrenirse önemi artar ve kim hadis öğrenirse inandırma gücü
+      artar. Kim matematik öğrenirse görüşü çoğalır. Kim az bilinen gerçekleri
+      öğrenirse huyu yumuşar. Kim izzeti nefis sahibi olmazsa ilmi ona fayda
+      vermez.’"
+    page: 659
 draft: false
 ---
