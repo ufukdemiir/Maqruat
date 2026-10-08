@@ -40,5 +40,8 @@ quotes:
       birine yüzümü tam çevirerek baktığım zaman, onu dünyadan tamamen
       alıkoyduğumu bilmiyor musun?’"
     page: 292
+  - text: "Hz. Ali (r.a.) bir gün avucuna bir dirhem para alarak ona şöyle seslendi:
+      ‘Hiç şüphesiz, sen, elimden çıkmadan bana yaramazsın.’"
+    page: 334
 draft: false
 ---
