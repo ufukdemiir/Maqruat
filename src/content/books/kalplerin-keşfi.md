@@ -50,5 +50,10 @@ quotes:
       ona iki sefer: ‘Sidik yolundan çıktığı hâlde kendini büyük gören
       âdemoğlunun hâline ne kadar şaşılır.’ dedi."
     page: 383
+  - text: "Diğer bir şair de şöyle der: ‘Cahillerin yükselişi ve faziletlilerin
+      arkada kalışı yüzünden dünyaya sitem ettim. / Bana “Mazeretimi dinle.”
+      dedi. / “Cahiller öz çocuklarım oldukları için onları yükselttim” / “Takva
+      ehli ise diğer kumamın çocuklarıdır.“’"
+    page: 512
 draft: false
 ---
