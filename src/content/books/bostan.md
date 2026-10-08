@@ -97,5 +97,8 @@ quotes:
     page: 161
   - text: Ey akıl sahibi; Tanrıdan değil, Tanrıya feryat et.
     page: 224
+  - text: Kaptanı üstünü başını paralasa dahi, Tanrı gene gemiyi dilediği yere
+      götürür.
+    page: 228
 draft: false
 ---
