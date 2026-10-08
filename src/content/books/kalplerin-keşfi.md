@@ -22,5 +22,10 @@ quotes:
       salmaktan sakın. Çünkü bakış, hedefine varan bir ok ve buyruğunu
       dinletebilen bir padişahtır.’"
     page: 221
+  - text: "Ebu Süleyman-üd Darani (r.a.) der ki: ‘Ümmü Harun'a ‘Ölmek ister misin?’
+      diye sordum, ‘Hayır.’ dedi. ‘Niçin?’ diye sordum, bana şu cevabı verdi:
+      ‘Bir insanın emrini kırmış olsam onunla karşılaşmak istemezdim. (Allah
+      ile) nasıl karşılaşmayı isteyebilirim ki. O'nun emrini kırdım.’"
+    page: 233
 draft: false
 ---
