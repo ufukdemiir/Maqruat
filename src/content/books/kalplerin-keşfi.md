@@ -55,5 +55,9 @@ quotes:
       dedi. / “Cahiller öz çocuklarım oldukları için onları yükselttim” / “Takva
       ehli ise diğer kumamın çocuklarıdır.“’"
     page: 512
+  - text: İbrahim İbni Havvas, ‘Ölümsüz, diri olan Allah’a güven.’ mealindeki ayeti
+      okuyarak ‘Bu ayeti gördükten sonra, insanın Allah’tan başkasına
+      güvenmemesi gerekir.’ dedi.
+    page: 592
 draft: false
 ---
