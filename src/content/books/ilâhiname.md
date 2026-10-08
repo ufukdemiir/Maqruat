@@ -43,5 +43,10 @@ quotes:
       terk ettim. Zandan ibaret olduğundan hepsinden vazgeçtim. Bilmem sen ne
       vakit kendine geleceksin? Bu kadar dalgınlıktan ne zaman vazgeçeceksin?
     page: 133
+  - text: İblis de lânete uğradığı zaman Tanrıyı tespih ve takdise koyuldu. Senden
+      gelen lânet dedi, senden baş çekip ağyara baş eğmekten yüzlerde defa
+      hoştur. Bir yara yüzünden kapıdan uzaklaşan köpek, kemikten ebedî olarak
+      ayrılır.
+    page: 186
 draft: false
 ---
