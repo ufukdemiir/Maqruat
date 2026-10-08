@@ -104,5 +104,9 @@ quotes:
       yapmaz? Efendisine karşı kölenin beslediği güveni sen Tanrıya karşı
       beslemez misin?
     page: 243
+  - text: "Sultana tapan fakire haber ver: Sultan fakirden daha yoksuldur. Zira
+      dilenciyi bir dirhem gümüş doyurduğu hâlde Ferîdun koca Acem memleketiyle
+      yarı toktur."
+    page: 244
 draft: false
 ---
