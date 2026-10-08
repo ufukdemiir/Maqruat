@@ -44,5 +44,9 @@ quotes:
   - text: Âzade ruhlu adam yokluktan ölür, fakat bir zavallının yanında karın
       doyurmaz.
     page: 38
+  - text: Eli boş olan insan, bir tek ekmeğin kaygısındadır. Halbuki cihan sahibi,
+      bir cihanın gamını çeker. Yoksul, akşam ekmeğini ele geçirince öyle bir
+      uyur ki onu Şam sultanı sanırsın.
+    page: 59
 draft: false
 ---
