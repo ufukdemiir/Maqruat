@@ -6,7 +6,7 @@ pageCount: 626
 startDate: 2026-09-11
 status: reading
 rating: 9
-pagesRead: 326
+pagesRead: ""
 genres:
   - Din
   - İslam
