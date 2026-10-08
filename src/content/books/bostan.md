@@ -68,5 +68,8 @@ quotes:
   - text: Düşman askerlerinin içine anlaşmazlık girince sen kendi kılıcını kınına
       koy. Kurtlar birbirine düştüğü zaman, aralarında koyun rahat eder.
     page: 93
+  - text: Âcizlerin gönlünü sevindir ve acze düşeceğin günü hatırla. El kapılarında
+      dilenci değilsin; bunun şükranesi olarak kapından dilenciyi kovma.
+    page: 98
 draft: false
 ---
