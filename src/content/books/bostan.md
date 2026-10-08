@@ -18,5 +18,9 @@ quotes:
       uzun uzun anlatır. İşte Sadi'nin en kuvvetli cephesi budur. Yüzyıllarca
       benimsenmiş olmasının sırrını burada aramamız lâzımdır. (Önsözden)
     page: 4
+  - text: Zaten tevazu büyüklerden gelirse iyidir. Yoksul tevazu gösterse bile bu
+      onun tabiatıdır. Emir altında bulunan kişi düşkün görünürse bundan ne
+      çıkar? En gerçek Allah adamı, düşkün görünen ferman sahibidir.
+    page: 13
 draft: false
 ---
