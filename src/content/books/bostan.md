@@ -120,5 +120,7 @@ quotes:
       olamaz. Bunun gibi, şekerkamışının da faydası çoktur. Fakat bir şartla:
       Eğer adamın ömrü kalmışsa..."
     page: 298
+  - text: Çarşı ne kadar dolu bulunursa, züğürdün gönlü o kadar perişan olur.
+    page: 308
 draft: false
 ---
