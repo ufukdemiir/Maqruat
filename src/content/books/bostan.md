@@ -65,5 +65,8 @@ quotes:
       Ahlâksız çocuklar, savaş günü kadın gibi kaçan kılıç erlerinden daha
       iyidirler.
     page: 91
+  - text: Düşman askerlerinin içine anlaşmazlık girince sen kendi kılıcını kınına
+      koy. Kurtlar birbirine düştüğü zaman, aralarında koyun rahat eder.
+    page: 93
 draft: false
 ---
