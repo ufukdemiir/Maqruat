@@ -26,5 +26,12 @@ quotes:
       bir bildik. Tanrım, bu yoksul pek kudretsizdir. Senin kapında bir avuç
       kemikten ibarettir. Tanrım, Attar'ın canı hayrettedir. "
     page: 12
+  - text: "Bir Hıristiyan Müslüman oldu, bahta erişti. Ertesi günü o bilgisiz, şarap
+      içip sarhoş oldu. Anası onu sarhoş görünce dertlenip dedi ki: A oğlum, ne
+      yaptın sen? İsa, senden inciniverdi, fakat Muhammet de hoşnut olmadı.
+      Puştçasına gidiş iyi bir şey değil. Her güzel tabiatlı, ona lâyık er
+      olamaz ki. Hangi dindeysen ercesine yürü. Dinde puta tapmak, adam
+      olmamaklıktan ileri gelir."
+    page: 129
 draft: false
 ---
