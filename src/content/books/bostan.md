@@ -108,7 +108,8 @@ quotes:
       dilenciyi bir dirhem gümüş doyurduğu hâlde Ferîdun koca Acem memleketiyle
       yarı toktur."
     page: 244
-  - text: Oğlum, sel yoluna ev yapma; bu binayı kimse tamamlıyamamıştır.
+  - text: Oğlum, sel yoluna ev yapma; bu binayı kimse tamamlıyamamıştır. Kervancının
+      yolda ev yapması, akıl, tedbir ve marifet işi değildir.
     page: 245
 draft: false
 ---
