@@ -27,5 +27,10 @@ quotes:
       “Bir insanın emrini kırmış olsam onunla karşılaşmak istemezdim. (Allah
       ile) nasıl karşılaşmayı isteyebilirim ki? O’nun emrini kırdım.”’"
     page: 233
+  - text: "Lokman Hekim oğluna şöyle nasihat eder: ‘Yavrum, dünyaya geldiğin ilk
+      günden itibaren her geçirdiğin gün ile dünyayı arkada bırakıyor ve ahireti
+      karşılıyorsun. Her gün adım adım yaklaştığın bir ev, adım adım
+      uzaklaştığın evden sana daha yakındır.’"
+    page: 273
 draft: false
 ---
