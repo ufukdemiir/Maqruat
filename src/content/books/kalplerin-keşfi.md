@@ -73,5 +73,17 @@ quotes:
       öğrenirse huyu yumuşar. Kim izzeti nefis sahibi olmazsa ilmi ona fayda
       vermez.’"
     page: 659
+  - text: Bilesin ki, cenazeler basiret sahipleri için ibrettir. Cenaze uyarıcı ve
+      hatırlatıcıdır. Fakat bu uyarıcılık ve hatırlatıcılık gafiller için
+      değildir. Çünkü cenazeleri görmek, gafillerin sadece gönül katılığını
+      artırır. Çünkü onlar her zaman başkalarının cenazelerine bakacaklarını
+      sanırlar ve kaçınılmaz olarak bir gün kendi cenazelerinin de eller üstünce
+      taşınacağını hesap etmezler. Yahut da cenazelerinin taşınmasını yakın
+      görmezler ve o anda cenazeleri taşınanların da öyle düşündüklerini fakat
+      hesaplarının yanlış çıktığını ve sürelerinin çok erken dolduğunu göz
+      önünde tutmazlar. Kendini bilen kimse, cenazeye, tabuta kendisi konmuş
+      gibi bakmalıdır. Çünkü çok geçmeden, belki ertesi ve belki iki gün sonra
+      tabuta girebilir.
+    page: 745
 draft: false
 ---
