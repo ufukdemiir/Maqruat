@@ -11,5 +11,12 @@ genres:
   - Edebiyat
   - Klasik
   - Doğu Klasikleri
+quotes:
+  - text: Sadi daha çok hayattan bahsetmiştir. Bir şeyh, bir sofi olmasına rağmen, o
+      gene hayatın içinde kalmıştır. Gülistan'ın başlangıcında bir kere uzlete
+      niyet ettiğini, fakat bir dostunun ısrariyle tekrar insanlara karıştığını
+      uzun uzun anlatır. İşte Sadi'nin en kuvvetli cephesi budur. Yüzyıllarca
+      benimsenmiş olmasının sırrını burada aramamız lâzımdır. (Önsözden)
+    page: 4
 draft: false
 ---
