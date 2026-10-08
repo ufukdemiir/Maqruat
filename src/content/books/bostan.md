@@ -100,5 +100,9 @@ quotes:
   - text: Kaptanı üstünü başını paralasa dahi, Tanrı gene gemiyi dilediği yere
       götürür.
     page: 228
+  - text: Köleyi satın alan bir efendi ona baktıktan sonra, köleyi yaratan ne
+      yapmaz? Efendisine karşı kölenin beslediği güveni sen Tanrıya karşı
+      beslemez misin?
+    page: 243
 draft: false
 ---
