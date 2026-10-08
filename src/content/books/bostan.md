@@ -56,5 +56,10 @@ quotes:
       fayda edecektir. Ekşi yüzlü adam, insanı hoş tabiatlı, tatlı mizaçlı
       dostlardan daha güzel tenkit eder.
     page: 79
+  - text: Oğlu savaşa gitmek için okunu, yayını takındığı zaman Gurgin ne güzel
+      söylemişti. ‘Eğer, demişti, hemen kadınlar gibi kaçacaksan gidip de cenk
+      erlerinin şerefini kırma.’ Savaşta sırtını gösteren süvari yalnız kendini
+      değil, namlı yiğitleri de öldürmüş olur.
+    page: 91
 draft: false
 ---
