@@ -38,5 +38,8 @@ quotes:
   - text: Çünkü günahsız olan, pervasız konuşur. Muhtesip dolaşırken gocunanlar,
       terazilerinde dirhem taşı noksan olanlardır.
     page: 34
+  - text: Elli yılda kazanılmış nice iyi adlar vardır ki, bir tek kötü şöhret
+      hepsini ayaklar altına almıştır.
+    page: 38
 draft: false
 ---
