@@ -48,5 +48,10 @@ quotes:
       hoştur. Bir yara yüzünden kapıdan uzaklaşan köpek, kemikten ebedî olarak
       ayrılır.
     page: 186
+  - text: "Mübarekoğlu, köleye dedi ki: Neden efendine söylemezsin? Sana bir elbise
+      alsın. Kölecik dedi ki: Efendime ne söyleyeyim? O, eksiğimi, fazlamı zaten
+      görmede. O beni açıkça gördükten sonra ben ne diyeyim? O, benim hâlimi
+      benden iyi bilmede, ne isteyeyim ondan?"
+    page: 247
 draft: false
 ---
