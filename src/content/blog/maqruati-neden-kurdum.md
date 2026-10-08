@@ -1,10 +1,11 @@
 ---
-title: "Maqruat'ı Neden Kurdum"
-publishDate: 2026-09-01
-excerpt: "Yıllardır dağınık şekilde tuttuğum okuma notlarını tek bir yerde toplama fikri nasıl bu platforma dönüştü."
+title: Maqruat'ı Neden Kurdum
+publishDate: 2026-09-08
+excerpt: Yıllardır dağınık şekilde tuttuğum okuma notlarını tek bir yerde
+  toplama fikri nasıl bu platforma dönüştü.
 tags:
-  - "Platform"
-  - "Kişisel"
+  - Platform
+  - Kişisel
 draft: false
 ---
 
