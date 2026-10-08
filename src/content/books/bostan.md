@@ -75,5 +75,8 @@ quotes:
       Şu hâlde dünyaya tapanın elindeki altın henüz taşın içinde duruyor
       demektir.
     page: 134
+  - text: ‘Çifteli hayvana ağır yük gerek.’ diyen köy kocası ne güzel bir mesel
+      söylemiş!
+    page: 140
 draft: false
 ---
