@@ -1,6 +1,6 @@
 ---
 title: 2026 Okuma Hedefim Üzerine
-publishDate: 2026-07-03
+publishDate: 2026-09-13
 excerpt: 2026'da okuma hedefi koymadan okuyorum. Seçici okuma kriterlerimi,
   emeği önceleyen yaklaşımımı ve sayısal hedefleri neden sonraya bıraktığımı
   anlattım.
