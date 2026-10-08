@@ -35,5 +35,8 @@ quotes:
       anlatmazlar... Sevdiğinin yüzüne bakmaya bir kere cesaret ettinse gayrı
       ona doyamazsın: susaklının Dicle'den doymadığı gibi."
     page: 32
+  - text: Çünkü günahsız olan, pervasız konuşur. Muhtesip dolaşırken gocunanlar,
+      terazilerinde dirhem taşı noksan olanlardır.
+    page: 34
 draft: false
 ---
