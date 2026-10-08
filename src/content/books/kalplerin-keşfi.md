@@ -59,5 +59,9 @@ quotes:
       okuyarak ‘Bu ayeti gördükten sonra, insanın Allah’tan başkasına
       güvenmemesi gerekir.’ dedi.
     page: 592
+  - text: Adamın biri Ömer İbni Abdülâziz'e ‘Ne zaman konuşayım?’ diye sorar, o da
+      ‘Canın susmak isteyince.’ der. Adam, ‘Peki, ne zaman susayım?’ diye sorar,
+      o da ‘Canın konuşmak isteyince.’ der.
+    page: 606
 draft: false
 ---
