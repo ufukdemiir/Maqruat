@@ -17,8 +17,8 @@ genres:
 seriesTitle: İlâhiname
 volumeNumber: 1
 notes:
-  - Eski bir baskı ve ikinci cilt elimde mevcut değil, o sebeple yalnızca ilk on
-    iki makalesini okuyabildim. İnşallah yeni veya eski bir baskısını temin
-    ettiğimde on üçüncü makale ile devam edeceğim.
+  - Bu eski bir baskıydı ve ikinci cilt elimde mevcut değil, o sebeple yalnızca
+    ilk on iki makalesini okuyabildim. İnşallah başka bir zaman yeni veya eski
+    bir baskısını temin ettiğimde on üçüncü makale ile devam edeceğim.
 draft: false
 ---
