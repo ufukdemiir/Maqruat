@@ -71,5 +71,9 @@ quotes:
   - text: Âcizlerin gönlünü sevindir ve acze düşeceğin günü hatırla. El kapılarında
       dilenci değilsin; bunun şükranesi olarak kapından dilenciyi kovma.
     page: 98
+  - text: Altını kara taşın içinden dostlarla, sevgililerle yensin diye çıkarırlar.
+      Şu hâlde dünyaya tapanın elindeki altın henüz taşın içinde duruyor
+      demektir.
+    page: 134
 draft: false
 ---
