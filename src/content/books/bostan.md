@@ -111,5 +111,9 @@ quotes:
   - text: Oğlum, sel yoluna ev yapma; bu binayı kimse tamamlıyamamıştır. Kervancının
       yolda ev yapması, akıl, tedbir ve marifet işi değildir.
     page: 245
+  - text: Az konuşanın ünü keskin olur. Söyledin de şerefin kalmadı mı, bulunduğun
+      yerden kaç. Ey akıl sahibi, susmak senin için vakardır, fakat cahil için
+      bir perdedir. Eğer bilginsen, heybetini kaybetme; cahilsen perdeni yırtma.
+    page: 253
 draft: false
 ---
