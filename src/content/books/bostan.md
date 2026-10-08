@@ -80,5 +80,9 @@ quotes:
     page: 140
   - text: Temeli sağlam olmayan binayı yükseltme. Şayet yükseltirsen ondan kork.
     page: 140
+  - text: "Bir gün bir köleye yüreğim yandı. Efendisi onu satıyordu. Köle diyordu
+      ki: ‘Sana benden iyi binlerce kul düşer, ama bana senin gibi efendi
+      düşmez.’"
+    page: 156
 draft: false
 ---
