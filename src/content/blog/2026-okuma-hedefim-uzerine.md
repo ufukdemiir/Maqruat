@@ -1,18 +1,32 @@
 ---
-title: "2026 Okuma Hedefim Üzerine"
+title: 2026 Okuma Hedefim Üzerine
 publishDate: 2026-09-05
-excerpt: "Bu yıl kendime koyduğum kitap hedefinin arkasındaki mantık ve sayının kendisinden çok neyi önemsediğim."
+excerpt: 2026'da okuma hedefi koymadan okuyorum. Seçici okuma kriterlerimi,
+  emeği önceleyen yaklaşımımı ve sayısal hedefleri neden sonraya bıraktığımı
+  anlattım.
 tags:
-  - "Okuma Alışkanlıkları"
+  - Okuma Alışkanlıkları
+  - Kişisel
 draft: false
 ---
+2026 için kendime okumaya dair bir hedef koymadım, bir süreç planı da yapmadım. Ana sayfadaki ilerleme çubuğunda görünen 3 kitaplık hedef tamamen temsilî.
 
-Bu yıl için kendime koyduğum hedef, göründüğünden daha az kitap. Geçmiş yıllarda sırf sayıyı büyütmek için ince ve hızlı okunan kitaplara yönelip, asıl okumak istediğim uzun ve zorlayıcı eserleri hep erteledigimi fark ettim.
+Süreç, Temmuz ayında *Kalplerin Keşfi* ile kendiliğinden başladı. Devam ederken okumalarımı aynı zamanda veriye dayalı ve istatistiksel olarak da takip etmek istedim; **Maqruat**'ı bu yüzden kurdum. Platformun hikâyesini "[Maqruat'ı Neden Kurdum?](https://ufukdemiir.github.io/Maqruat/blog/maqruati-neden-kurdum/)" yazısında anlattım.
 
-Bu sefer tam tersini denemek istiyorum: daha az ama daha bilinçli seçilmiş kitaplar. Bir kitabı bitirmek için kendimi acele ettirmemek, notlar almak, altını çizdiğim yerlere geri dönüp düşünmek için zaman ayırmak.
+## Önce süreç, sonra sayı
 
-## Sayı değil, süreç
+Elime geçen her kitabı okuduğum uzun bir dönem var. Elbette bunun çok yönlülük veya başka açılardan faydaları olmuştur. Ancak bundan sonraki okumalarımda, yeni bir karara kadar, bazı kriterleri esas almaya karar verdim:
 
-Maqruat'ı kurarken de aslında bu yaklaşımı destekleyecek bir yapı istedim. Yıllık hedef ilerleme çubuğu güzel bir motivasyon kaynağı, ama asıl değerli olan kısım benim için notlar ve alıntılar bölümleri. Bir kitabı bitirdikten aylar sonra o notlara geri dönüp "ne düşünmüşüm" diye bakabilmek, sadece "kaç kitap okudum" sayısından çok daha anlamlı geliyor bana.
+> Mümkün olduğunca, kendi seviyene uygun, nitelikli ve kurucu metinleri düzenli ve çapraz oku.
 
-Yıl sonunda buraya dönüp bu hedefi ne kadar tuttuğuma bakacağım. Şimdilik ilerleme iyi gidiyor.
+Bu kriterleri korumak kolay olmayacak, ciddi bir mesai gerektirecek. O yüzden sıkıldığın zamanlar için bir kaçış kitabı da bulundur.
+
+Benim için bunun anlamı şu: Hayat, ele geçen her kitabı okuyacak kadar uzun değil. Bu yüzden o devir kapandı; seçici davranmanın, okuduğum kitaba gerçekten emek vermenin ve emek isteyen, anlamca hacimli kitapları okumanın devri başladı.
+
+## Asıl kıymetli olan
+
+**Maqruat**'ı kurarken hem bu yaklaşımı destekleyecek hem de beni motive edecek bir yapı istedim. Platformda benim için en değerli kısım İstatistikler sayfası. Çünkü orada, emek verdiğim kitapları girdikçe biriken veri, "kaç kitap ya da kaç sayfa okudum" gibi soruların yanı sıra, o emeğin gerçek karşılığını da gösteriyor.
+
+İlerleyen yıllarda sayısal hedefler de koymayı düşünüyorum; ama önce bu zemini oturtmak istiyorum.
+
+İnşallah bu okuma tavrını sürdürebilirim.
