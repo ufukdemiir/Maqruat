@@ -61,5 +61,9 @@ quotes:
       erlerinin şerefini kırma.’ Savaşta sırtını gösteren süvari yalnız kendini
       değil, namlı yiğitleri de öldürmüş olur.
     page: 91
+  - text: Savaşta birinin kaçtığını gördün mü, onu düşman öldürmediyse sen öldür.
+      Ahlâksız çocuklar, savaş günü kadın gibi kaçan kılıç erlerinden daha
+      iyidirler.
+    page: 91
 draft: false
 ---
