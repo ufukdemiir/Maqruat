@@ -63,5 +63,9 @@ quotes:
       ‘Canın susmak isteyince.’ der. Adam, ‘Peki, ne zaman susayım?’ diye sorar,
       o da ‘Canın konuşmak isteyince.’ der.
     page: 606
+  - text: "İbni Celâ (r.a.) der ki: ‘Allah (c.c.), Hz. İsa’ya (a.s.) şöyle vahyetti:
+      “Bir kalbi gözden geçirip içinde dünya ve ahiret sevgisi bulmadığım zaman
+      onu kendi sevgimle doldururum ve onu himayem altına alırım.”’"
+    page: 625
 draft: false
 ---
