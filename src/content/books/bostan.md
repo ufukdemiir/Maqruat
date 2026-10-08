@@ -48,5 +48,7 @@ quotes:
       bir cihanın gamını çeker. Yoksul, akşam ekmeğini ele geçirince öyle bir
       uyur ki onu Şam sultanı sanırsın.
     page: 59
+  - text: "Sen Sadi'yi dinle: Düşen, her zaman kalkmış değildir ve bu söz doğrudur."
+    page: 67
 draft: false
 ---
