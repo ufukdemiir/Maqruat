@@ -50,5 +50,11 @@ quotes:
     page: 59
   - text: "Sen Sadi'yi dinle: Düşen, her zaman kalkmış değildir ve bu söz doğrudur."
     page: 67
+  - text: Güzel huyu akıllılardan da öğrenebilirsin; ama o kusura arıyan cahillerden
+      öğrendiğin kadar değil. Kendi ahlâkını düşmanından dinle; dostun gözünde
+      her yaptığın iyidir. Hastaya şeker vermek günah olur; çünkü ona acı ilâç
+      fayda edecektir. Ekşi yüzlü adam, insanı hoş tabiatlı, tatlı mizaçlı
+      dostlardan daha güzel tenkit eder.
+    page: 79
 draft: false
 ---
