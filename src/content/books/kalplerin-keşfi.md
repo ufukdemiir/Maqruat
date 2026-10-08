@@ -32,5 +32,13 @@ quotes:
       karşılıyorsun. Her gün adım adım yaklaştığın bir ev, adım adım
       uzaklaştığın evden sana daha yakındır.’"
     page: 273
+  - text: "Yine söylendiğine göre, Hz. Musa (a.s.) yerde uyuyan birine rastlar,
+      adamın yüzü sakalı toprağa bulaşmış, başının altında yastık yerine bir
+      kerpiç ve paltosunu üzerine örtmüş. Gördüğü manzara karşısında Hz. Musa
+      (a.s.), Allah'a (c.c.) seslenerek: ‘Ya Rabbi, şu kulun dünyada mahvolmuş.’
+      der. Bunun üzerine Allah, Hz. Musa'ya şöyle vahyeder: ‘Ya Musa! Benim,
+      birine yüzümü tam çevirerek baktığım zaman, onu dünyadan tamamen
+      alıkoyduğumu bilmiyor musun?’"
+    page: 292
 draft: false
 ---
