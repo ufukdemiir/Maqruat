@@ -27,5 +27,9 @@ quotes:
       Nitekim kurdun kafasını da halkın koyunlarını paraladıktan sonra değil,
       önceden kesmek gerekir.
     page: 23
+  - text: Sana hizmeti geçmiş biri ihtiyarlayınca yılların hakkını unutma.
+      İhtiyarlık onun elini hizmetten alıkoyduysa, senin elin cömertliğe
+      muktedirdir.
+    page: 24
 draft: false
 ---
