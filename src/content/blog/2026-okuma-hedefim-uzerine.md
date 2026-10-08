@@ -21,9 +21,9 @@ Elime geçen her kitabı okuduğum uzun bir dönem var. Elbette bunun çok yönl
 
 Bu kriterleri korumak kolay olmayacak, ciddi bir mesai gerektirecek. O yüzden sıkıldığın zamanlar için bir kaçış kitabı da bulundur.
 
-Günde on sayfa gibi küçük bir alışkanlığı sürdürmek de bu kriterlere uygun kitapları okumanın en gerçekçi yolu.
+Bu mesaiyi sürdürülebilir kılan şey ise küçük alışkanlıklar. Günde on sayfa gibi yormayan bir ritim, bu kriterlere uygun kitapları okumanın en gerçekçi yollarından biridir.
 
-Benim için bunun anlamı şu: Hayat, ele geçen her kitabı okuyacak kadar uzun değil. Bu yüzden o devir kapandı; seçici davranmanın, okuduğum kitaba gerçekten emek vermenin ve emek isteyen, anlamca hacimli kitapları okumanın devri başladı.
+Bütün bunlar benim için şu anlama geliyor: Hayat, ele geçen her kitabı okuyacak kadar uzun değil. Bu yüzden o devir kapandı; seçici davranmanın, okuduğum kitaba gerçekten emek vermenin ve emek isteyen, anlamca hacimli kitapları okumanın devri başladı.
 
 ## Asıl kıymetli olan
 
