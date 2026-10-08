@@ -1,8 +1,9 @@
 ---
-title: Maqruat'ı Neden Kurdum
+title: Maqruat'ı Neden Kurdum?
 publishDate: 2026-09-08
-excerpt: Yıllardır dağınık şekilde tuttuğum okuma notlarını tek bir yerde
-  toplama fikri nasıl bu platforma dönüştü.
+excerpt: Maqruat'ı neden kurdum? Arapçada "okunan şeyler" demek olan Maqruat;
+  okuma takibi, kişisel kütüphane, alıntı ve notlarımı tek yerde tutan sade bir
+  platform.
 tags:
   - Platform
   - Kişisel
