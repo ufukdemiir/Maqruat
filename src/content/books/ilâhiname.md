@@ -21,5 +21,10 @@ notes:
     elimdeki ciltte bulunan on iki makaleyi okuyabildim. İnşallah başka bir
     zaman yeni veya eski bir baskısını temin ettiğimde on üçüncü makale ile
     devam edeceğim.
+quotes:
+  - text: "Tanrım, bu dünyada kimim ben? Bir yoksul, dostlarının arasına katılmış
+      bir bildik. Tanrım, bu yoksul pek kudretsizdir. Senin kapında bir avuç
+      kemikten ibarettir. Tanrım, Attar'ın canı hayrettedir. "
+    page: 12
 draft: false
 ---
