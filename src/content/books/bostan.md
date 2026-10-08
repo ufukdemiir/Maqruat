@@ -115,5 +115,10 @@ quotes:
       yerden kaç. Ey akıl sahibi, susmak senin için vakardır, fakat cahil için
       bir perdedir. Eğer bilginsen, heybetini kaybetme; cahilsen perdeni yırtma.
     page: 253
+  - text: "Tanrı balın içinde şifa yaratmıştır, ama ecelin hakkından gelecek kadar
+      değil. Bu bal, yaşıyanların sıhhatine yararsa da, ölüm derdine ilâç
+      olamaz. Bunun gibi, şekerkamışının da faydası çoktur. Fakat bir şartla:
+      Eğer adamın ömrü kalmışsa..."
+    page: 298
 draft: false
 ---
