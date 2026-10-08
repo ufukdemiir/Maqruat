@@ -25,7 +25,9 @@ Okuma eylemini ite kaka devam ettirmeye çalıştığım bir sırada, sürdürü
 
 Vakit buldukça buraya okuduğum kitapları, o kitaplardan seçtiğim alıntıları, aldığım notları ve kısa incelemelerimi ekleyeceğim. Bu blog kısmını da, kitaplarla doğrudan ilgili olan veya olmayan ama yine de paylaşmak istediğim düşünceler için ayırdım. Çeşitli konularda blog yazıları ekleyebilirim.
 
-Uzun soluklu bir proje olarak düşünüyorum bunu — yıllar içinde büyüyen, kendi kişisel arşivim hâline gelen bir yer.\
+Bu yıl okumalarıma nasıl yaklaştığımı da "[2026 Okuma Hedefim Üzerine](https://ufukdemiir.github.io/Maqruat/blog/2026-okuma-hedefim-uzerine/)" yazısında anlattım.
+
+Uzun soluklu bir proje olarak düşünüyorum burayı — yıllar içinde büyüyen, kendi kişisel arşivim hâline gelen bir yer.\
 \
 İnşallah burada seni yakalayan bir şeyler de bulursun.\
 \
