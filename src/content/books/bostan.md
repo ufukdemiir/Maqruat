@@ -22,5 +22,10 @@ quotes:
       onun tabiatıdır. Emir altında bulunan kişi düşkün görünürse bundan ne
       çıkar? En gerçek Allah adamı, düşkün görünen ferman sahibidir.
     page: 13
+  - text: Zalimi mal cezasiyle bırakma; onun kökünü dibinden kazmak gerekir. Zulmü
+      seven âmil'e tahammül etme. Mademki semirmiştir, derisini yüzmek gerekir.
+      Nitekim kurdun kafasını da halkın koyunlarını paraladıktan sonra değil,
+      önceden kesmek gerekir.
+    page: 23
 draft: false
 ---
