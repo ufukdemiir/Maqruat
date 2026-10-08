@@ -41,5 +41,8 @@ quotes:
   - text: Elli yılda kazanılmış nice iyi adlar vardır ki, bir tek kötü şöhret
       hepsini ayaklar altına almıştır.
     page: 38
+  - text: Âzade ruhlu adam yokluktan ölür, fakat bir zavallının yanında karın
+      doyurmaz.
+    page: 38
 draft: false
 ---
