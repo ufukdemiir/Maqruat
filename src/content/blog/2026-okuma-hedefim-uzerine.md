@@ -32,3 +32,5 @@ Bütün bunlar benim için şu anlama geliyor: Hayat, ele geçen her kitabı oku
 İlerleyen yıllarda sayısal hedefler de koymayı düşünüyorum; ama önce bu zemini oturtmak istiyorum.
 
 İnşallah bu okuma tavrını sürdürebilirim.
+
+Allah'a emanet.
