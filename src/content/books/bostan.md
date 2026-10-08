@@ -31,8 +31,9 @@ quotes:
       İhtiyarlık onun elini hizmetten alıkoyduysa, senin elin cömertliğe
       muktedirdir.
     page: 24
-  - text: Emanetçi, Tanrıdan korkar bir adam olmalıdır. Sırf senden korkan emin'e
-      güvenme.
-    page: 25
+  - text: "Aklı, ruhu birleşen iki insan, dudakları susarken bile, neler neler
+      anlatmazlar... Sevdiğinin yüzüne bakmaya bir kere cesaret ettinse gayrı
+      ona doyamazsın: susaklının Dicle'den doymadığı gibi."
+    page: 32
 draft: false
 ---
