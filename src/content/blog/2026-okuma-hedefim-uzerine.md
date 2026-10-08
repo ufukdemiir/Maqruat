@@ -25,7 +25,7 @@ Benim için bunun anlamı şu: Hayat, ele geçen her kitabı okuyacak kadar uzun
 
 ## Asıl kıymetli olan
 
-**Maqruat**'ı kurarken hem bu yaklaşımı destekleyecek hem de beni motive edecek bir yapı istedim. Platformda benim için en değerli kısım İstatistikler sayfası. Çünkü orada, emek verdiğim kitapları girdikçe biriken veri, "kaç kitap ya da kaç sayfa okudum" gibi soruların yanı sıra, o emeğin gerçek karşılığını da gösteriyor.
+**Maqruat**'ı kurarken hem bu süreci destekleyecek hem de beni motive edecek bir yapı istedim. Platformda benim için en değerli kısım İstatistikler sayfası. Çünkü orada, emek verdiğim kitapları girdikçe biriken veri, "kaç kitap ya da kaç sayfa okudum" gibi soruların yanı sıra, o emeğin gerçek karşılığını da gösteriyor.
 
 İlerleyen yıllarda sayısal hedefler de koymayı düşünüyorum; ama önce bu zemini oturtmak istiyorum.
 
