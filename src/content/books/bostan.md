@@ -95,5 +95,7 @@ quotes:
       kendini düşünmüş olursun. Ağzın hırsla açık kaldıkça gönül kulağına gayb
       âleminin sırları girmez.
     page: 161
+  - text: Ey akıl sahibi; Tanrıdan değil, Tanrıya feryat et.
+    page: 224
 draft: false
 ---
