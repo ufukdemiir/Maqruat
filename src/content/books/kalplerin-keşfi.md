@@ -43,5 +43,12 @@ quotes:
   - text: "Hz. Ali (r.a.) bir gün avucuna bir dirhem para alarak ona şöyle seslendi:
       ‘Hiç şüphesiz, sen, elimden çıkmadan bana yaramazsın.’"
     page: 334
+  - text: "Ahnef İbni Kays ile Mus'ab İbni Zübeyr (r.a.) aynı sedirde otururlardı;
+      bir gün Ahnef geldiği zaman Mus'ab ayaklarını uzatmış oturuyordu, arkadaşı
+      otursun diye ayaklarını toplamadı. Bu durumda Ahnef oturunca Mus'ab'ın
+      rahatını biraz bozdu, Mus'ab sıkıldığını yüz ifadesiyle belli edince Ahnef
+      ona iki sefer: ‘Sidik yolundan çıktığı hâlde kendini büyük gören
+      âdemoğlunun hâline ne kadar şaşılır.’ dedi."
+    page: 383
 draft: false
 ---
