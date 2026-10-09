@@ -17,20 +17,20 @@ Süreç, Temmuz ayında *Kalplerin Keşfi* ile kendiliğinden başladı. Devam e
 
 Elime geçen her kitabı okuduğum uzun bir dönem var. Elbette bunun çok yönlülük veya başka açılardan faydaları olmuştur. Ancak bundan sonraki okumalarımda, yeni bir karara kadar, bazı kriterleri esas almaya karar verdim:
 
-> Mümkün olduğunca, kendi seviyene uygun, nitelikli ve kurucu metinleri düzenli ve çapraz oku.
+> Mümkün olduğunca, kendi seviyeme uygun, nitelikli ve kurucu metinleri, düzenli ve çapraz okumak.
 
-Bu kriterleri korumak kolay olmayacak, ciddi bir mesai gerektirecek. O yüzden sıkıldığın zamanlar için bir kaçış kitabı da bulundur.
+Bu kriterleri korumak kolay olmayacak, ciddi bir mesai gerektirecek. O yüzden sıkıldığım zamanlar için bir kaçış kitabı da bulunduracağım.
 
-Bu mesaiyi sürdürülebilir kılan şey ise küçük alışkanlıklar. Günde on sayfa gibi yormayan bir ritim, bu kriterlere uygun kitapları okumanın en gerçekçi yollarından biridir.
+Bu mesaiyi sürdürülebilir kılan şey ise bence küçük alışkanlıklar. Günde on sayfa gibi yormayan bir ritim, bu kriterlere uygun kitapları okumanın en gerçekçi yollarından biri.
 
 Bütün bunlar benim için şu anlama geliyor: Hayat, ele geçen her kitabı okuyacak kadar uzun değil. Bu yüzden o devir kapandı; seçici davranmanın, okuduğum kitaba gerçekten emek vermenin ve emek isteyen, anlamca hacimli kitapları okumanın devri başladı.
 
 ## Asıl kıymetli olan
 
-**Maqruat**'ı kurarken hem bu süreci destekleyecek hem de beni motive edecek bir yapı istedim. Platformda benim için en değerli kısım İstatistikler sayfası. Çünkü orada, emek verdiğim kitapları girdikçe biriken veri, "kaç kitap ya da kaç sayfa okudum" gibi soruların yanı sıra, o emeğin gerçek karşılığını da gösteriyor.
+**Maqruat**'ı kurarken hem bu süreci destekleyecek hem de beni motive edecek bir yapı istedim. Platformda benim için en değerli kısım İstatistikler sayfası. Çünkü orada, emek verdiğim kitapları girdikçe biriken veri, "kaç kitap ya da kaç sayfa okudum" gibi sorulara cevap vermesinin yanı sıra, o emeğin gerçek karşılığını da gösteriyor.
 
 İlerleyen yıllarda sayısal hedefler de koymayı düşünüyorum; ama önce bu zemini oturtmak istiyorum.
 
 İnşallah bu okuma tavrını sürdürebilirim.
 
-Allah'a emanet.
+Sonraki yazılarda görüşmek üzere. Allah'a emanet olun.
