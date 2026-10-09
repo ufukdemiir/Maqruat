@@ -9,7 +9,7 @@ tags:
   - Kişisel
 draft: false
 ---
-Okuma eylemini ite kaka devam ettirmeye çalıştığım bir sırada, sürdürülen küçük alışkanlıkların zamanla gerçekten de bir dağa dönüştüğünü müşahede ettim. Örneğin, her gün yalnızca on sayfa veya on dakika okumak. Bunu kesinlikle denemelisin. Bunun yanında, okuma sürecine dair verileri derli toplu bir biçimde görebilmenin, yani süreçteki gelişimi kolaylıkla takip edebilmenin de oldukça motive edici olduğunu fark ettim.
+Okuma eylemini ite kaka devam ettirmeye çalıştığım bir sırada, sürdürülen küçük alışkanlıkların zamanla gerçekten de bir dağa dönüştüğünü müşahede ettim. Örneğin, her gün yalnızca on sayfa veya on dakika okumak. Bunu kesinlikle denemelisiniz. Bunun yanında, okuma sürecine dair verileri derli toplu bir biçimde görebilmenin, yani süreçteki gelişimi kolaylıkla takip edebilmenin de oldukça motive edici olduğunu fark ettim.
 
 **Maqruat**, tam olarak bu ihtiyaca çözüm arayışımın sonucu. Amacım karmaşık bir *"kitap sosyal medyası"* değil; sadece kendi okuma sürecimi, kütüphanemi, alıntılarımı, incelemelerimi ve notlarımı tek bir yerde, düzenli bir şekilde tutabileceğim ve kendimi istatistiksel olarak da takip edebileceğim sade bir platform.
 
@@ -29,6 +29,6 @@ Bu arada, 2026'da okumalarıma nasıl yaklaştığımı da "[2026 Okuma Hedefim 
 
 Uzun soluklu bir proje olarak düşünüyorum burayı — yıllar içinde büyüyen, kendi kişisel arşivim hâline gelen bir yer.\
 \
-İnşallah burada seni yakalayan bir şeyler de bulursun.\
+İnşallah burada sizi yakalayan bir şeyler de bulursunuz.\
 \
-Allah'a emanet.
+Sonraki yazılarda görüşmek üzere. Allah'a emanet olun.
