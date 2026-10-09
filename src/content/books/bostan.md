@@ -11,6 +11,7 @@ genres:
   - Edebiyat
   - Klasik
   - Doğu Klasikleri
+  - Tasavvuf
 notes:
   - "\"Mahmud'la Ayaz\" (114. hikâye) mânâ bakımından en etkileyici bulduğum
     hikâyelerden oldu. Ayaz isimli kölenin, efendisi Gazneli Mahmud'a
