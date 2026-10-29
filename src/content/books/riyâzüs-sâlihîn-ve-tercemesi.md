@@ -4,7 +4,7 @@ author: İmam Nevevî
 publisher: Diyanet İşleri Başkanlığı Yayınları
 pageCount: 626
 startDate: 2026-09-11
-status: reading
+status: completed
 rating: 9
 genres:
   - Din
