@@ -5,6 +5,10 @@ publisher: Diyanet İşleri Başkanlığı Yayınları
 pageCount: 587
 startDate: 2026-10-30
 status: reading
+genres:
+  - Din
+  - İslam
+  - Hadis
 seriesTitle: Riyâzü's-Sâlihîn ve Tercemesi
 volumeNumber: 2
 draft: false
