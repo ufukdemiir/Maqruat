@@ -3,8 +3,8 @@ title: Riyâzü's-Sâlihîn ve Tercemesi
 author: İmam Nevevî
 publisher: Diyanet İşleri Başkanlığı Yayınları
 pageCount: 587
-startDate: 2026-10-30
-status: reading
+startDate: ""
+status: want-to-read
 genres:
   - Din
   - İslam
