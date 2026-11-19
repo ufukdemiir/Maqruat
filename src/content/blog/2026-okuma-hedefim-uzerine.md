@@ -11,7 +11,7 @@ draft: false
 ---
 2026 için kendime okumaya dair bir hedef koymadım, bir süreç planı da yapmadım. Ana sayfadaki ilerleme çubuğunda görünen 3 kitaplık hedef tamamen temsilî.
 
-Süreç, Temmuz ayında *Kalplerin Keşfi* ile kendiliğinden başladı. Devam ederken okumalarımı aynı zamanda veriye dayalı ve istatistiksel olarak da takip etmek istedim; **Maqruat**'ı bu yüzden kurdum. Platformun hikâyesini "[Maqruat'ı Neden Kurdum?](https://ufukdemiir.github.io/Maqruat/blog/maqruati-neden-kurdum/)" yazısında anlattım.
+Süreç, Temmuz ayında *[Kalplerin Keşfi](https://ufukdemiir.github.io/Maqruat/kitaplar/kalplerin-ke%C5%9Ffi/)* ile kendiliğinden başladı. Devam ederken okumalarımı aynı zamanda veriye dayalı ve istatistiksel olarak da takip etmek istedim; **Maqruat**'ı bu yüzden kurdum. Platformun hikâyesini "[Maqruat'ı Neden Kurdum?](https://ufukdemiir.github.io/Maqruat/blog/maqruati-neden-kurdum/)" yazısında anlattım.
 
 ## Önce süreç, sonra sayı
 
