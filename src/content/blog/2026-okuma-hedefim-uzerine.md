@@ -27,7 +27,7 @@ Bütün bunlar benim için şu anlama geliyor: Hayat, ele geçen her kitabı oku
 
 ## Asıl kıymetli olan
 
-**Maqruat**'ı kurarken hem bu süreci destekleyecek hem de beni motive edecek bir yapı istedim. Platformda benim için en değerli kısım İstatistikler sayfası. Çünkü orada, emek verdiğim kitapları girdikçe biriken veri, "kaç kitap ya da kaç sayfa okudum" gibi sorulara cevap vermesinin yanı sıra, o emeğin gerçek karşılığını da gösteriyor.
+**Maqruat**'ı kurarken hem bu süreci destekleyecek hem de beni motive edecek bir yapı istedim. Platformda benim için en değerli kısım *[İstatistikler](https://ufukdemiir.github.io/Maqruat/istatistikler/)* sayfası. Çünkü orada, emek verdiğim kitapları girdikçe biriken veri, "kaç kitap ya da kaç sayfa okudum" gibi sorulara cevap vermesinin yanı sıra, o emeğin gerçek karşılığını da gösteriyor.
 
 İlerleyen yıllarda sayısal hedefler de koymayı düşünüyorum; ama önce bu zemini oturtmak istiyorum.
 
