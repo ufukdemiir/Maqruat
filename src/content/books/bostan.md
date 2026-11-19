@@ -16,7 +16,7 @@ notes:
   - "\"Mahmud'la Ayaz\" (114. hikâye) mânâ bakımından en etkileyici bulduğum
     hikâyelerden oldu. Ayaz isimli kölenin, efendisi Gazneli Mahmud'a
     sergilediği tavır üzerinden, bir kul ile yaratıcısı arasında olması gereken
-    ilişki, çok hoş bir üslupla idealize edilmiş."
+    ilişki, çok hoş bir üslupla aktarılmış."
 quotes:
   - text: Sadi daha çok hayattan bahsetmiştir. Bir şeyh, bir sofi olmasına rağmen, o
       gene hayatın içinde kalmıştır. Gülistan'ın başlangıcında bir kere uzlete
